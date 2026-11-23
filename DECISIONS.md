@@ -54,6 +54,14 @@ Gaps against the configured means come from removing duplicate edges. Twitter fo
 - **2026-11-23 · #8 · ATM call.** Logged every tick as `bs_call(P, P, option_maturity_days/365, risk_free_rate, IV)`, 30 days and r = 0 by default. New config fields (PLACEHOLDER): `option_maturity_days`, `risk_free_rate`, `vol_ewma_lambda`; plus `trading_days_per_year = 252`.
 - **2026-11-23 · #8 · No market-maker depth.** ADV is floored at 1e-9 so the market maker's curve stays strictly increasing and the clearing move is unique. With no orders and no depth, the price does not move.
 
+- **2026-11-23 · #14 · `Event` pulled forward from #4.** `marketsim/events.py` has only the `Event` record and the kind/seeding lists. The queue, Hawkes generator, seeding and broadcast are still issue #4.
+- **2026-11-23 · #14 · New kind `statement`** for company statements such as confirmations and denials. The notes' kinds (earnings, macro, regulatory, product, rumour, leak) have no slot for the demo's "company denial". `price_move` is an internal kind (created by the simulation) and the parser rejects it.
+- **2026-11-23 · #14 · The LLM gives `parent` as a batch index.** A model cannot know event ids, so the prompt lists the earlier headlines in the batch and the model names one by index; `parse_headlines` maps it to the event id. A parent that points forward or at itself is rejected. If a parent was skipped (`on_error="skip"`), the child gets `parent = -1`.
+- **2026-11-23 · #14 · The LLM estimates `true_impact`** (clamped to ±0.5 log), told to use 0 for anything unverified. For calibration, replace it with the event-study label from `abnormal_return_impact`, which is never a forecast input (see its docstring).
+- **2026-11-23 · #14 · `tick`, `ticker` and `id` never come from the LLM.** They come from the caller (headline timestamp, `ticker` argument, `first_id` counter).
+- **2026-11-23 · #14 · The cache stores raw responses**, keyed by sha256 of the prompt version plus the full prompt (which includes the earlier headlines). Validation runs on every load, so tightening the validator needs no cache flush. The cache is written atomically and saved even when a batch fails part-way.
+- **2026-11-23 · #14 · Event-study estimation window.** It ends before the event day, and before the event window if that starts earlier, so the event's own return never enters α and β. Abnormal returns are summed over the inclusive window `[event_idx + a, event_idx + b]` (default (0, 2)).
+
 ## Simplifications
 
 _(none yet)_
