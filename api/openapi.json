@@ -1,0 +1,2226 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "marketsim API",
+    "description": "Agent-based market simulator: scenarios, runs and results.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Health",
+        "description": "Liveness probe; also reports the engine version the API was built against.",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Health",
+        "description": "Liveness probe; also reports the engine version the API was built against.",
+        "operationId": "health_v1",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/config/defaults": {
+      "get": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Get Defaults",
+        "description": "Default parameters (from `config.py`) and a default empty scenario.",
+        "operationId": "get_defaults_api_v1_config_defaults_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigDefaults"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/config/schema": {
+      "get": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Get Schema",
+        "description": "Every parameter with its default, range, description and PLACEHOLDER flag, plus enums.",
+        "operationId": "get_schema_api_v1_config_schema_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/scenarios": {
+      "get": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "List Scenarios",
+        "operationId": "list_scenarios_api_v1_scenarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioRecord"
+                  },
+                  "type": "array",
+                  "title": "Response List Scenarios Api V1 Scenarios Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "Create Scenario",
+        "operationId": "create_scenario_api_v1_scenarios_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioSpec"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/scenarios/{scenario_id}": {
+      "get": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "Get Scenario",
+        "operationId": "get_scenario_api_v1_scenarios__scenario_id__get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "Update Scenario",
+        "operationId": "update_scenario_api_v1_scenarios__scenario_id__put",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioSpec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "Delete Scenario",
+        "operationId": "delete_scenario_api_v1_scenarios__scenario_id__delete",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs": {
+      "post": {
+        "tags": [
+          "runs"
+        ],
+        "summary": "Create Run",
+        "description": "Record a run with status `queued`.\n\nThe scenario is copied into the run, so later edits to a saved scenario never change a\npast run.",
+        "operationId": "create_run_api_v1_runs_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "runs"
+        ],
+        "summary": "List Runs",
+        "operationId": "list_runs_api_v1_runs_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RunStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "runs"
+        ],
+        "summary": "Get Run",
+        "operationId": "get_run_api_v1_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "runs"
+        ],
+        "summary": "Delete Run",
+        "operationId": "delete_run_api_v1_runs__run_id__delete",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BeliefParams": {
+        "properties": {
+          "mu0": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Mu0",
+            "description": "Base belief step size",
+            "default": 0.35,
+            "placeholder": false
+          },
+          "impact_to_sentiment": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Impact To Sentiment",
+            "description": "How knowledgeable agents translate true_impact into sentiment",
+            "default": 10.0,
+            "placeholder": false
+          },
+          "adopt_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Adopt Rate",
+            "description": "Base probability of adopting a narrative that moved the agent's belief.",
+            "default": 0.5,
+            "placeholder": false
+          },
+          "narrative_pull": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Narrative Pull",
+            "description": "Per tick pull of Confidence toward held narrative",
+            "default": 0.02,
+            "placeholder": false
+          },
+          "confidence_decay": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence Decay",
+            "description": "Per tick forgetting toward 0",
+            "default": 0.002,
+            "placeholder": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "BeliefParams",
+        "description": "BeliefConfig(mu0: float = 0.35, impact_to_sentiment: float = 10.0, adopt_rate: float = 0.5, narrative_pull: float = 0.02, confidence_decay: float = 0.002)"
+      },
+      "Clock": {
+        "properties": {
+          "ticks_per_day": {
+            "type": "integer",
+            "title": "Ticks Per Day",
+            "default": 96
+          },
+          "minutes_per_tick": {
+            "type": "integer",
+            "title": "Minutes Per Tick",
+            "default": 15
+          },
+          "market_open_tick": {
+            "type": "integer",
+            "title": "Market Open Tick",
+            "default": 38
+          },
+          "market_close_tick": {
+            "type": "integer",
+            "title": "Market Close Tick",
+            "default": 64
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Clock"
+      },
+      "ConfigDefaults": {
+        "properties": {
+          "parameters": {
+            "$ref": "#/components/schemas/Parameters"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/ScenarioSpec"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "parameters",
+          "scenario"
+        ],
+        "title": "ConfigDefaults"
+      },
+      "ConfigSchema": {
+        "properties": {
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/SectionMeta"
+            },
+            "type": "array",
+            "title": "Sections"
+          },
+          "enums": {
+            "$ref": "#/components/schemas/Enumerations"
+          },
+          "clock": {
+            "$ref": "#/components/schemas/Clock"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sections"
+        ],
+        "title": "ConfigSchema"
+      },
+      "Correlation": {
+        "properties": {
+          "a": {
+            "type": "string",
+            "title": "A",
+            "description": "First trait"
+          },
+          "b": {
+            "type": "string",
+            "title": "B",
+            "description": "Second trait"
+          },
+          "rho": {
+            "type": "number",
+            "maximum": 0.99,
+            "minimum": -0.99,
+            "title": "Rho",
+            "description": "Target correlation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "a",
+          "b",
+          "rho"
+        ],
+        "title": "Correlation"
+      },
+      "DiffusionParams": {
+        "properties": {
+          "base_online": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Base Online",
+            "description": "Chance an agent checks social media in a 15-min tick at peak hour",
+            "default": 0.12,
+            "placeholder": false
+          },
+          "attention_slots": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Attention Slots",
+            "description": "New items an agent can take in per tick",
+            "default": 3,
+            "placeholder": false
+          },
+          "base_share": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Base Share",
+            "description": "Base probability of sharing an item just seen.",
+            "default": 0.25,
+            "placeholder": false
+          },
+          "broadcast_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Broadcast Rate",
+            "description": "TV / push alerts, scaled by salience x media_attention",
+            "default": 0.15,
+            "placeholder": false
+          },
+          "salience_decay": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Salience Decay",
+            "description": "Per tick (half-life ~6h)",
+            "default": 0.97,
+            "placeholder": false
+          },
+          "retire_salience": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Retire Salience",
+            "description": "Items below this salience with no sharers are retired.",
+            "default": 0.03,
+            "placeholder": false
+          },
+          "max_items": {
+            "type": "integer",
+            "maximum": 4096.0,
+            "minimum": 8.0,
+            "title": "Max Items",
+            "description": "Active items kept in memory",
+            "default": 128,
+            "placeholder": false
+          },
+          "mutate_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Mutate Rate",
+            "description": "Base probability that a sharer mutates a narrative.",
+            "default": 0.04,
+            "placeholder": false
+          },
+          "invent_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Invent Rate",
+            "description": "Base probability of inventing a narrative after a big unexplained move.",
+            "default": 0.002,
+            "placeholder": false
+          },
+          "invent_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Invent Threshold",
+            "description": "|1-day return| that makes agents look for an explanation",
+            "default": 0.03,
+            "placeholder": false
+          },
+          "price_news_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Price News Threshold",
+            "description": "|move| since last price headline that makes outlets report it",
+            "default": 0.04,
+            "placeholder": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DiffusionParams",
+        "description": "DiffusionConfig(base_online: float = 0.12, attention_slots: int = 3, base_share: float = 0.25, broadcast_rate: float = 0.15, salience_decay: float = 0.97, retire_salience: float = 0.03, max_items: int = 128, mutate_rate: float = 0.04, invent_rate: float = 0.002, invent_threshold: float = 0.03, price_news_threshold: float = 0.04)"
+      },
+      "Enumerations": {
+        "properties": {
+          "kinds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Kinds",
+            "default": [
+              "earnings",
+              "macro",
+              "regulatory",
+              "product",
+              "rumour",
+              "leak",
+              "statement"
+            ]
+          },
+          "seedings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Seedings",
+            "default": [
+              "official",
+              "outlet",
+              "influencer",
+              "insider",
+              "anonymous"
+            ]
+          },
+          "topics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Topics",
+            "default": [
+              "finance",
+              "tech",
+              "crypto",
+              "energy",
+              "politics",
+              "sports",
+              "entertainment",
+              "health"
+            ]
+          },
+          "platforms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Platforms",
+            "default": [
+              "twitter",
+              "reddit",
+              "friendship",
+              "instagram",
+              "tiktok",
+              "youtube"
+            ]
+          },
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Categories",
+            "default": [
+              "non_investor",
+              "long_term",
+              "swing",
+              "day_trader",
+              "media"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Enumerations"
+      },
+      "EventSpec": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Id",
+            "description": "Unique within the scenario; -1 to assign automatically",
+            "default": -1
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Tick",
+            "description": "Tick of injection (96 ticks per day, 15 minutes each)"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "earnings",
+              "macro",
+              "regulatory",
+              "product",
+              "rumour",
+              "leak",
+              "statement"
+            ],
+            "title": "Kind"
+          },
+          "ticker": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Ticker",
+            "description": "Ticker / sector index; v1 simulates one ticker (0)",
+            "default": 0
+          },
+          "true_impact": {
+            "type": "number",
+            "maximum": 0.5,
+            "minimum": -0.5,
+            "title": "True Impact",
+            "description": "Log change in fundamental value; hidden",
+            "default": 0.0
+          },
+          "sentiment": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": -1.0,
+            "title": "Sentiment"
+          },
+          "credibility": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Credibility"
+          },
+          "salience": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Salience"
+          },
+          "complexity": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Complexity"
+          },
+          "seeding": {
+            "type": "string",
+            "enum": [
+              "official",
+              "outlet",
+              "influencer",
+              "insider",
+              "anonymous"
+            ],
+            "title": "Seeding"
+          },
+          "parent": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Parent",
+            "description": "Id of the event this follows up, or -1",
+            "default": -1
+          },
+          "topic": {
+            "type": "string",
+            "enum": [
+              "finance",
+              "tech",
+              "crypto",
+              "energy",
+              "politics",
+              "sports",
+              "entertainment",
+              "health"
+            ],
+            "title": "Topic",
+            "default": "finance"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label",
+            "description": "Headline shown in the UI (not used by the engine)"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tick",
+          "kind",
+          "sentiment",
+          "credibility",
+          "salience",
+          "complexity",
+          "seeding"
+        ],
+        "title": "EventSpec",
+        "description": "A scheduled news event. Mirrors `marketsim.events.Event`."
+      },
+      "FieldMeta": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "int",
+              "float",
+              "bool",
+              "map",
+              "list",
+              "other"
+            ],
+            "title": "Kind"
+          },
+          "default": {
+            "title": "Default"
+          },
+          "min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "placeholder": {
+            "type": "boolean",
+            "title": "Placeholder"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "key",
+          "kind",
+          "default",
+          "min",
+          "max",
+          "description",
+          "placeholder"
+        ],
+        "title": "FieldMeta"
+      },
+      "GraphParams": {
+        "properties": {
+          "platforms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "enum": [
+              "twitter",
+              "reddit",
+              "friendship",
+              "instagram",
+              "tiktok",
+              "youtube"
+            ],
+            "minItems": 1,
+            "title": "Platforms",
+            "description": "Platforms switched on. The v1 default is Twitter, Reddit and Friendship.",
+            "default": [
+              "twitter",
+              "reddit",
+              "friendship"
+            ],
+            "placeholder": false
+          },
+          "twitter_mean_out": {
+            "type": "number",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Twitter Mean Out",
+            "description": "Mean number of accounts a Twitter user follows (scaled by activity).",
+            "default": 40.0,
+            "placeholder": false
+          },
+          "twitter_homophily": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Twitter Homophily",
+            "description": "Share of follows inside the agent's main-interest cluster",
+            "default": 0.5,
+            "placeholder": false
+          },
+          "instagram_mean_out": {
+            "type": "number",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Instagram Mean Out",
+            "description": "Mean number of accounts an Instagram user follows (scaled by activity).",
+            "default": 60.0,
+            "placeholder": false
+          },
+          "instagram_homophily": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Instagram Homophily",
+            "description": "Share of follows inside the offline community",
+            "default": 0.6,
+            "placeholder": false
+          },
+          "friendship_mean_degree": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Friendship Mean Degree",
+            "description": "Mean number of friends per person.",
+            "default": 20.0,
+            "placeholder": false
+          },
+          "friendship_homophily": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Friendship Homophily",
+            "description": "Share of friendships inside the person's offline community.",
+            "default": 0.8,
+            "placeholder": false
+          },
+          "triadic_closure": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Triadic Closure",
+            "description": "Extra edges closing triangles, as a share of edges",
+            "default": 0.15,
+            "placeholder": false
+          },
+          "reddit_mean_memberships": {
+            "type": "number",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Reddit Mean Memberships",
+            "description": "Mean number of subreddits a Reddit user belongs to.",
+            "default": 3.0,
+            "placeholder": false
+          },
+          "reddit_agents_per_sub": {
+            "type": "number",
+            "maximum": 1000000.0,
+            "minimum": 10.0,
+            "title": "Reddit Agents Per Sub",
+            "description": "Agents per subreddit; the number of subreddits is N divided by this.",
+            "default": 400.0,
+            "placeholder": false
+          },
+          "youtube_creator_share": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0001,
+            "title": "Youtube Creator Share",
+            "description": "Share of YouTube users who are creators (the most influential).",
+            "default": 0.01,
+            "placeholder": false
+          },
+          "youtube_mean_subs": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 1.0,
+            "title": "Youtube Mean Subs",
+            "description": "Mean number of creators a YouTube user subscribes to.",
+            "default": 15.0,
+            "placeholder": false
+          },
+          "youtube_lag_ticks": {
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "type": "array",
+            "maximum": 960.0,
+            "minimum": 0.0,
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Youtube Lag Ticks",
+            "description": "Videos appear 4h to 1 day after a creator decides to cover it",
+            "default": [
+              16,
+              96
+            ],
+            "placeholder": false
+          },
+          "youtube_homophily": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Youtube Homophily",
+            "description": "Share of subscriptions to creators of the agent's main interest",
+            "default": 0.5,
+            "placeholder": true
+          },
+          "degree_sigma": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Degree Sigma",
+            "description": "Lognormal sigma of out-degree / friend count (before activity scaling)",
+            "default": 0.8,
+            "placeholder": true
+          },
+          "reddit_zipf": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Reddit Zipf",
+            "description": "Zipf exponent of subreddit popularity within a topic",
+            "default": 1.0,
+            "placeholder": true
+          },
+          "reach": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Reach",
+            "description": "Exposure per sharer per tick on each platform.",
+            "default": {
+              "twitter": 0.08,
+              "instagram": 0.05,
+              "friendship": 0.25,
+              "reddit": 0.6,
+              "tiktok": 0.002,
+              "youtube": 0.15
+            },
+            "keys": [
+              "twitter",
+              "instagram",
+              "friendship",
+              "reddit",
+              "tiktok",
+              "youtube"
+            ],
+            "placeholder": false
+          },
+          "trust": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "title": "Trust",
+            "description": "How much people trust what reaches them on each platform (belief weight).",
+            "default": {
+              "twitter": 0.8,
+              "instagram": 0.7,
+              "friendship": 1.3,
+              "reddit": 0.9,
+              "tiktok": 0.6,
+              "youtube": 1.0
+            },
+            "keys": [
+              "twitter",
+              "instagram",
+              "friendship",
+              "reddit",
+              "tiktok",
+              "youtube"
+            ],
+            "placeholder": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "GraphParams",
+        "description": "GraphConfig(platforms: tuple = ('twitter', 'reddit', 'friendship'), twitter_mean_out: float = 40.0, twitter_homophily: float = 0.5, instagram_mean_out: float = 60.0, instagram_homophily: float = 0.6, friendship_mean_degree: float = 20.0, friendship_homophily: float = 0.8, triadic_closure: float = 0.15, reddit_mean_memberships: float = 3.0, reddit_agents_per_sub: float = 400.0, youtube_creator_share: float = 0.01, youtube_mean_subs: float = 15.0, youtube_lag_ticks: tuple = (16, 96), youtube_homophily: float = 0.5, degree_sigma: float = 0.8, reddit_zipf: float = 1.0, reach: dict = <factory>, trust: dict = <factory>)"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status",
+            "default": "ok"
+          },
+          "api_version": {
+            "type": "string",
+            "title": "Api Version"
+          },
+          "engine_version": {
+            "type": "string",
+            "title": "Engine Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "engine_version"
+        ],
+        "title": "Health"
+      },
+      "MarketParams": {
+        "properties": {
+          "initial_price": {
+            "type": "number",
+            "maximum": 1000000.0,
+            "minimum": 0.01,
+            "title": "Initial Price",
+            "description": "Starting share price.",
+            "default": 100.0,
+            "placeholder": false
+          },
+          "implied_vol": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.01,
+            "title": "Implied Vol",
+            "description": "Annualised; options used as a signal only in v1",
+            "default": 0.3,
+            "placeholder": false
+          },
+          "impact_Y": {
+            "type": "number",
+            "maximum": 10.0,
+            "minimum": 0.01,
+            "title": "Impact Y",
+            "description": "Square-root law prefactor",
+            "default": 0.7,
+            "placeholder": false
+          },
+          "adv_turnover": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Adv Turnover",
+            "description": "Average daily volume as a share of shares held",
+            "default": 0.01,
+            "placeholder": false
+          },
+          "noise_frac": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "title": "Noise Frac",
+            "description": "Unmodelled order flow, as a share of per-tick vol",
+            "default": 0.3,
+            "placeholder": false
+          },
+          "circuit_breaker": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.001,
+            "title": "Circuit Breaker",
+            "description": "Max |log move| per tick",
+            "default": 0.15,
+            "placeholder": false
+          },
+          "option_maturity_days": {
+            "type": "number",
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Option Maturity Days",
+            "description": "Maturity of the logged ATM call (calendar days)",
+            "default": 30.0,
+            "placeholder": true
+          },
+          "risk_free_rate": {
+            "type": "number",
+            "maximum": 0.5,
+            "minimum": -0.1,
+            "title": "Risk Free Rate",
+            "description": "Annualised, continuously compounded",
+            "default": 0.0,
+            "placeholder": true
+          },
+          "vol_ewma_lambda": {
+            "type": "number",
+            "maximum": 0.999,
+            "minimum": 0.0,
+            "title": "Vol Ewma Lambda",
+            "description": "RiskMetrics decay for realised daily vol",
+            "default": 0.94,
+            "placeholder": true
+          },
+          "trading_days_per_year": {
+            "type": "integer",
+            "maximum": 366.0,
+            "minimum": 200.0,
+            "title": "Trading Days Per Year",
+            "description": "Trading days per year, for annualising volatility.",
+            "default": 252,
+            "placeholder": false
+          },
+          "n_prop_firms": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "N Prop Firms",
+            "description": "Number of prop-trading firms (short-horizon momentum).",
+            "default": 5,
+            "placeholder": false
+          },
+          "n_funds": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "N Funds",
+            "description": "Number of funds (fundamental value, known with a 1-day lag).",
+            "default": 3,
+            "placeholder": false
+          },
+          "firm_capital_share": {
+            "type": "number",
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Firm Capital Share",
+            "description": "Firms' capital vs total investor wealth",
+            "default": 0.15,
+            "placeholder": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "MarketParams",
+        "description": "MarketConfig(initial_price: float = 100.0, implied_vol: float = 0.3, impact_Y: float = 0.7, adv_turnover: float = 0.01, noise_frac: float = 0.3, circuit_breaker: float = 0.15, option_maturity_days: float = 30.0, risk_free_rate: float = 0.0, vol_ewma_lambda: float = 0.94, trading_days_per_year: int = 252, n_prop_firms: int = 5, n_funds: int = 3, firm_capital_share: float = 0.15)"
+      },
+      "Parameters": {
+        "properties": {
+          "population": {
+            "$ref": "#/components/schemas/PopulationParams"
+          },
+          "graph": {
+            "$ref": "#/components/schemas/GraphParams"
+          },
+          "diffusion": {
+            "$ref": "#/components/schemas/DiffusionParams"
+          },
+          "belief": {
+            "$ref": "#/components/schemas/BeliefParams"
+          },
+          "trading": {
+            "$ref": "#/components/schemas/TradingParams"
+          },
+          "market": {
+            "$ref": "#/components/schemas/MarketParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Parameters",
+        "description": "All model parameters, one object per config section."
+      },
+      "PopulationParams": {
+        "properties": {
+          "investor_share": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Investor Share",
+            "description": "Share of agents holding a brokerage account",
+            "default": 0.15,
+            "placeholder": true
+          },
+          "media_per_100k": {
+            "type": "number",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Media Per 100K",
+            "description": "Media outlet nodes per 100k agents",
+            "default": 50.0,
+            "placeholder": false
+          },
+          "community_mean_size": {
+            "type": "number",
+            "maximum": 1000.0,
+            "minimum": 2.0,
+            "title": "Community Mean Size",
+            "description": "Offline communities (school, work)",
+            "default": 60.0,
+            "placeholder": false
+          },
+          "correlations": {
+            "items": {
+              "$ref": "#/components/schemas/Correlation"
+            },
+            "type": "array",
+            "title": "Correlations",
+            "description": "Trait correlations for the Gaussian copula (repaired to PSD before use).",
+            "default": [
+              {
+                "a": "age",
+                "b": "wealth",
+                "rho": 0.45
+              },
+              {
+                "a": "age",
+                "b": "impulsiveness",
+                "rho": -0.3
+              },
+              {
+                "a": "age",
+                "b": "risk_tolerance",
+                "rho": -0.25
+              },
+              {
+                "a": "age",
+                "b": "knowledge",
+                "rho": 0.2
+              },
+              {
+                "a": "age",
+                "b": "media_attention",
+                "rho": 0.3
+              },
+              {
+                "a": "wealth",
+                "b": "knowledge",
+                "rho": 0.3
+              },
+              {
+                "a": "wealth",
+                "b": "risk_tolerance",
+                "rho": 0.1
+              },
+              {
+                "a": "impulsiveness",
+                "b": "risk_tolerance",
+                "rho": 0.35
+              },
+              {
+                "a": "impulsiveness",
+                "b": "knowledge",
+                "rho": -0.2
+              },
+              {
+                "a": "impulsiveness",
+                "b": "belief_tolerance",
+                "rho": 0.2
+              },
+              {
+                "a": "knowledge",
+                "b": "belief_tolerance",
+                "rho": -0.15
+              },
+              {
+                "a": "risk_tolerance",
+                "b": "loss_aversion",
+                "rho": -0.3
+              }
+            ],
+            "placeholder": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "PopulationParams",
+        "description": "PopulationConfig(investor_share: float = 0.15, media_per_100k: float = 50.0, community_mean_size: float = 60.0, correlations: dict = <factory>)"
+      },
+      "RunCreate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RunMode",
+            "default": "single"
+          },
+          "runs": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "title": "Runs",
+            "description": "Monte Carlo repetitions (1 for a single run)",
+            "default": 1
+          },
+          "workers": {
+            "type": "integer",
+            "maximum": 64.0,
+            "minimum": 1.0,
+            "title": "Workers",
+            "default": 1
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "scenario": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Parameters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model parameters; defaults if omitted"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4294967295.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed",
+            "description": "Overrides the scenario's seed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RunCreate",
+        "description": "Start a run from a saved scenario (`scenario_id`) or an inline `scenario`."
+      },
+      "RunDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RunStatus"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RunMode"
+          },
+          "runs": {
+            "type": "integer",
+            "title": "Runs"
+          },
+          "n_agents": {
+            "type": "integer",
+            "title": "N Agents"
+          },
+          "days": {
+            "type": "integer",
+            "title": "Days"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed"
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "spec_hash": {
+            "type": "string",
+            "title": "Spec Hash",
+            "description": "sha256 of the canonical spec; equal hashes give identical results"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/RunSpec"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "mode",
+          "runs",
+          "n_agents",
+          "days",
+          "seed",
+          "scenario_id",
+          "spec_hash",
+          "created_at",
+          "updated_at",
+          "spec"
+        ],
+        "title": "RunDetail"
+      },
+      "RunList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RunRecord"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "RunList"
+      },
+      "RunMode": {
+        "type": "string",
+        "enum": [
+          "single",
+          "montecarlo"
+        ],
+        "title": "RunMode"
+      },
+      "RunRecord": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RunStatus"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RunMode"
+          },
+          "runs": {
+            "type": "integer",
+            "title": "Runs"
+          },
+          "n_agents": {
+            "type": "integer",
+            "title": "N Agents"
+          },
+          "days": {
+            "type": "integer",
+            "title": "Days"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed"
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "spec_hash": {
+            "type": "string",
+            "title": "Spec Hash",
+            "description": "sha256 of the canonical spec; equal hashes give identical results"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "mode",
+          "runs",
+          "n_agents",
+          "days",
+          "seed",
+          "scenario_id",
+          "spec_hash",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "RunRecord"
+      },
+      "RunSpec": {
+        "properties": {
+          "engine_version": {
+            "type": "string",
+            "title": "Engine Version"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RunMode"
+          },
+          "runs": {
+            "type": "integer",
+            "title": "Runs"
+          },
+          "workers": {
+            "type": "integer",
+            "title": "Workers"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/ScenarioSpec"
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/Parameters"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "engine_version",
+          "mode",
+          "runs",
+          "workers",
+          "seed",
+          "scenario",
+          "parameters"
+        ],
+        "title": "RunSpec",
+        "description": "Everything needed to reproduce a run exactly. Stored as runs/<id>/spec.json."
+      },
+      "RunStatus": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "running",
+          "done",
+          "failed",
+          "cancelled"
+        ],
+        "title": "RunStatus"
+      },
+      "ScenarioRecord": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/ScenarioSpec"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "spec"
+        ],
+        "title": "ScenarioRecord"
+      },
+      "ScenarioSpec": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "default": "Untitled scenario"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Description",
+            "default": ""
+          },
+          "n_agents": {
+            "type": "integer",
+            "maximum": 2000000.0,
+            "minimum": 100.0,
+            "title": "N Agents",
+            "default": 10000
+          },
+          "days": {
+            "type": "integer",
+            "maximum": 250.0,
+            "minimum": 1.0,
+            "title": "Days",
+            "default": 5
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 0
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/EventSpec"
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ScenarioSpec",
+        "description": "What to simulate: population size, length, seed and the scheduled events."
+      },
+      "SectionMeta": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/FieldMeta"
+            },
+            "type": "array",
+            "title": "Fields"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "fields"
+        ],
+        "title": "SectionMeta"
+      },
+      "TradingParams": {
+        "properties": {
+          "strategy_prior": {
+            "additionalProperties": {
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array",
+              "maxItems": 3,
+              "minItems": 3
+            },
+            "type": "object",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Strategy Prior",
+            "description": "Strategy mix (fundamentalist, chartist, sentiment) per investor category.",
+            "default": {
+              "long_term": [
+                0.7,
+                0.1,
+                0.2
+              ],
+              "swing": [
+                0.3,
+                0.4,
+                0.3
+              ],
+              "day_trader": [
+                0.1,
+                0.5,
+                0.4
+              ]
+            },
+            "keys": [
+              "long_term",
+              "swing",
+              "day_trader"
+            ],
+            "placeholder": true
+          },
+          "horizon_days": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "maximum": 1000.0,
+            "minimum": 0.01,
+            "title": "Horizon Days",
+            "description": "Holding horizon per investor category, in days.",
+            "default": {
+              "long_term": 60.0,
+              "swing": 5.0,
+              "day_trader": 0.5
+            },
+            "keys": [
+              "long_term",
+              "swing",
+              "day_trader"
+            ],
+            "placeholder": false
+          },
+          "momentum_ticks": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Momentum Ticks",
+            "description": "Momentum look-back per investor category, in ticks.",
+            "default": {
+              "long_term": 960,
+              "swing": 192,
+              "day_trader": 8
+            },
+            "keys": [
+              "long_term",
+              "swing",
+              "day_trader"
+            ],
+            "placeholder": false
+          },
+          "sentiment_scale": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Sentiment Scale",
+            "description": "Full conviction (Confidence = 1) = 5% expected excess return",
+            "default": 0.05,
+            "placeholder": false
+          },
+          "switching": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Switching",
+            "description": "How far weights move toward recently profitable strategies",
+            "default": 0.3,
+            "placeholder": false
+          },
+          "switching_intensity": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Switching Intensity",
+            "description": "How sharply strategy weights favour the best recent performer.",
+            "default": 200.0,
+            "placeholder": false
+          },
+          "risk_aversion": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Risk Aversion",
+            "description": "Risk aversion in position sizing.",
+            "default": 2.0,
+            "placeholder": false
+          },
+          "panic_loss": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Panic Loss",
+            "description": "Unrealised loss that triggers loss-aversion behaviour",
+            "default": 0.1,
+            "placeholder": false
+          },
+          "panic_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Panic Rate",
+            "description": "Base probability of selling out once the panic loss is reached.",
+            "default": 0.05,
+            "placeholder": false
+          },
+          "trading_online_boost": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Trading Online Boost",
+            "description": "Investors check the market more often during trading hours",
+            "default": 2.0,
+            "placeholder": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "TradingParams",
+        "description": "TradingConfig(strategy_prior: dict = <factory>, horizon_days: dict = <factory>, momentum_ticks: dict = <factory>, sentiment_scale: float = 0.05, switching: float = 0.3, switching_intensity: float = 200.0, risk_aversion: float = 2.0, panic_loss: float = 0.1, panic_rate: float = 0.05, trading_online_boost: float = 2.0)"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

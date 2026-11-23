@@ -24,7 +24,7 @@ uv sync --all-extras
 uv run pytest -q
 uv run ruff check . && uv run ruff format --check . && uv run mypy
 
-# API (skeleton): http://127.0.0.1:8000/api/health
+# API: http://127.0.0.1:8000/docs (interactive OpenAPI docs)
 uv run uvicorn marketsim_api.main:app --reload
 
 # Web
@@ -37,6 +37,27 @@ pnpm -C web build
 uv run pre-commit install
 ```
 
+## API
+
+FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives under `/api/v1`:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /config/defaults` | Default parameters (from `marketsim/config.py`) and an empty scenario |
+| `GET /config/schema` | Every parameter with default, range, description and `placeholder` flag, plus enums and the tick clock |
+| `POST/GET/PUT/DELETE /scenarios` | Saved scenarios: agent count, days, seed and scheduled events |
+| `POST /runs` | Record a run (`queued`) from a saved or inline scenario; execution arrives in #17 |
+| `GET /runs`, `GET/DELETE /runs/{id}` | Run index (paged, filter by status) and run details |
+
+The parameter models are generated from the `config.py` dataclasses, so adding a field there adds it to the API (give it a range in `config_schema.FIELD_RANGES`; a test enforces this). Runs are stored under `MARKETSIM_DATA_DIR` (default `./runs`): `index.sqlite3` plus `runs/<id>/spec.json`. Each run has a `spec_hash`, and equal hashes mean identical results.
+
+After changing the API, regenerate the spec and the web types (CI checks both):
+
+```bash
+uv run python -m marketsim_api.export_openapi
+pnpm -C web gen:api
+```
+
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request:
@@ -44,8 +65,8 @@ uv run pre-commit install
 | Job | Steps |
 |---|---|
 | `engine` | ruff check, ruff format --check, mypy, pytest `tests/` |
-| `api` | pytest `api/tests/` |
-| `web` | pnpm install --frozen-lockfile, eslint, prettier --check, tsc, vitest, vite build |
+| `api` | OpenAPI spec up to date, pytest `api/tests/` |
+| `web` | pnpm install --frozen-lockfile, API types up to date, eslint, prettier --check, tsc, vitest, vite build |
 
 ## Branch protection (recommended)
 

@@ -1,19 +1,71 @@
-"""FastAPI application entry point.
+"""FastAPI application.
 
-Skeleton only (issue #1). Schemas, run registry and streaming land in issues #16-#18.
-Run locally with:  uv run --extra api uvicorn marketsim_api.main:app --reload
+Run locally with:  uv run uvicorn marketsim_api.main:app --reload
+Environment: MARKETSIM_DATA_DIR (default ./runs), MARKETSIM_CORS_ORIGINS, MARKETSIM_LOG_LEVEL,
+MARKETSIM_LOG_JSON (1 = JSON lines, the default).
 """
 
-from fastapi import FastAPI
+from __future__ import annotations
+
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 import marketsim
 
 from . import __version__
+from .log import RequestLogMiddleware, configure_logging, logger
+from .routes import config, runs, scenarios
+from .schemas import Health
+from .settings import Settings
+from .storage import Store
 
-app = FastAPI(title="marketsim API", version=__version__)
+API_PREFIX = "/api/v1"
 
 
-@app.get("/api/health")
-def health() -> dict[str, str]:
+def health() -> Health:
     """Liveness probe; also reports the engine version the API was built against."""
-    return {"status": "ok", "api_version": __version__, "engine_version": marketsim.__version__}
+    return Health(api_version=__version__, engine_version=marketsim.__version__)
+
+
+def create_app(settings: Settings | None = None) -> FastAPI:
+    settings = settings or Settings()
+    configure_logging(settings.log_level, settings.log_json)
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        app.state.store = Store(settings.data_dir)
+        logger.info("startup", extra={"data_dir": str(settings.data_dir), "version": __version__})
+        yield
+
+    app = FastAPI(
+        title="marketsim API",
+        version=__version__,
+        description="Agent-based market simulator: scenarios, runs and results.",
+        lifespan=lifespan,
+    )
+    app.state.settings = settings
+    app.add_middleware(RequestLogMiddleware)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["X-Request-ID"],
+    )
+
+    app.add_api_route("/api/health", health, methods=["GET"], response_model=Health, tags=["meta"])
+    v1 = APIRouter(prefix=API_PREFIX)
+    v1.add_api_route(
+        "/health", health, methods=["GET"], response_model=Health, tags=["meta"], operation_id="health_v1"
+    )
+    v1.include_router(config.router)
+    v1.include_router(scenarios.router)
+    v1.include_router(runs.router)
+    app.include_router(v1)
+    return app
+
+
+app = create_app()

@@ -62,6 +62,16 @@ Gaps against the configured means come from removing duplicate edges. Twitter fo
 - **2026-11-23 · #14 · The cache stores raw responses**, keyed by sha256 of the prompt version plus the full prompt (which includes the earlier headlines). Validation runs on every load, so tightening the validator needs no cache flush. The cache is written atomically and saved even when a batch fails part-way.
 - **2026-11-23 · #14 · Event-study estimation window.** It ends before the event day, and before the event window if that starts earlier, so the event's own return never enters α and β. Abnormal returns are summed over the inclusive window `[event_idx + a, event_idx + b]` (default (0, 2)).
 
+- **2026-11-23 · #16 · Parameter models are generated from `config.py` at import time.** Types and defaults come from the dataclasses. Descriptions and the `placeholder` flag come from the comments next to each field (read with `tokenize` + `ast`). Allowed ranges live in `config_schema.FIELD_RANGES`, and a test fails if a numeric field has no range or description. Fields with no comment in `config.py` get a description from `DESCRIPTION_OVERRIDES`, so `config.py` itself stays as written.
+- **2026-11-23 · #16 · The `placeholder` flag follows the explicit PLACEHOLDER markers in `config.py`.** In practice nothing is fitted to data yet. Unmarked values (e.g. `twitter_mean_out`) are guesses too, but the UI badge shows only what the file marks.
+- **2026-11-23 · #16 · JSON shapes for non-JSON config values.** Correlations `{(a, b): rho}` become `[{a, b, rho}]`. Per-category dicts keyed by integer constants are keyed by category name (`long_term`, `swing`, `day_trader`). Tuples become fixed-length arrays. The round trip defaults → engine `Config` → defaults is exact (tested).
+- **2026-11-23 · #16 · Agent count and seed belong to the scenario,** not the parameters. A run's engine `Config` is the scenario's `n_agents` and `seed` plus the six parameter sections. `POST /runs` can override the seed.
+- **2026-11-23 · #16 · Runs snapshot their scenario.** The full spec (engine version, mode, runs, seed, scenario, parameters) is copied into `runs/<id>/spec.json`, so editing a saved scenario never changes a past run. `spec_hash` covers only what affects results; names, descriptions, event labels and worker count are excluded.
+- **2026-11-23 · #16 · Scenario events are validated and normalised.** Ids are auto-assigned when -1; parents must exist and come no later; ticks must fall inside the run; events are sorted by (tick, id). `price_move` is not allowed in a scenario because the engine creates it. Events get an optional `label` (headline text for the UI), which the engine ignores.
+- **2026-11-23 · #16 · `sqlite3` from the standard library instead of SQLModel.** The index is two small tables, so an ORM adds a dependency for little gain. Each operation opens a short-lived connection (safe in FastAPI's thread pool), and the database runs in WAL mode.
+- **2026-11-23 · #16 · `DELETE /runs/{id}` returns 409 for queued or running runs.** Cancelling comes with the job runner in #17.
+- **2026-11-23 · #16 · The OpenAPI spec is committed** (`api/openapi.json`) and the web types are generated from it with `openapi-typescript`. CI fails if either is stale. Pydantic's mypy plugin is enabled.
+
 ## Simplifications
 
 _(none yet)_
