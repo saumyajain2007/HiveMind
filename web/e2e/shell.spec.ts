@@ -1,0 +1,94 @@
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+
+const PAGES = [
+  "/",
+  "/builder",
+  "/cockpit",
+  "/monte-carlo",
+  "/network",
+  "/narratives",
+  "/analysis",
+  "/design",
+];
+
+async function setTheme(page: Page, theme: "dark" | "light") {
+  await page.addInitScript((t) => localStorage.setItem("marketsim-theme", t), theme);
+}
+
+async function settle(page: Page) {
+  await page.waitForLoadState("networkidle");
+  // let entry animations finish so axe measures final colours
+  await page.waitForTimeout(700);
+}
+
+for (const theme of ["dark", "light"] as const) {
+  test.describe(`${theme} theme`, () => {
+    for (const path of PAGES) {
+      test(`axe: no violations on ${path}`, async ({ page }) => {
+        await setTheme(page, theme);
+        await page.goto(path);
+        await settle(page);
+        const results = await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze();
+        const summary = results.violations.map((v) => `${v.id}: ${v.nodes.length} × ${v.help}`);
+        expect(summary, summary.join("\n")).toEqual([]);
+      });
+    }
+  });
+}
+
+test("demo replay streams live data into the ticker and cockpit", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Simulation runs" })).toBeVisible();
+  await expect(page.getByRole("row").nth(1)).toBeVisible(); // seeded mock runs
+  await page.getByRole("button", { name: "Run demo", exact: true }).click();
+  await expect(page).toHaveURL(/\/cockpit$/);
+  await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
+    timeout: 10_000,
+  });
+  const ticker = page.getByLabel("Market ticker");
+  await expect(ticker).toContainText(/Day \d · \d\d:\d\d/, { timeout: 10_000 });
+  await expect(page.getByRole("img", { name: /Price over the run: \d+ points/ })).toBeVisible();
+});
+
+test("command palette opens with Ctrl+K and navigates", async ({ page }) => {
+  await page.goto("/");
+  await settle(page);
+  await page.keyboard.press("Control+k");
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await page.keyboard.type("design");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/design$/);
+});
+
+test("theme toggle switches and persists", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.getByRole("button", { name: "Toggle theme" }).click();
+  await expect(page.locator("html")).toHaveClass(/light/);
+  await page.reload();
+  await expect(page.locator("html")).toHaveClass(/light/);
+});
+
+test("reduced motion: no running CSS animations on the cockpit", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Run demo", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
+    timeout: 10_000,
+  });
+  const long = await page.evaluate(
+    () =>
+      document.getAnimations().filter((a) => {
+        const t = a.effect?.getComputedTiming();
+        return t && (t.iterations === Infinity || Number(t.duration) > 1);
+      }).length,
+  );
+  expect(long).toBe(0);
+  await ctx.close();
+});

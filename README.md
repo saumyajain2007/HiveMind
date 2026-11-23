@@ -30,7 +30,10 @@ uv run uvicorn marketsim_api.main:app --reload
 # Web
 corepack enable            # once; or prefix commands with `corepack`
 pnpm -C web install
-pnpm -C web dev            # http://localhost:5173
+pnpm -C web dev            # http://localhost:5173 (mock API by default, see below)
+pnpm -C web test           # unit tests (Vitest + MSW)
+pnpm -C web exec playwright install chromium   # once
+pnpm -C web e2e            # accessibility (axe, both themes) + end-to-end
 pnpm -C web build
 
 # Git hooks (ruff, mypy, prettier, eslint on commit)
@@ -58,6 +61,15 @@ uv run python -m marketsim_api.export_openapi
 pnpm -C web gen:api
 ```
 
+## Web app
+
+React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Query, Zustand. The design is a night-mode trading terminal, with dark as the default and a light theme too. `/design` shows every token and component in both themes.
+
+- **Mock API.** `web/.env.development` sets `VITE_API_MOCK=true`, so `pnpm dev` runs against an in-browser mock of the FastAPI routes plus a replayed live stream (MSW, `web/src/mocks`). A "MOCK DATA" tag in the top bar says so. Set `VITE_API_MOCK=false` and run the API on :8000 to use the real backend; Vite proxies `/api`. Production builds never include the mocks.
+- **Live data.** `WS /api/v1/runs/{id}/stream` messages are defined in `web/src/lib/live/types.ts`; the real stream arrives with #17. Frames go into ring buffers outside React state, and subscribers re-render at most once per animation frame.
+- **Shortcuts.** `Ctrl/⌘ K` opens the command palette. Charts can be read with the keyboard: focus a chart, then use ← →.
+- **Accessibility.** The e2e suite runs axe (WCAG 2.1 AA, including colour contrast) on every page in both themes. Animations respect `prefers-reduced-motion`.
+
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request:
@@ -67,13 +79,14 @@ pnpm -C web gen:api
 | `engine` | ruff check, ruff format --check, mypy, pytest `tests/` |
 | `api` | OpenAPI spec up to date, pytest `api/tests/` |
 | `web` | pnpm install --frozen-lockfile, API types up to date, eslint, prettier --check, tsc, vitest, vite build |
+| `e2e` | Playwright + axe on every page in both themes, live-stream smoke test (mock API) |
 
 ## Branch protection (recommended)
 
 The repo's owner chose to push the early skeleton work straight to `main`. Once the engine work starts, protect `main` under **Settings → Branches → Add rule**:
 
 - Require a pull request before merging (1 approval, or 0 for a solo repo).
-- Require status checks to pass: `engine`, `api`, `web`.
+- Require status checks to pass: `engine`, `api`, `web`, `e2e`.
 - Require branches to be up to date before merging.
 - Block force pushes and deletions.
 

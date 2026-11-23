@@ -72,6 +72,20 @@ Gaps against the configured means come from removing duplicate edges. Twitter fo
 - **2026-11-23 · #16 · `DELETE /runs/{id}` returns 409 for queued or running runs.** Cancelling comes with the job runner in #17.
 - **2026-11-23 · #16 · The OpenAPI spec is committed** (`api/openapi.json`) and the web types are generated from it with `openapi-typescript`. CI fails if either is stale. Pydantic's mypy plugin is enabled.
 
+- **2026-11-23 · #19 · Chart colours were validated, not eyeballed.** The dataviz palette checker (lightness band, chroma, colour-blind separation, contrast) was run against each theme's panel surface.
+  - Platforms use the reference categorical hues in a passing order: Twitter blue, Reddit orange, Friendship aqua, Instagram yellow, TikTok violet, YouTube red. Worst adjacent CVD ΔE is 9.1 (light) / 8.4 (dark). The three default platforms also pass when every pair is compared.
+  - The Tailwind 400 shades first proposed in `issues.md` failed the lightness band and were dropped.
+  - Up/down marks are `#0d9488`/`#e11d48` (light) and `#10a5a0`/`#ea5f78` (dark).
+- **2026-11-23 · #19 · Semantic and platform colours never share a chart.** Up≈Friendship, down≈YouTube, narrative≈TikTok and official≈Instagram are too close to tell apart. Network (#23) and Narratives (#24) must encode platform by layer switch or shape when they also show sentiment.
+- **2026-11-23 · #19 · Separate text and mark tokens.** `--bull`/`--bear`/… are for marks; `--*-text` tokens are for text and meet 4.5:1. `--primary` is the UI accent (light `#0f766e`, 5.5:1 with white text), distinct from the up-mark colour. Contrast is enforced by axe in the e2e suite.
+- **2026-11-23 · #19 · Live frames bypass React state.** Ring buffers (`SeriesBuffer`) take every frame; the store bumps `version` at most once per animation frame. Only the ticker and the open page re-render, never the shell.
+- **2026-11-23 · #19 · The live-stream message format is defined by the web app** (`web/src/lib/live/types.ts`: hello / tick / event / narrative / done / error, `?after=<tick>` to resume). #17 must send exactly these.
+- **2026-11-23 · #19 · Mock API by default in development.** MSW mocks every #16 route plus the #17 stream, which replays a synthetic recording of the demo scenario. These mock numbers are not engine output. The mock's config fixtures are exported from the real API (`export_openapi` writes them, and CI checks they are current).
+- **2026-11-23 · #19 · An in-app `/design` gallery instead of Storybook or Ladle.** It shows every token and component in a dark and a light island side by side, needs no extra tooling (Storybook did not yet support Vite 8), and is covered by the axe e2e tests.
+- **2026-11-23 · #19 · Playwright + axe instead of Lighthouse.** The e2e job runs axe (WCAG 2.1 AA including colour contrast) on all 8 pages in both themes. Lighthouse is not run in CI.
+- **2026-11-23 · #19 · Pages other than Runs are lazy-loaded.** The main chunk is ~230 kB gzip (React, router, Radix, Motion, React Query), and the size-warning limit is raised to 800 kB.
+- **2026-11-23 · #19 · Library versions are newer than the plan assumed:** React Router 8, MSW 3 (`onUnhandledFrame`), react-resizable-panels 4 (`Group`/`Panel`/`Separator`, numbers are pixels), Motion 14. `openapi-fetch` is given a per-call `fetch` so MSW's patch is seen in tests.
+
 ## Simplifications
 
 _(none yet)_

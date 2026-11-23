@@ -2,3 +2,7 @@ dist
 coverage
 node_modules
 pnpm-lock.yaml
+public/mockServiceWorker.js
+src/mocks/fixtures
+test-results
+playwright-report

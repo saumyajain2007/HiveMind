@@ -3,46 +3,86 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
 
-@custom-variant dark (&:is(.dark *));
+/* `dark:` applies inside .dark, except inside a nested .light island (used by /design). */
+@custom-variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
 
 /*
- * Design tokens (issues.md §5). Dark "night-mode trading terminal" is the default;
- * the full design system is built out in issue #19.
+ * Design tokens (issues.md §5, issue #19).
+ *
+ * Night-mode trading terminal by default. Chart colours were validated with the dataviz
+ * palette checker (lightness band, chroma, colour-blind separation, contrast) against the
+ * panel surface of each theme. Rules:
+ *  - `--bull` / `--bear` etc. are for marks (lines, candles, fills). Text uses the
+ *    `-text` variants, which meet text contrast.
+ *  - Platform colours are categorical and fixed per platform. Semantic colours (up/down,
+ *    narrative, official) never share a chart with platform colours: friendship≈up,
+ *    youtube≈down, tiktok≈narrative, instagram≈official.
  */
-:root {
+:root,
+.light {
+  color-scheme: light;
   --radius: 0.75rem;
-  --background: #f7f8fb;
+
+  --background: #f6f7f9;
   --foreground: #0f1420;
   --card: #ffffff;
   --card-foreground: #0f1420;
+  --surface-2: #f1f3f6;
   --popover: #ffffff;
   --popover-foreground: #0f1420;
-  --primary: #0d9488;
+  --primary: #0f766e; /* UI accent: 5.5:1 with white text (marks use --bull) */
   --primary-foreground: #ffffff;
-  --secondary: #eef1f6;
+  --secondary: #eef1f5;
   --secondary-foreground: #0f1420;
-  --muted: #eef1f6;
-  --muted-foreground: #5b6476;
-  --accent: #eef1f6;
+  --muted: #eef1f5;
+  --muted-foreground: #566074;
+  --accent: #eef1f5;
   --accent-foreground: #0f1420;
-  --destructive: #e11d48;
-  --border: #dde2ea;
+  --destructive: #d03b3b;
+  --border: #e2e6ec;
+  --border-strong: #cfd5de;
   --input: #dde2ea;
-  --ring: #0d9488;
+  --ring: #0f766e;
+  --glow: rgb(15 118 110 / 0.1);
 
+  /* marks */
   --bull: #0d9488;
   --bear: #e11d48;
-  --narrative: #7c3aed;
-  --official: #d97706;
-  --fundamental: #0284c7;
+  --narrative: #6250d6;
+  --official: #eda100;
+  --fundamental: #1c5cab;
+  --grid: #eef1f5;
+  --axis: #d5dbe4;
+  /* text */
+  --bull-text: #0f766e;
+  --bear-text: #be123c;
+  --narrative-text: #5641c9;
+  --official-text: #854d0e;
+
+  /* platforms (categorical, fixed order = ALL_PLATFORMS) */
+  --twitter: #2a78d6;
+  --reddit: #eb6834;
+  --friendship: #1baf7a;
+  --instagram: #eda100;
+  --tiktok: #6250d6;
+  --youtube: #e34948;
+
+  /* status: reserved, always paired with an icon and a label */
+  --status-good-text: #006300;
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
 }
 
 .dark {
+  color-scheme: dark;
   --background: #0a0d13;
   --foreground: #e6e9ef;
   --card: #11151d;
   --card-foreground: #e6e9ef;
-  --popover: #11151d;
+  --surface-2: #161b25;
+  --popover: #141923;
   --popover-foreground: #e6e9ef;
   --primary: #2dd4bf;
   --primary-foreground: #04201c;
@@ -52,16 +92,32 @@
   --muted-foreground: #8a93a6;
   --accent: #1a202b;
   --accent-foreground: #e6e9ef;
-  --destructive: #fb7185;
+  --destructive: #d42a45; /* 5.0:1 with white text */
   --border: #1e2430;
-  --input: #1e2430;
+  --border-strong: #2a3242;
+  --input: #232a37;
   --ring: #2dd4bf;
+  --glow: rgb(45 212 191 / 0.08);
 
-  --bull: #2dd4bf;
-  --bear: #fb7185;
-  --narrative: #a78bfa;
-  --official: #fbbf24;
-  --fundamental: #7dd3fc;
+  --bull: #10a5a0;
+  --bear: #ea5f78;
+  --narrative: #9085e9;
+  --official: #c98500;
+  --fundamental: #6da7ec;
+  --grid: #171c26;
+  --axis: #2a3242;
+  --bull-text: #2dd4bf;
+  --bear-text: #fb7185;
+  --narrative-text: #b4abf5;
+  --official-text: #fbbf24;
+  --status-good-text: #0ca30c;
+
+  --twitter: #3987e5;
+  --reddit: #d95926;
+  --friendship: #199e70;
+  --instagram: #c98500;
+  --tiktok: #9085e9;
+  --youtube: #e66767;
 }
 
 @theme inline {
@@ -77,6 +133,7 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-surface-2: var(--surface-2);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
@@ -89,6 +146,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
@@ -97,24 +155,103 @@
   --color-narrative: var(--narrative);
   --color-official: var(--official);
   --color-fundamental: var(--fundamental);
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+  --color-bull-text: var(--bull-text);
+  --color-bear-text: var(--bear-text);
+  --color-narrative-text: var(--narrative-text);
+  --color-official-text: var(--official-text);
 
-  /* Platform colours, fixed across the app. */
-  --color-twitter: #38bdf8;
-  --color-reddit: #fb923c;
-  --color-friendship: #4ade80;
-  --color-instagram: #f472b6;
-  --color-tiktok: #22d3ee;
-  --color-youtube: #f87171;
+  --color-twitter: var(--twitter);
+  --color-reddit: var(--reddit);
+  --color-friendship: var(--friendship);
+  --color-instagram: var(--instagram);
+  --color-tiktok: var(--tiktok);
+  --color-youtube: var(--youtube);
+
+  --color-status-good: var(--status-good);
+  --color-status-good-text: var(--status-good-text);
+  --color-status-warning: var(--status-warning);
+  --color-status-serious: var(--status-serious);
+  --color-status-critical: var(--status-critical);
+
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  --animate-flash-up: flash-up 0.9s ease-out;
+  --animate-flash-down: flash-down 0.9s ease-out;
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes flash-up {
+    0% {
+      background-color: color-mix(in oklab, var(--bull) 28%, transparent);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  @keyframes flash-down {
+    0% {
+      background-color: color-mix(in oklab, var(--bear) 28%, transparent);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
   body {
     @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings:
+      "cv11" 1,
+      "ss01" 1;
   }
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 30%, transparent);
+  }
+}
+
+@layer components {
+  /* Faint dotted grid behind page content; disappears in forced-colors mode. */
+  .bg-terminal {
+    background-image:
+      radial-gradient(1200px 600px at 0% -10%, var(--glow), transparent 60%),
+      radial-gradient(color-mix(in oklab, var(--foreground) 7%, transparent) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      22px 22px;
+  }
+  .panel-highlight {
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 5%, transparent),
+      0 1px 2px 0 rgb(0 0 0 / 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

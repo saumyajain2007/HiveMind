@@ -10,6 +10,11 @@ export default defineConfig({
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },
+  build: {
+    // React + router + Radix + motion + React Query land in the main chunk (~230 kB gzip);
+    // pages other than Runs are split out with React.lazy.
+    chunkSizeWarningLimit: 800,
+  },
   server: {
     // The FastAPI service (uv run uvicorn marketsim_api.main:app) listens on :8000.
     proxy: { "/api": { target: "http://127.0.0.1:8000", ws: true } },
@@ -18,6 +23,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
+    include: ["src/**/*.test.{ts,tsx}"],
     css: true,
   },
 });
