@@ -17,7 +17,35 @@ Each entry: **date · issue · decision**, then a line of rationale.
 
 ## Model
 
-_(filled in from issue #2 onward)_
+- **2026-11-23 · #3 · The graph reads the population through a `GraphPopulation` protocol** (`n`, `community`, `interests`, `influence`, `platform_use` (N×6 bool, `ALL_PLATFORMS` order), `platform_intensity` (N×6, 0 for non-users)). Issue #3 was built before #2, so tests use `marketsim.testing.StubPopulation`. The real `Population` (#2) must expose these fields under these names.
+- **2026-11-23 · #3 · `push()` returns exposure already multiplied by the layer's `reach`.** The handoff writes both "Σ reach · push" (diffusion) and puts `reach` inside the Reddit and TikTok formulas; putting it inside every layer avoids applying it twice. Diffusion (#6) sums the layers directly. `trust` is stored on each layer for beliefs (#7).
+- **2026-11-23 · #3 · One `push` signature for all layers:** `push(sharers, *, topic=0, popularity=None)`. Only TikTok uses `topic` and `popularity`; the default popularity is the number of sharers.
+- **2026-11-23 · #3 · Follow direction.** Directed edges are follower → followee (subscriber → creator). "Out-degree" is the number of accounts followed (lognormal × activity); "in-degree" is the follower count (targets ∝ influence, which gives the heavy tail).
+- **2026-11-23 · #3 · Friendship degree.** Each user initiates Binomial(d, ½) ties to partners weighted by their target degree d, so a user ends up with about d friends after symmetrising. Partners are drawn inside the offline community with probability `friendship_homophily`.
+- **2026-11-23 · #3 · Number of subreddits = round(N / `reddit_agents_per_sub`)**, using all agents as the handoff says (not just Reddit users), with at least one sub per topic. The extra subs are split across topics in proportion to Reddit users' total interest. Popularity within a topic is Zipf (`reddit_zipf`).
+- **2026-11-23 · #3 · YouTube homophily.** Subscriptions go to creators of the subscriber's main interest with probability `youtube_homophily` (new PLACEHOLDER), so a finance creator cluster can form like Twitter's.
+- **2026-11-23 · #3 · New config fields** (all PLACEHOLDER): `degree_sigma = 0.8`, `reddit_zipf = 1.0`, `youtube_homophily = 0.5`.
+- **2026-11-23 · #3 · `add_nodes` uses preferential attachment** with weight (followers + 1) for follows and subscriptions, (degree + 1) for friendship, and (sub size + 1) for Reddit, inside the group with the layer's homophily share. Influence is used only at build time. Newcomers start with no followers.
+- **2026-11-23 · #3 · `layer_stats()` uses its own fixed RNG** for the clustering sample, so calling it never changes a simulation's random stream.
+
+### `layer_stats()` at 10k agents (stub population, default config, seed 0)
+
+```
+[twitter] directed, 2514 users
+  edges 85604  reciprocity 0.036  clustering 0.120
+  in-degree   mean    34.1  p50     22  p90     59  p99    226  max   1044  (max/median 47.5)
+  out-degree  mean    34.1  p50     24  p90     74  p99    163  max    269
+[reddit] membership, 2087 users
+  subs 25  memberships 5305
+  subs/user   mean     2.5  p50      2  p90      4  p99      6  max      7
+  sub size    mean   212.2  p50    189  p90    373  p99    434  max    444
+[friendship] undirected, 9477 users
+  edges 81599  clustering 0.270
+  degree      mean    17.2  p50     14  p90     34  p99     65  max    153
+[overlap] twitter~friendship 0.0016
+```
+
+Gaps against the configured means come from removing duplicate edges. Twitter follows land on popular accounts and friendships stay inside small communities, so duplicates are common: the realised Twitter out-degree is 34 (target 40) and friendship degree is 17 (target 20, plus 15% closure). Correcting for this is part of fitting to data (DATA_SOURCES.md), not done here. With all six layers, building takes 0.2 s at 10k and 3.6 s at 100k on the dev machine.
 
 ## Simplifications
 

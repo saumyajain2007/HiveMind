@@ -49,6 +49,9 @@ class GraphConfig:
     youtube_creator_share: float = 0.01
     youtube_mean_subs: float = 15.0
     youtube_lag_ticks: tuple = (16, 96)   # videos appear 4h to 1 day after a creator decides to cover it
+    youtube_homophily: float = 0.5        # PLACEHOLDER: share of subscriptions to creators of the agent's main interest
+    degree_sigma: float = 0.8             # PLACEHOLDER: lognormal sigma of out-degree / friend count (before activity scaling)
+    reddit_zipf: float = 1.0              # PLACEHOLDER: Zipf exponent of subreddit popularity within a topic
     # exposure per sharer per tick on each layer, and how much people trust what reaches them there
     reach: dict = field(default_factory=lambda: {
         "twitter": 0.08, "instagram": 0.05, "friendship": 0.25, "reddit": 0.6, "tiktok": 0.002, "youtube": 0.15})
