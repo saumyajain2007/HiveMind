@@ -1,0 +1,91 @@
+Structure:
+Each node is represented by a 15 dimensional array containing information on:
+Wealth
+Impulsiveness
+Risk tolerance
+Knowledge of markets
+[Array of social media platform activity]
+Connections (Computed from social structure graph)
+Market participant category (day trader, swing trader, etc.)
+Age
+Narrative induced bias
+[TBD]
+Additionally, it contains information pertaining to the stock:
+	Confidence E [-1,1]
+	Portfolio (agent acts differently if his portfolio is taking losses)
+Correlation matrix???
+Idea for implementation is individual distributions based on data and correlation matrix to come up with agents???
+
+These values come from distributions based on data.
+New nodes may be added and nodes cannot be removed (even if stocks are sold the market participants are still going to impact the rest of the graph)
+
+Market State:
+	Volatility, Options Prices (Black Scholes), volume, Historical Open Close High Low, etc.
+
+Large agents like companies are accounted for as well.
+Unique structure for organised trading firms???
+LLMs model prop firms
+
+Social structure:
+Agents are given latent attributes like:
+Offline communities (School, work, etc.)
+Interests vector (embedding over topics like crypto, energy, etc.)
+Influence potential (heavy tailed distribution like pareto or lognormal)
+
+Social Media Engine:
+Different platforms have different structures:
+	Instagram - Directed Graph (Followers)
+Youtube - Content Creator (
+	Friendship!!! - Undirected Graph (Friends)
+	Reddit/Forums - Sparse Membership Graph (Membership)
+	Tiktok - Algorithmic (Algorithm determines exposure)
+	Twitter - directed graph 
+(HAS TO BE MODELLED BASED ON DATA!!!!)
+News Injections:
+Different Events are introduced to the system as Events 
+
+class Event:
+    tick: int
+    kind: str           # earnings, macro, regulatory, product, rumour, leak
+    ticker: int         # sector
+    true_impact: float  # change in fundamental value; hidden from agents (0 for a false rumour)
+    sentiment: float    # how it's presented, -1..1
+    credibility: float  # trustworthiness
+    salience: float     # how attention-grabbing it is
+    complexity: float   # knowledge needed to interpret it correctly
+    seeding: str        # official, outlet, influencer, insider, anonymous
+    parent: int = -1    # for follow-ups: confirmations, denials, corrections
+
+LLM Call to parse real world/controlled events to event format!!!! Use reinforcement
+
+Platform Diffusion:
+How far information travels in one cycle is determined by the nature of the event and randomness.
+Belief and Narrative Update:
+Belief - an item only moves Confidence if it is close enough to the current view. Size of the move depends on impulsiveness, knowledge and item credibility
+Adopt - agent takes on a narrative seen in its feed
+Mutate - agent changes it when passing it on (more extreme, less credible), more likely for impulsive, low knowledge agents
+Invent - after a big price move with no explanation, agent makes one up in the direction of the move
+Trading Decisions:
+Only investors trade, and only when online
+expected return = fundamentalist part (perceived value vs price) + chartist part (momentum) + sentiment part (Confidence) —- weighted average based on category
+target position = risk tolerance x wealth x expected return / risk
+order = target - current holding, only if bigger than a threshold (lower for impulsive agents)
+Market participant category sets the mix and holding period; the mix shifts toward whatever has been profitable lately
+Simple orderbook!!!
+Market Maker:
+All orders summed into net demand D
+new price = price x exp(λ x D / liquidity + noise)
+Only clears during trading hours
+Predetermined values – mostly a blackbox, predetermined parameters from pretraining
+
+
+Next Tick:
+New price feeds back into Platform Diffusion:
+Big moves become news events ("stock up 8%")
+Chartists follow momentum
+Agents invent narratives to explain the move
+Agents in profit spread bullish narratives, agents taking losses panic
+Prediction:
+Calibrate against one real historical event first
+Run hundreds of Monte Carlo runs, output a range of price paths
+Backtest against a random walk
