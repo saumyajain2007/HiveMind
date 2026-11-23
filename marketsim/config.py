@@ -107,6 +107,10 @@ class MarketConfig:
     adv_turnover: float = 0.01            # average daily volume as a share of shares held
     noise_frac: float = 0.3               # unmodelled order flow, as a share of per-tick vol
     circuit_breaker: float = 0.15         # max |log move| per tick
+    option_maturity_days: float = 30.0    # PLACEHOLDER: maturity of the logged ATM call (calendar days)
+    risk_free_rate: float = 0.0           # PLACEHOLDER: annualised, continuously compounded
+    vol_ewma_lambda: float = 0.94         # PLACEHOLDER: RiskMetrics decay for realised daily vol
+    trading_days_per_year: int = 252
     n_prop_firms: int = 5
     n_funds: int = 3
     firm_capital_share: float = 0.15      # firms' capital vs total investor wealth
