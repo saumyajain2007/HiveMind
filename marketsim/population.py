@@ -20,18 +20,36 @@ Generative model
 
 ``[TBD]`` from the design notes is deliberately not implemented.
 """
+
 from __future__ import annotations
 
 import numpy as np
 from scipy.special import betaincinv, expit, gammaincinv, ndtr
 
-from .config import (ALL_PLATFORMS, CATEGORIES, DAY_TRADER, LONG_TERM, MEDIA, NON_INVESTOR, SWING,
-                     TOPICS, Config)
+from .config import (
+    ALL_PLATFORMS,
+    CATEGORIES,
+    DAY_TRADER,
+    LONG_TERM,
+    MEDIA,
+    NON_INVESTOR,
+    SWING,
+    TOPICS,
+    Config,
+)
 
 # Order of the copula (rows/columns of R). belief_tolerance, media_attention and loss_aversion
 # are extra fields the model needs (see DECISIONS.md).
-COPULA_TRAITS = ("age", "wealth", "impulsiveness", "risk_tolerance", "knowledge",
-                 "belief_tolerance", "media_attention", "loss_aversion")
+COPULA_TRAITS = (
+    "age",
+    "wealth",
+    "impulsiveness",
+    "risk_tolerance",
+    "knowledge",
+    "belief_tolerance",
+    "media_attention",
+    "loss_aversion",
+)
 
 _P = len(ALL_PLATFORMS)
 _T = len(TOPICS)
@@ -41,21 +59,21 @@ FIELD_SPECS: dict[str, tuple] = {
     "category": (np.int8, ()),
     **{name: (np.float64, ()) for name in COPULA_TRAITS},
     "peak_hour": (np.float64, ()),
-    "platform_use": (np.bool_, (_P,)),          # columns follow config.ALL_PLATFORMS
+    "platform_use": (np.bool_, (_P,)),  # columns follow config.ALL_PLATFORMS
     "platform_intensity": (np.float64, (_P,)),  # 0 for non-users
-    "community": (np.int32, ()),                # -1 for media outlets
-    "interests": (np.float64, (_T,)),           # rows sum to 1; columns follow config.TOPICS
+    "community": (np.int32, ()),  # -1 for media outlets
+    "interests": (np.float64, (_T,)),  # rows sum to 1; columns follow config.TOPICS
     "influence": (np.float64, ()),
     "confidence": (np.float64, ()),
     "narrative_bias": (np.float64, ()),
-    "held_narrative": (np.int32, ()),           # -1 = none
+    "held_narrative": (np.int32, ()),  # -1 = none
     "perceived_value": (np.float64, ()),
     "cash": (np.float64, ()),
     "shares": (np.float64, ()),
-    "entry_price": (np.float64, ()),            # 0 = no position
-    "strategy_weights": (np.float64, (3,)),     # fundamentalist, chartist, sentiment
-    "media_credibility": (np.float64, ()),      # 0 for non-media
-    "media_bias": (np.float64, ()),             # 0 for non-media
+    "entry_price": (np.float64, ()),  # 0 = no position
+    "strategy_weights": (np.float64, (3,)),  # fundamentalist, chartist, sentiment
+    "media_credibility": (np.float64, ()),  # 0 for non-media
+    "media_bias": (np.float64, ()),  # 0 for non-media
 }
 
 
@@ -134,6 +152,33 @@ class Population:
     entry_price, strategy_weights, media_credibility, media_bias.
     """
 
+    # One array per field (FIELD_SPECS), created in __init__; declared here for type checkers.
+    category: np.ndarray
+    age: np.ndarray
+    wealth: np.ndarray
+    impulsiveness: np.ndarray
+    risk_tolerance: np.ndarray
+    knowledge: np.ndarray
+    belief_tolerance: np.ndarray
+    media_attention: np.ndarray
+    loss_aversion: np.ndarray
+    peak_hour: np.ndarray
+    platform_use: np.ndarray
+    platform_intensity: np.ndarray
+    community: np.ndarray
+    interests: np.ndarray
+    influence: np.ndarray
+    confidence: np.ndarray
+    narrative_bias: np.ndarray
+    held_narrative: np.ndarray
+    perceived_value: np.ndarray
+    cash: np.ndarray
+    shares: np.ndarray
+    entry_price: np.ndarray
+    strategy_weights: np.ndarray
+    media_credibility: np.ndarray
+    media_bias: np.ndarray
+
     def __init__(self, config: Config | None = None, rng: np.random.Generator | None = None):
         self.cfg = config if config is not None else Config()
         self.rng = rng if rng is not None else np.random.default_rng(self.cfg.seed)
@@ -142,8 +187,8 @@ class Population:
         self._chol = np.linalg.cholesky(self.target_corr)
         for name, (dtype, shape) in FIELD_SPECS.items():
             setattr(self, name, np.empty((0, *shape), dtype=dtype))
-        self.community_pref: np.ndarray | None = None   # (n_communities, T) lookup table
-        self._investor_intercept: float | None = None   # calibrated on the first batch
+        self.community_pref: np.ndarray | None = None  # (n_communities, T) lookup table
+        self._investor_intercept: float | None = None  # calibrated on the first batch
         self._platform_intercepts: np.ndarray | None = None
         pri = np.full((len(CATEGORIES), 3), 1.0 / 3.0)
         for cat, w in self.cfg.trading.strategy_prior.items():
@@ -152,15 +197,16 @@ class Population:
 
     # -- construction -------------------------------------------------------
     @classmethod
-    def build(cls, config: Config | None = None, n_agents: int | None = None,
-              seed: int | None = None) -> "Population":
+    def build(
+        cls, config: Config | None = None, n_agents: int | None = None, seed: int | None = None
+    ) -> Population:
         """``n_agents`` people plus ``media_per_100k`` outlet nodes (at least one)."""
         cfg = config if config is not None else Config()
         n = cfg.n_agents if n_agents is None else n_agents
         rng = np.random.default_rng(cfg.seed if seed is None else seed)
         pop = cls(cfg, rng)
         pop.add_agents(n)
-        n_media = int(round(cfg.population.media_per_100k * n / 100_000.0))
+        n_media = round(cfg.population.media_per_100k * n / 100_000.0)
         if cfg.population.media_per_100k > 0 and n > 0:
             n_media = max(1, n_media)
         if n_media:
@@ -232,8 +278,7 @@ class Population:
         """Latent scores z (n, 8) and the trait arrays, as a dict."""
         pc = self.cfg.population
         z = self.rng.standard_normal((n, len(COPULA_TRAITS))) @ self._chol.T
-        traits = {name: _marginal_ppf(pc.marginals[name], z[:, j])
-                  for j, name in enumerate(COPULA_TRAITS)}
+        traits = {name: _marginal_ppf(pc.marginals[name], z[:, j]) for j, name in enumerate(COPULA_TRAITS)}
         return {name: z[:, j] for j, name in enumerate(COPULA_TRAITS)}, traits
 
     def _peak_hours(self, n: int) -> np.ndarray:
@@ -254,8 +299,8 @@ class Population:
             "confidence": np.clip(self.rng.normal(0.0, pc.confidence_sd, n), -1.0, 1.0),
             "narrative_bias": np.zeros(n),
             "held_narrative": np.full(n, -1, dtype=np.int32),
-            "perceived_value": p0 * np.exp(self.rng.standard_normal(n)
-                                           * pc.perceived_value_noise * (1.0 - knowledge)),
+            "perceived_value": p0
+            * np.exp(self.rng.standard_normal(n) * pc.perceived_value_noise * (1.0 - knowledge)),
             "cash": wealth - shares * p0,
             "shares": shares,
             "entry_price": entry,
@@ -277,7 +322,7 @@ class Population:
                 sizes = np.concatenate([sizes, more])
                 csum = np.cumsum(sizes)
             last = int(np.searchsorted(csum, n))
-            sizes = sizes[:last + 1].copy()
+            sizes = sizes[: last + 1].copy()
             sizes[last] -= csum[last] - n
             ids = np.repeat(np.arange(len(sizes), dtype=np.int32), sizes)
             order = np.argsort(age + self.rng.normal(0.0, pc.community_age_noise, n))
@@ -319,9 +364,11 @@ class Population:
 
         # Latent attributes.
         community = self._assign_community(traits["age"])
+        assert self.community_pref is not None  # set by _assign_community on the first batch
         w = pc.community_interest_mix
-        interests = ((1.0 - w) * _dirichlet(rng, pc.interest_concentration, n, _T)
-                     + w * self.community_pref[community])
+        interests = (1.0 - w) * _dirichlet(rng, pc.interest_concentration, n, _T) + w * self.community_pref[
+            community
+        ]
         influence = 1.0 + rng.pareto(pc.influence_alpha, n)
 
         # Platform usage and intensity.
@@ -331,22 +378,31 @@ class Population:
             wt = np.zeros(_T)
             for topic, c in par["interests"].items():
                 wt[TOPICS.index(topic)] = c
-            logit[:, j] = (par["age"] * zs["age"] + par["knowledge"] * zs["knowledge"]
-                           + _T * (interests @ wt) - wt.sum())
+            logit[:, j] = (
+                par["age"] * zs["age"] + par["knowledge"] * zs["knowledge"] + _T * (interests @ wt) - wt.sum()
+            )
         if self._platform_intercepts is None:
-            self._platform_intercepts = np.array([
-                solve_intercept(logit[:, j], pc.platform_params[p]["target"])
-                for j, p in enumerate(ALL_PLATFORMS)])
+            self._platform_intercepts = np.array(
+                [
+                    solve_intercept(logit[:, j], pc.platform_params[p]["target"])
+                    for j, p in enumerate(ALL_PLATFORMS)
+                ]
+            )
         use = rng.random((n, _P)) < expit(logit + self._platform_intercepts)
         a, b = pc.intensity_beta
         intensity = rng.beta(a, b, (n, _P)) * use
 
         batch = {
-            "category": category, **traits,
+            "category": category,
+            **traits,
             "peak_hour": self._peak_hours(n),
-            "platform_use": use, "platform_intensity": intensity,
-            "community": community, "interests": interests, "influence": influence,
-            "media_credibility": np.zeros(n), "media_bias": np.zeros(n),
+            "platform_use": use,
+            "platform_intensity": intensity,
+            "community": community,
+            "interests": interests,
+            "influence": influence,
+            "media_credibility": np.zeros(n),
+            "media_bias": np.zeros(n),
         }
         batch.update(self._state(n, category, traits["wealth"], traits["knowledge"]))
         return batch
@@ -355,20 +411,24 @@ class Population:
         pc, rng = self.cfg.population, self.rng
         _, traits = self._draw_copula(n)
         category = np.full(n, MEDIA, dtype=np.int8)
-        traits["wealth"] = np.zeros(n)            # outlets hold no money and never trade
+        use = np.ones((n, _P), dtype=bool)
+        use[:, ALL_PLATFORMS.index("friendship")] = False  # outlets have no offline friends
+        traits["wealth"] = np.zeros(n)  # outlets hold no money and never trade
         cred_a, cred_b = pc.media_credibility_beta
         batch = {
-            "category": category, **traits,
+            "category": category,
+            **traits,
             "peak_hour": self._peak_hours(n),
-            "platform_use": np.ones((n, _P), dtype=bool),   # outlets publish everywhere
-            "platform_intensity": np.ones((n, _P)),
+            "platform_use": use,  # outlets publish on every platform except Friendship
+            "platform_intensity": use.astype(np.float64),
             "community": np.full(n, -1, dtype=np.int32),
             "interests": _dirichlet(rng, pc.interest_concentration, n, _T),
             "influence": pc.media_influence_mult * (1.0 + rng.pareto(pc.influence_alpha, n)),
             "media_credibility": rng.beta(cred_a, cred_b, n),
             "media_bias": np.clip(rng.normal(0.0, pc.media_bias_sd, n), -1.0, 1.0),
         }
-        batch.update(self._state(n, category, traits["wealth"], traits["knowledge"],
-                                 long_term_position=False))
+        batch.update(
+            self._state(n, category, traits["wealth"], traits["knowledge"], long_term_position=False)
+        )
         batch["confidence"] = np.zeros(n)
         return batch

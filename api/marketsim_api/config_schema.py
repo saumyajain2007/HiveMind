@@ -61,6 +61,21 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "population.media_per_100k": (0.0, 1000.0),
     "population.community_mean_size": (2.0, 1000.0),
     "population.correlations": (-0.99, 0.99),
+    "population.psd_eps": (1e-12, 0.1),
+    "population.investor_logit": (-10.0, 10.0),
+    "population.intensity_beta": (0.01, 100.0),
+    "population.online_width": (0.1, 12.0),
+    "population.community_size_sigma": (0.0, 3.0),
+    "population.community_age_noise": (0.0, 50.0),
+    "population.interest_concentration": (0.01, 100.0),
+    "population.community_interest_mix": (0.0, 1.0),
+    "population.influence_alpha": (1.01, 10.0),
+    "population.media_influence_mult": (1.0, 1000.0),
+    "population.media_credibility_beta": (0.01, 100.0),
+    "population.media_bias_sd": (0.0, 2.0),
+    "population.confidence_sd": (0.0, 1.0),
+    "population.long_term_initial_position": (0.0, 1.0),
+    "population.perceived_value_noise": (0.0, 1.0),
     # graph
     "graph.twitter_mean_out": (0.0, 1000.0),
     "graph.twitter_homophily": (0.0, 1.0),
@@ -126,6 +141,10 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
 
 # Descriptions for fields whose comment in config.py does not describe them on its own.
 DESCRIPTION_OVERRIDES: dict[str, str] = {
+    "population.media_influence_mult": "Influence multiplier for media outlets.",
+    "population.media_credibility_beta": "Beta(a, b) distribution of media outlets' credibility.",
+    "population.confidence_sd": "Spread of agents' initial confidence, N(0, sd).",
+    "population.media_bias_sd": "Spread of media outlets' editorial bias, N(0, sd) clipped to [-1, 1].",
     "graph.platforms": "Platforms switched on. The v1 default is Twitter, Reddit and Friendship.",
     "graph.reach": "Exposure per sharer per tick on each platform.",
     "graph.trust": "How much people trust what reaches them on each platform (belief weight).",
@@ -159,6 +178,11 @@ DESCRIPTION_OVERRIDES: dict[str, str] = {
 # --------------------------------------------------------------------------- comments in config.py
 
 
+def _clean_comment(t: str) -> str:
+    t = t.replace("PLACEHOLDER:", "").replace("-- PLACEHOLDER", "").replace("PLACEHOLDER", "")
+    return " ".join(t.split()).strip(" -:")
+
+
 def _config_comments() -> dict[str, tuple[str, bool]]:
     """Map 'section.field' -> (description, placeholder) from the comments in config.py.
 
@@ -179,17 +203,16 @@ def _config_comments() -> dict[str, tuple[str, bool]]:
         for stmt in node.body:
             if not (isinstance(stmt, ast.AnnAssign) and isinstance(stmt.target, ast.Name)):
                 continue
-            raw = comments.get(stmt.lineno, "")
-            if not raw:
-                above: list[str] = []
-                ln = stmt.lineno - 1
-                while ln >= 1 and lines[ln - 1].strip().startswith("#"):
-                    above.insert(0, comments.get(ln, ""))
-                    ln -= 1
-                raw = " ".join(above)
-            placeholder = "PLACEHOLDER" in raw
-            desc = raw.replace("PLACEHOLDER:", "").replace("-- PLACEHOLDER", "").replace("PLACEHOLDER", "")
-            text = " ".join(desc.split()).strip(" -:")
+            trailing = comments.get(stmt.lineno, "")
+            above: list[str] = []
+            ln = stmt.lineno - 1
+            while ln >= 1 and lines[ln - 1].strip().startswith("#"):
+                above.insert(0, comments.get(ln, ""))
+                ln -= 1
+            block = " ".join(above)
+            # The trailing comment wins unless it is only a marker ("# PLACEHOLDER").
+            text = _clean_comment(trailing) or _clean_comment(block)
+            placeholder = "PLACEHOLDER" in trailing or "PLACEHOLDER" in block
             out[f"{by_class[node.name]}.{stmt.target.id}"] = (text[:1].upper() + text[1:], placeholder)
     return out
 
@@ -214,29 +237,65 @@ class Correlation(BaseModel):
         return v
 
 
+def _int_keyed(d: Any) -> bool:
+    return isinstance(d, dict) and bool(d) and all(isinstance(k, int) and not isinstance(k, bool) for k in d)
+
+
+def _jsonify(v: Any) -> Any:
+    """Engine value -> JSON: tuples become lists, category-id keys become category names."""
+    if isinstance(v, dict):
+        if _int_keyed(v):
+            return {engine_config.CATEGORIES[k]: _jsonify(x) for k, x in v.items()}
+        return {k: _jsonify(x) for k, x in v.items()}
+    if isinstance(v, (tuple, list)):
+        return [_jsonify(x) for x in v]
+    return v
+
+
+def _engineify(v: Any, template: Any) -> Any:
+    """JSON -> engine value, using the engine default as a template for tuples and keys."""
+    if isinstance(template, dict) and isinstance(v, dict):
+        int_keys = _int_keyed(template)
+        sample = next(iter(template.values()), None)
+        out = {}
+        for k, x in v.items():
+            ek = _CATEGORY_ID[k] if int_keys else k
+            out[ek] = _engineify(x, template.get(ek, sample))
+        return out
+    if isinstance(template, tuple) and isinstance(v, (list, tuple)):
+        if len(v) == len(template):
+            return tuple(_engineify(x, t) for x, t in zip(v, template, strict=True))
+        return tuple(_engineify(x, template[0] if template else None) for x in v)
+    return v
+
+
 def _to_json_value(section: str, name: str, value: Any) -> Any:
     if section == "population" and name == "correlations":
         return [{"a": a, "b": b, "rho": rho} for (a, b), rho in value.items()]
-    if isinstance(value, dict) and value and all(isinstance(k, int) for k in value):
-        return {engine_config.CATEGORIES[k]: _to_json_value(section, "", v) for k, v in value.items()}
-    if isinstance(value, tuple):
-        return list(value)
-    if isinstance(value, dict):
-        return dict(value)
-    return value
+    return _jsonify(value)
 
 
 def _to_engine_value(section: str, name: str, value: Any, default: Any) -> Any:
     if section == "population" and name == "correlations":
         return {(c["a"], c["b"]): float(c["rho"]) for c in value}
-    if isinstance(default, dict) and default and all(isinstance(k, int) for k in default):
-        sample = next(iter(default.values()))
-        return {_CATEGORY_ID[k]: (tuple(v) if isinstance(sample, tuple) else v) for k, v in value.items()}
-    if isinstance(default, tuple):
-        return tuple(value)
-    if isinstance(default, dict):
-        return dict(value)
-    return value
+    return _engineify(value, default)
+
+
+def _is_number(x: Any) -> bool:
+    return isinstance(x, (int, float)) and not isinstance(x, bool)
+
+
+def _shape(default_json: Any) -> str:
+    """number | numlist (fixed-length numbers) | nummap (str -> number or numlist) | json."""
+    if _is_number(default_json):
+        return "number"
+    if isinstance(default_json, list) and default_json and all(_is_number(x) for x in default_json):
+        return "numlist"
+    if isinstance(default_json, dict) and default_json:
+        vals = list(default_json.values())
+        if all(_is_number(x) for x in vals) or all(_shape(x) == "numlist" for x in vals):
+            return "nummap"
+    return "json"
 
 
 # --------------------------------------------------------------------------- model generation
@@ -270,6 +329,16 @@ def _field_spec(section: str, f: dataclasses.Field[Any], default_json: Any) -> t
     if section == "graph" and f.name == "youtube_lag_ticks":
         extra.update(minimum=lo, maximum=hi)
         return tuple[int, int], field()
+    shape = _shape(default_json)
+    if shape == "numlist":
+        extra.update(minimum=lo, maximum=hi)
+        item: Any = int if all(isinstance(x, int) for x in default_json) else float
+        return tuple.__class_getitem__((item,) * len(default_json)), field()
+    if shape == "json":
+        # Nested shapes (e.g. marginals, platform_params) travel as plain JSON; the top-level
+        # keys are checked here, and the engine validates the rest when it builds the population.
+        extra["kind"] = "json"
+        return (dict[str, Any] if isinstance(default_json, dict) else list[Any]), field()
     if isinstance(default_json, dict):
         extra.update(minimum=lo, maximum=hi, keys=list(default_json))
         sample = next(iter(default_json.values()))
@@ -305,6 +374,12 @@ def _validators(section: str, defaults: dict[str, Any]) -> dict[str, Any]:
                 a, b = v
                 if not (rng and rng[0] <= a <= b <= rng[1]):
                     raise ValueError(f"graph.youtube_lag_ticks: need {rng[0] if rng else 0} <= min <= max")
+            elif _shape(default) == "numlist":
+                if rng and not all(rng[0] <= x <= rng[1] for x in v):
+                    raise ValueError(f"{key}: values must be in [{rng[0]}, {rng[1]}]")
+            elif _shape(default) == "json" and not (section == "population" and name == "correlations"):
+                if isinstance(default, dict) and set(v) != set(default):
+                    raise ValueError(f"{key}: keys must be exactly {sorted(default)}")
             elif isinstance(default, dict):
                 if set(v) != set(default):
                     raise ValueError(f"{key}: keys must be exactly {sorted(default)}")
@@ -422,6 +497,8 @@ def ui_schema() -> list[dict[str, Any]]:
 
 
 def _kind(default: Any, annotation: Any) -> str:
+    if _shape(default) == "json":
+        return "json"
     if isinstance(default, bool):
         return "bool"
     if isinstance(default, int):

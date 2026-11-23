@@ -36,7 +36,7 @@
         {
           "name": "correlations",
           "key": "population.correlations",
-          "kind": "list",
+          "kind": "json",
           "default": [
             {
               "a": "age",
@@ -103,6 +103,349 @@
           "max": 0.99,
           "description": "Trait correlations for the Gaussian copula (repaired to PSD before use).",
           "placeholder": true
+        },
+        {
+          "name": "marginals",
+          "key": "population.marginals",
+          "kind": "json",
+          "default": {
+            "age": [
+              "beta",
+              2.0,
+              3.0,
+              18.0,
+              67.0
+            ],
+            "wealth": [
+              "lognormal",
+              50000.0,
+              1.3
+            ],
+            "impulsiveness": [
+              "beta",
+              2.0,
+              5.0,
+              0.0,
+              1.0
+            ],
+            "risk_tolerance": [
+              "beta",
+              2.0,
+              2.5,
+              0.0,
+              1.0
+            ],
+            "knowledge": [
+              "beta",
+              2.0,
+              4.0,
+              0.0,
+              1.0
+            ],
+            "belief_tolerance": [
+              "beta",
+              3.0,
+              3.0,
+              0.2,
+              1.0
+            ],
+            "media_attention": [
+              "beta",
+              2.0,
+              3.0,
+              0.0,
+              1.0
+            ],
+            "loss_aversion": [
+              "gamma",
+              2.0,
+              0.6,
+              1.0
+            ]
+          },
+          "min": null,
+          "max": null,
+          "description": "Marginals for the copula traits (HANDOFF section 4, M1). All , not fitted to data. (\"beta\", a, b, loc, scale) -> loc + scale * Beta(a, b) (\"lognormal\", median, sigma) -> exp(log(median) + sigma * Z) (\"gamma\", shape, scale, loc) -> loc + Gamma(shape, scale)",
+          "placeholder": true
+        },
+        {
+          "name": "psd_eps",
+          "key": "population.psd_eps",
+          "kind": "float",
+          "default": 1e-06,
+          "min": 1e-12,
+          "max": 0.1,
+          "description": "Eigenvalue floor when repairing the correlation matrix",
+          "placeholder": false
+        },
+        {
+          "name": "investor_logit",
+          "key": "population.investor_logit",
+          "kind": "map",
+          "default": {
+            "wealth": 1.0,
+            "knowledge": 0.6,
+            "risk_tolerance": 0.4
+          },
+          "min": -10.0,
+          "max": 10.0,
+          "description": "Investor logit on the latent (standard-normal) copula scores; intercept solved to hit investor_share",
+          "placeholder": true
+        },
+        {
+          "name": "category_logits",
+          "key": "population.category_logits",
+          "kind": "json",
+          "default": {
+            "long_term": [
+              0.0,
+              {
+                "age": 0.8,
+                "knowledge": 0.8,
+                "impulsiveness": -0.3
+              }
+            ],
+            "swing": [
+              0.4,
+              {}
+            ],
+            "day_trader": [
+              -1.0,
+              {
+                "age": -0.8,
+                "impulsiveness": 0.8,
+                "risk_tolerance": 0.5
+              }
+            ]
+          },
+          "min": null,
+          "max": null,
+          "description": "Category softmax among investors: (intercept, {trait: coef on latent score}); swing is the baseline",
+          "placeholder": true
+        },
+        {
+          "name": "platform_params",
+          "key": "population.platform_params",
+          "kind": "json",
+          "default": {
+            "twitter": {
+              "target": 0.25,
+              "age": -0.3,
+              "knowledge": 0.2,
+              "interests": {
+                "finance": 0.3,
+                "tech": 0.3,
+                "crypto": 0.3,
+                "politics": 0.3
+              }
+            },
+            "reddit": {
+              "target": 0.22,
+              "age": -0.5,
+              "knowledge": 0.3,
+              "interests": {
+                "tech": 0.3,
+                "crypto": 0.3,
+                "finance": 0.2,
+                "sports": 0.2
+              }
+            },
+            "friendship": {
+              "target": 0.9,
+              "age": -0.1,
+              "knowledge": 0.0,
+              "interests": {}
+            },
+            "instagram": {
+              "target": 0.4,
+              "age": -0.8,
+              "knowledge": 0.0,
+              "interests": {
+                "entertainment": 0.3,
+                "sports": 0.2
+              }
+            },
+            "tiktok": {
+              "target": 0.35,
+              "age": -0.9,
+              "knowledge": 0.0,
+              "interests": {
+                "entertainment": 0.4
+              }
+            },
+            "youtube": {
+              "target": 0.8,
+              "age": -0.3,
+              "knowledge": 0.0,
+              "interests": {}
+            }
+          },
+          "min": null,
+          "max": null,
+          "description": "Roughly Pew / Ofcom shaped",
+          "placeholder": true
+        },
+        {
+          "name": "intensity_beta",
+          "key": "population.intensity_beta",
+          "kind": "json",
+          "default": [
+            2.0,
+            3.0
+          ],
+          "min": 0.01,
+          "max": 100.0,
+          "description": "Beta(a, b) usage intensity for platform users",
+          "placeholder": true
+        },
+        {
+          "name": "peak_hour_mix",
+          "key": "population.peak_hour_mix",
+          "kind": "json",
+          "default": [
+            [
+              0.7,
+              20.5,
+              2.0
+            ],
+            [
+              0.2,
+              12.5,
+              2.5
+            ],
+            [
+              0.1,
+              7.5,
+              1.5
+            ]
+          ],
+          "min": null,
+          "max": null,
+          "description": "Activity hours: mixture of (weight, mean hour, sd hours) for each agent's peak hour (mostly evening)",
+          "placeholder": true
+        },
+        {
+          "name": "online_width",
+          "key": "population.online_width",
+          "kind": "float",
+          "default": 3.0,
+          "min": 0.1,
+          "max": 12.0,
+          "description": "Sd (hours) of the gaussian bump around the peak hour",
+          "placeholder": true
+        },
+        {
+          "name": "community_size_sigma",
+          "key": "population.community_size_sigma",
+          "kind": "float",
+          "default": 0.8,
+          "min": 0.0,
+          "max": 3.0,
+          "description": "Lognormal sigma of community sizes",
+          "placeholder": true
+        },
+        {
+          "name": "community_age_noise",
+          "key": "population.community_age_noise",
+          "kind": "float",
+          "default": 4.0,
+          "min": 0.0,
+          "max": 50.0,
+          "description": "Years of noise when sorting agents into communities",
+          "placeholder": true
+        },
+        {
+          "name": "interest_concentration",
+          "key": "population.interest_concentration",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.01,
+          "max": 100.0,
+          "description": "Dirichlet concentration (individual and community)",
+          "placeholder": true
+        },
+        {
+          "name": "community_interest_mix",
+          "key": "population.community_interest_mix",
+          "kind": "float",
+          "default": 0.4,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Weight of the community preference in interests",
+          "placeholder": true
+        },
+        {
+          "name": "influence_alpha",
+          "key": "population.influence_alpha",
+          "kind": "float",
+          "default": 1.5,
+          "min": 1.01,
+          "max": 10.0,
+          "description": "Pareto tail exponent",
+          "placeholder": false
+        },
+        {
+          "name": "media_influence_mult",
+          "key": "population.media_influence_mult",
+          "kind": "float",
+          "default": 50.0,
+          "min": 1.0,
+          "max": 1000.0,
+          "description": "Influence multiplier for media outlets.",
+          "placeholder": false
+        },
+        {
+          "name": "media_credibility_beta",
+          "key": "population.media_credibility_beta",
+          "kind": "json",
+          "default": [
+            6.0,
+            3.0
+          ],
+          "min": 0.01,
+          "max": 100.0,
+          "description": "Beta(a, b) distribution of media outlets' credibility.",
+          "placeholder": true
+        },
+        {
+          "name": "media_bias_sd",
+          "key": "population.media_bias_sd",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "Spread of media outlets' editorial bias, N(0, sd) clipped to [-1, 1].",
+          "placeholder": true
+        },
+        {
+          "name": "confidence_sd",
+          "key": "population.confidence_sd",
+          "kind": "float",
+          "default": 0.1,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Spread of agents' initial confidence, N(0, sd).",
+          "placeholder": false
+        },
+        {
+          "name": "long_term_initial_position",
+          "key": "population.long_term_initial_position",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of wealth long-term investors hold in stock",
+          "placeholder": true
+        },
+        {
+          "name": "perceived_value_noise",
+          "key": "population.perceived_value_noise",
+          "kind": "float",
+          "default": 0.05,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Sd of log(perceived_value / price), scaled by (1 - knowledge)",
+          "placeholder": true
         }
       ]
     },
@@ -112,7 +455,7 @@
         {
           "name": "platforms",
           "key": "graph.platforms",
-          "kind": "list",
+          "kind": "json",
           "default": [
             "twitter",
             "reddit",
@@ -236,7 +579,7 @@
         {
           "name": "youtube_lag_ticks",
           "key": "graph.youtube_lag_ticks",
-          "kind": "other",
+          "kind": "json",
           "default": [
             16,
             96
@@ -488,7 +831,7 @@
         {
           "name": "strategy_prior",
           "key": "trading.strategy_prior",
-          "kind": "map",
+          "kind": "json",
           "default": {
             "long_term": [
               0.7,

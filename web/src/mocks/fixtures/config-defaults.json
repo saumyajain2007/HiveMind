@@ -65,7 +65,179 @@
           "b": "loss_aversion",
           "rho": -0.3
         }
-      ]
+      ],
+      "marginals": {
+        "age": [
+          "beta",
+          2.0,
+          3.0,
+          18.0,
+          67.0
+        ],
+        "wealth": [
+          "lognormal",
+          50000.0,
+          1.3
+        ],
+        "impulsiveness": [
+          "beta",
+          2.0,
+          5.0,
+          0.0,
+          1.0
+        ],
+        "risk_tolerance": [
+          "beta",
+          2.0,
+          2.5,
+          0.0,
+          1.0
+        ],
+        "knowledge": [
+          "beta",
+          2.0,
+          4.0,
+          0.0,
+          1.0
+        ],
+        "belief_tolerance": [
+          "beta",
+          3.0,
+          3.0,
+          0.2,
+          1.0
+        ],
+        "media_attention": [
+          "beta",
+          2.0,
+          3.0,
+          0.0,
+          1.0
+        ],
+        "loss_aversion": [
+          "gamma",
+          2.0,
+          0.6,
+          1.0
+        ]
+      },
+      "psd_eps": 1e-06,
+      "investor_logit": {
+        "wealth": 1.0,
+        "knowledge": 0.6,
+        "risk_tolerance": 0.4
+      },
+      "category_logits": {
+        "long_term": [
+          0.0,
+          {
+            "age": 0.8,
+            "knowledge": 0.8,
+            "impulsiveness": -0.3
+          }
+        ],
+        "swing": [
+          0.4,
+          {}
+        ],
+        "day_trader": [
+          -1.0,
+          {
+            "age": -0.8,
+            "impulsiveness": 0.8,
+            "risk_tolerance": 0.5
+          }
+        ]
+      },
+      "platform_params": {
+        "twitter": {
+          "target": 0.25,
+          "age": -0.3,
+          "knowledge": 0.2,
+          "interests": {
+            "finance": 0.3,
+            "tech": 0.3,
+            "crypto": 0.3,
+            "politics": 0.3
+          }
+        },
+        "reddit": {
+          "target": 0.22,
+          "age": -0.5,
+          "knowledge": 0.3,
+          "interests": {
+            "tech": 0.3,
+            "crypto": 0.3,
+            "finance": 0.2,
+            "sports": 0.2
+          }
+        },
+        "friendship": {
+          "target": 0.9,
+          "age": -0.1,
+          "knowledge": 0.0,
+          "interests": {}
+        },
+        "instagram": {
+          "target": 0.4,
+          "age": -0.8,
+          "knowledge": 0.0,
+          "interests": {
+            "entertainment": 0.3,
+            "sports": 0.2
+          }
+        },
+        "tiktok": {
+          "target": 0.35,
+          "age": -0.9,
+          "knowledge": 0.0,
+          "interests": {
+            "entertainment": 0.4
+          }
+        },
+        "youtube": {
+          "target": 0.8,
+          "age": -0.3,
+          "knowledge": 0.0,
+          "interests": {}
+        }
+      },
+      "intensity_beta": [
+        2.0,
+        3.0
+      ],
+      "peak_hour_mix": [
+        [
+          0.7,
+          20.5,
+          2.0
+        ],
+        [
+          0.2,
+          12.5,
+          2.5
+        ],
+        [
+          0.1,
+          7.5,
+          1.5
+        ]
+      ],
+      "online_width": 3.0,
+      "community_size_sigma": 0.8,
+      "community_age_noise": 4.0,
+      "interest_concentration": 0.5,
+      "community_interest_mix": 0.4,
+      "influence_alpha": 1.5,
+      "media_influence_mult": 50.0,
+      "media_credibility_beta": [
+        6.0,
+        3.0
+      ],
+      "media_bias_sd": 0.3,
+      "confidence_sd": 0.1,
+      "long_term_initial_position": 0.5,
+      "perceived_value_noise": 0.05
     },
     "graph": {
       "platforms": [

@@ -474,7 +474,7 @@ export interface components {
        * Kind
        * @enum {string}
        */
-      kind: "int" | "float" | "bool" | "map" | "list" | "other";
+      kind: "int" | "float" | "bool" | "map" | "list" | "json" | "other";
       /** Default */
       default: unknown;
       /** Min */
@@ -829,6 +829,281 @@ export interface components {
        *     ]
        */
       correlations: components["schemas"]["Correlation"][];
+      /**
+       * Marginals
+       * @description Marginals for the copula traits (HANDOFF section 4, M1). All , not fitted to data. ("beta", a, b, loc, scale) -> loc + scale * Beta(a, b) ("lognormal", median, sigma) -> exp(log(median) + sigma * Z) ("gamma", shape, scale, loc) -> loc + Gamma(shape, scale)
+       * @default {
+       *       "age": [
+       *         "beta",
+       *         2,
+       *         3,
+       *         18,
+       *         67
+       *       ],
+       *       "wealth": [
+       *         "lognormal",
+       *         50000,
+       *         1.3
+       *       ],
+       *       "impulsiveness": [
+       *         "beta",
+       *         2,
+       *         5,
+       *         0,
+       *         1
+       *       ],
+       *       "risk_tolerance": [
+       *         "beta",
+       *         2,
+       *         2.5,
+       *         0,
+       *         1
+       *       ],
+       *       "knowledge": [
+       *         "beta",
+       *         2,
+       *         4,
+       *         0,
+       *         1
+       *       ],
+       *       "belief_tolerance": [
+       *         "beta",
+       *         3,
+       *         3,
+       *         0.2,
+       *         1
+       *       ],
+       *       "media_attention": [
+       *         "beta",
+       *         2,
+       *         3,
+       *         0,
+       *         1
+       *       ],
+       *       "loss_aversion": [
+       *         "gamma",
+       *         2,
+       *         0.6,
+       *         1
+       *       ]
+       *     }
+       */
+      marginals: {
+        [key: string]: unknown;
+      };
+      /**
+       * Psd Eps
+       * @description Eigenvalue floor when repairing the correlation matrix
+       * @default 0.000001
+       */
+      psd_eps: number;
+      /**
+       * Investor Logit
+       * @description Investor logit on the latent (standard-normal) copula scores; intercept solved to hit investor_share
+       * @default {
+       *       "wealth": 1,
+       *       "knowledge": 0.6,
+       *       "risk_tolerance": 0.4
+       *     }
+       */
+      investor_logit: {
+        [key: string]: number;
+      };
+      /**
+       * Category Logits
+       * @description Category softmax among investors: (intercept, {trait: coef on latent score}); swing is the baseline
+       * @default {
+       *       "long_term": [
+       *         0,
+       *         {
+       *           "age": 0.8,
+       *           "impulsiveness": -0.3,
+       *           "knowledge": 0.8
+       *         }
+       *       ],
+       *       "swing": [
+       *         0.4,
+       *         {}
+       *       ],
+       *       "day_trader": [
+       *         -1,
+       *         {
+       *           "age": -0.8,
+       *           "impulsiveness": 0.8,
+       *           "risk_tolerance": 0.5
+       *         }
+       *       ]
+       *     }
+       */
+      category_logits: {
+        [key: string]: unknown;
+      };
+      /**
+       * Platform Params
+       * @description Roughly Pew / Ofcom shaped
+       * @default {
+       *       "twitter": {
+       *         "age": -0.3,
+       *         "interests": {
+       *           "crypto": 0.3,
+       *           "finance": 0.3,
+       *           "politics": 0.3,
+       *           "tech": 0.3
+       *         },
+       *         "knowledge": 0.2,
+       *         "target": 0.25
+       *       },
+       *       "reddit": {
+       *         "age": -0.5,
+       *         "interests": {
+       *           "crypto": 0.3,
+       *           "finance": 0.2,
+       *           "sports": 0.2,
+       *           "tech": 0.3
+       *         },
+       *         "knowledge": 0.3,
+       *         "target": 0.22
+       *       },
+       *       "friendship": {
+       *         "age": -0.1,
+       *         "interests": {},
+       *         "knowledge": 0,
+       *         "target": 0.9
+       *       },
+       *       "instagram": {
+       *         "age": -0.8,
+       *         "interests": {
+       *           "entertainment": 0.3,
+       *           "sports": 0.2
+       *         },
+       *         "knowledge": 0,
+       *         "target": 0.4
+       *       },
+       *       "tiktok": {
+       *         "age": -0.9,
+       *         "interests": {
+       *           "entertainment": 0.4
+       *         },
+       *         "knowledge": 0,
+       *         "target": 0.35
+       *       },
+       *       "youtube": {
+       *         "age": -0.3,
+       *         "interests": {},
+       *         "knowledge": 0,
+       *         "target": 0.8
+       *       }
+       *     }
+       */
+      platform_params: {
+        [key: string]: unknown;
+      };
+      /**
+       * Intensity Beta
+       * @description Beta(a, b) usage intensity for platform users
+       * @default [
+       *       2,
+       *       3
+       *     ]
+       */
+      intensity_beta: [number, number];
+      /**
+       * Peak Hour Mix
+       * @description Activity hours: mixture of (weight, mean hour, sd hours) for each agent's peak hour (mostly evening)
+       * @default [
+       *       [
+       *         0.7,
+       *         20.5,
+       *         2
+       *       ],
+       *       [
+       *         0.2,
+       *         12.5,
+       *         2.5
+       *       ],
+       *       [
+       *         0.1,
+       *         7.5,
+       *         1.5
+       *       ]
+       *     ]
+       */
+      peak_hour_mix: unknown[];
+      /**
+       * Online Width
+       * @description Sd (hours) of the gaussian bump around the peak hour
+       * @default 3
+       */
+      online_width: number;
+      /**
+       * Community Size Sigma
+       * @description Lognormal sigma of community sizes
+       * @default 0.8
+       */
+      community_size_sigma: number;
+      /**
+       * Community Age Noise
+       * @description Years of noise when sorting agents into communities
+       * @default 4
+       */
+      community_age_noise: number;
+      /**
+       * Interest Concentration
+       * @description Dirichlet concentration (individual and community)
+       * @default 0.5
+       */
+      interest_concentration: number;
+      /**
+       * Community Interest Mix
+       * @description Weight of the community preference in interests
+       * @default 0.4
+       */
+      community_interest_mix: number;
+      /**
+       * Influence Alpha
+       * @description Pareto tail exponent
+       * @default 1.5
+       */
+      influence_alpha: number;
+      /**
+       * Media Influence Mult
+       * @description Influence multiplier for media outlets.
+       * @default 50
+       */
+      media_influence_mult: number;
+      /**
+       * Media Credibility Beta
+       * @description Beta(a, b) distribution of media outlets' credibility.
+       * @default [
+       *       6,
+       *       3
+       *     ]
+       */
+      media_credibility_beta: [number, number];
+      /**
+       * Media Bias Sd
+       * @description Spread of media outlets' editorial bias, N(0, sd) clipped to [-1, 1].
+       * @default 0.3
+       */
+      media_bias_sd: number;
+      /**
+       * Confidence Sd
+       * @description Spread of agents' initial confidence, N(0, sd).
+       * @default 0.1
+       */
+      confidence_sd: number;
+      /**
+       * Long Term Initial Position
+       * @description Share of wealth long-term investors hold in stock
+       * @default 0.5
+       */
+      long_term_initial_position: number;
+      /**
+       * Perceived Value Noise
+       * @description Sd of log(perceived_value / price), scaled by (1 - knowledge)
+       * @default 0.05
+       */
+      perceived_value_noise: number;
     };
     /**
      * RunCreate

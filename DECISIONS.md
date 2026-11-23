@@ -17,7 +17,8 @@ Each entry: **date · issue · decision**, then a line of rationale.
 
 ## Model
 
-- **2026-11-23 · #3 · The graph reads the population through a `GraphPopulation` protocol** (`n`, `community`, `interests`, `influence`, `platform_use` (N×6 bool, `ALL_PLATFORMS` order), `platform_intensity` (N×6, 0 for non-users)). Issue #3 was built before #2, so tests use `marketsim.testing.StubPopulation`. The real `Population` (#2) must expose these fields under these names.
+- **2026-11-23 · #3 · The graph reads the population through a `GraphPopulation` protocol** (`n`, `community`, `interests`, `influence`, `platform_use` (N×6 bool, `ALL_PLATFORMS` order), `platform_intensity` (N×6, 0 for non-users)). `marketsim.population.Population` (#2) satisfies it; a test checks this with mypy and at runtime. #3 was first built on a stand-in population and redone on the real one after #2 was merged; the stand-in (`marketsim/testing.py`) is deleted.
+- **2026-11-23 · #3 · A negative community or group means "no group".** Media outlets have `community = -1`. `sample_targets` used to index that as the last community, so half of the outlets' ties landed in one 18-person group. Stubs with a negative group now always draw from the whole pool (test: `test_negative_group_draws_from_whole_pool`).
 - **2026-11-23 · #3 · `push()` returns exposure already multiplied by the layer's `reach`.** The handoff writes both "Σ reach · push" (diffusion) and puts `reach` inside the Reddit and TikTok formulas; putting it inside every layer avoids applying it twice. Diffusion (#6) sums the layers directly. `trust` is stored on each layer for beliefs (#7).
 - **2026-11-23 · #3 · One `push` signature for all layers:** `push(sharers, *, topic=0, popularity=None)`. Only TikTok uses `topic` and `popularity`; the default popularity is the number of sharers.
 - **2026-11-23 · #3 · Follow direction.** Directed edges are follower → followee (subscriber → creator). "Out-degree" is the number of accounts followed (lognormal × activity); "in-degree" is the follower count (targets ∝ influence, which gives the heavy tail).
@@ -28,24 +29,24 @@ Each entry: **date · issue · decision**, then a line of rationale.
 - **2026-11-23 · #3 · `add_nodes` uses preferential attachment** with weight (followers + 1) for follows and subscriptions, (degree + 1) for friendship, and (sub size + 1) for Reddit, inside the group with the layer's homophily share. Influence is used only at build time. Newcomers start with no followers.
 - **2026-11-23 · #3 · `layer_stats()` uses its own fixed RNG** for the clustering sample, so calling it never changes a simulation's random stream.
 
-### `layer_stats()` at 10k agents (stub population, default config, seed 0)
+### `layer_stats()` at 10k agents (real population from #2, default config, seed 0)
 
 ```
-[twitter] directed, 2514 users
-  edges 85604  reciprocity 0.036  clustering 0.120
-  in-degree   mean    34.1  p50     22  p90     59  p99    226  max   1044  (max/median 47.5)
-  out-degree  mean    34.1  p50     24  p90     74  p99    163  max    269
-[reddit] membership, 2087 users
-  subs 25  memberships 5305
-  subs/user   mean     2.5  p50      2  p90      4  p99      6  max      7
-  sub size    mean   212.2  p50    189  p90    373  p99    434  max    444
-[friendship] undirected, 9477 users
-  edges 81599  clustering 0.270
-  degree      mean    17.2  p50     14  p90     34  p99     65  max    153
-[overlap] twitter~friendship 0.0016
+[twitter] directed, 2516 users
+  edges 81799  reciprocity 0.031  clustering 0.140
+  in-degree   mean    32.5  p50     20  p90     55  p99    213  max   1738  (max/median 86.9)
+  out-degree  mean    32.5  p50     22  p90     72  p99    152  max    319
+[reddit] membership, 2209 users
+  subs 25  memberships 5893
+  subs/user   mean     2.7  p50      3  p90      4  p99      6  max      8
+  sub size    mean   235.7  p50    188  p90    411  p99    615  max    664
+[friendship] undirected, 8961 users
+  edges 77363  clustering 0.259
+  degree      mean    17.3  p50     14  p90     34  p99     66  max    151
+[overlap] twitter~friendship 0.0010
 ```
 
-Gaps against the configured means come from removing duplicate edges. Twitter follows land on popular accounts and friendships stay inside small communities, so duplicates are common: the realised Twitter out-degree is 34 (target 40) and friendship degree is 17 (target 20, plus 15% closure). Correcting for this is part of fitting to data (DATA_SOURCES.md), not done here. With all six layers, building takes 0.2 s at 10k and 3.6 s at 100k on the dev machine.
+The 10,000 people come with 5 media outlets (`media_per_100k = 50`). The outlets are the five most-followed Twitter accounts (influence ×50), which is why Twitter's max/median is higher than on the stand-in (87 vs 48). Gaps against the configured means come from removing duplicate edges: follows land on popular accounts and friendships stay inside small communities, so the realised Twitter out-degree is 33 (target 40) and friendship degree is 17 (target 20, plus 15% closure). Correcting for this is part of fitting to data (DATA_SOURCES.md). With all six layers, building takes 0.1 s at 10k and 4.0 s at 100k on the dev machine.
 
 - **2026-11-23 · #8 · The market maker absorbs the imbalance left at the clearing price.** The clearing move solves `D(P·e^r) = sign(r)·ADV·(r/(Y·σ))²`. D is a step function, so at the solution the agents' net demand can differ slightly from the curve's value. All crossing orders fill in full and the market maker's inventory changes by exactly `sold − bought`.
 - **2026-11-23 · #8 · Noise is applied before fills.** The unmodelled-flow noise `N(0, noise_frac·σ_daily/√26)` is added to the auction's log move, and the result is clipped to ±`circuit_breaker`. Orders are filled against this final price, so no order fills outside its limit, even with noise.
@@ -85,6 +86,10 @@ Gaps against the configured means come from removing duplicate edges. Twitter fo
 - **2026-11-23 · #19 · Playwright + axe instead of Lighthouse.** The e2e job runs axe (WCAG 2.1 AA including colour contrast) on all 8 pages in both themes. Lighthouse is not run in CI.
 - **2026-11-23 · #19 · Pages other than Runs are lazy-loaded.** The main chunk is ~230 kB gzip (React, router, Radix, Motion, React Query), and the size-warning limit is raised to 800 kB.
 - **2026-11-23 · #19 · Library versions are newer than the plan assumed:** React Router 8, MSW 3 (`onUnhandledFrame`), react-resizable-panels 4 (`Group`/`Panel`/`Separator`, numbers are pixels), Motion 14. `openapi-fetch` is given a per-call `fetch` so MSW's patch is seen in tests.
+
+- **2026-11-23 · #2 · Population by Kaisha Kapoor, merged from `issue-2-population`.** Gaussian copula over the eight traits (correlations repaired to PSD by eigenvalue clipping), investor logit with its intercept solved by bisection, softmax categories among investors, platform-use logits with intercepts solved to hit each platform's target share, Dirichlet interests mixed with a community preference, Pareto influence, media outlets. `belief_tolerance`, `media_attention` and `loss_aversion` are extra traits the model needs (not in the design notes); the notes' `[TBD]` field is not implemented. All new distribution parameters live in `PopulationConfig` and are marked PLACEHOLDER.
+- **2026-11-23 · #2 · Fixes made when merging.** (1) Media outlets use every platform **except Friendship**, since an outlet has no offline friends (they previously got friendships, see the #3 entry on negative groups). (2) The struct-of-arrays fields are declared on `Population` so mypy and `GraphPopulation` see them. (3) ruff, ruff-format and mypy clean-ups. The branch had never gone through CI because CI runs only on `main` and on pull requests.
+- **2026-11-23 · #16 · Nested config shapes travel as JSON.** #2 added settings such as `marginals` (`("beta", a, b, loc, scale)` per trait), `category_logits` (`(intercept, {trait: coef})` per category), `platform_params` (nested dicts) and `peak_hour_mix` (tuple of tuples). The API schema generator now converts any nesting recursively, using the engine default as a template so tuples and category-id keys come back exactly. Fixed-length number tuples become typed tuples with range checks. Other nested shapes are `kind: "json"` with their top-level keys checked; the engine validates the rest when it builds the population. A test edits nested fields through the API format and builds a population from the result.
 
 ## Simplifications
 

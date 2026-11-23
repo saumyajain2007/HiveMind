@@ -20,7 +20,7 @@ Layer kinds
 Graph generators are parameterised so `layer_stats()` can be matched to published statistics;
 see DATA_SOURCES.md. Fitting to data is TODO (HANDOFF §2.6).
 
-Run ``python -m marketsim.graph`` to print `layer_stats()` for a 10k stub population.
+Run ``python -m marketsim.graph`` to print `layer_stats()` for a 10k-agent population.
 """
 
 from __future__ import annotations
@@ -38,7 +38,10 @@ _STATS_SEED = 12345  # stats use their own RNG so they never disturb a simulatio
 
 
 class GraphPopulation(Protocol):
-    """The population fields the graph reads. `Population` (issue #2) must provide these."""
+    """The population fields the graph reads; `marketsim.population.Population` provides them.
+
+    A negative `community` (media outlets) means "no offline community".
+    """
 
     @property
     def n(self) -> int: ...
@@ -105,7 +108,8 @@ def sample_targets(
     """For each edge stub, draw a target from `pool` with probability proportional to `weights`.
 
     With probability `homophily` the target is drawn inside the stub's group (falling back to
-    the whole pool if the group has no weight). One sort by group, one cumulative sum, and one
+    the whole pool if the group has no weight). Stubs whose group is negative ("no group")
+    always draw from the whole pool. One sort by group, one cumulative sum, and one
     `searchsorted` for all stubs.
     """
     m = len(src_group)
@@ -115,14 +119,15 @@ def sample_targets(
     pool_s, g_s = pool[order], pool_group[order]
     cum = np.cumsum(weights[order].astype(np.float64))
     total = cum[-1]
-    n_groups = int(max(g_s.max(), src_group.max())) + 1
+    n_groups = max(int(g_s.max()), int(src_group.max()), -1) + 1
     cum0 = np.concatenate([[0.0], cum])
     lo = cum0[np.searchsorted(g_s, np.arange(n_groups), "left")]
     hi = cum0[np.searchsorted(g_s, np.arange(n_groups), "right")]
 
     a = np.zeros(m)
     b = np.full(m, total)
-    inside = np.flatnonzero(rng.random(m) < homophily)
+    # A negative group means "no group" (e.g. media outlets have community -1): draw globally.
+    inside = np.flatnonzero((rng.random(m) < homophily) & (src_group >= 0))
     g = src_group[inside]
     ok = hi[g] > lo[g]
     a[inside[ok]] = lo[g[ok]]
@@ -829,15 +834,16 @@ if __name__ == "__main__":  # pragma: no cover
     import argparse
     import time
 
-    from .testing import StubPopulation
+    from .config import Config
+    from .population import Population
 
-    ap = argparse.ArgumentParser(description="Print layer_stats() for a stub population.")
+    ap = argparse.ArgumentParser(description="Print layer_stats() for a population of N agents.")
     ap.add_argument("--agents", type=int, default=10_000)
     ap.add_argument("--all-platforms", action="store_true", help="also build instagram, tiktok, youtube")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
-    population = StubPopulation.generate(args.agents, seed=args.seed)
+    population = Population.build(Config(n_agents=args.agents, seed=args.seed))
     t0 = time.perf_counter()
     graph = SocialGraph.build(
         population,

@@ -217,7 +217,7 @@ class RunList(_Strict):
 class FieldMeta(_Strict):
     name: str
     key: str
-    kind: Literal["int", "float", "bool", "map", "list", "other"]
+    kind: Literal["int", "float", "bool", "map", "list", "json", "other"]
     default: Any
     min: float | None
     max: float | None

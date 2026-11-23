@@ -1,4 +1,4 @@
-"""Tests for marketsim.graph (issue #3), run on the stub population until issue #2 lands."""
+"""Tests for marketsim.graph (issue #3), on the real copula population from issue #2."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import scipy.sparse as sp
 
-from marketsim.config import ALL_PLATFORMS, GraphConfig
+from marketsim.config import ALL_PLATFORMS, MEDIA, Config, GraphConfig
 from marketsim.graph import (
     PLATFORM_INDEX,
     DirectedLayer,
@@ -20,18 +20,18 @@ from marketsim.graph import (
     gather_rows,
     sample_targets,
 )
-from marketsim.testing import StubPopulation
+from marketsim.population import Population
 
 N = 10_000
 
 
 @pytest.fixture(scope="module")
-def pop() -> StubPopulation:
-    return StubPopulation.generate(N, seed=1)
+def pop() -> Population:
+    return Population.build(Config(n_agents=N, seed=1))  # N people + media outlets
 
 
 @pytest.fixture(scope="module")
-def graph(pop: StubPopulation) -> SocialGraph:
+def graph(pop: Population) -> SocialGraph:
     return SocialGraph.build(pop, GraphConfig(), np.random.default_rng(7), platforms=ALL_PLATFORMS)
 
 
@@ -42,12 +42,12 @@ def _directed(graph: SocialGraph) -> list[DirectedLayer]:
 # ----------------------------------------------------------------- structure
 
 
-def test_default_platforms_are_the_v1_set(pop: StubPopulation) -> None:
+def test_default_platforms_are_the_v1_set(pop: Population) -> None:
     g = SocialGraph.build(pop, GraphConfig(), np.random.default_rng(0))
     assert set(g.layers) == {"twitter", "reddit", "friendship"}
 
 
-def test_unknown_platform_rejected(pop: StubPopulation) -> None:
+def test_unknown_platform_rejected(pop: Population) -> None:
     with pytest.raises(ValueError, match="unknown platforms"):
         SocialGraph.build(pop, GraphConfig(), np.random.default_rng(0), platforms=["myspace"])
 
@@ -68,7 +68,7 @@ def test_no_self_loops_or_duplicates(graph: SocialGraph) -> None:
     assert len(np.unique(keys)) == len(keys)
 
 
-def test_only_platform_users_carry_edges(graph: SocialGraph, pop: StubPopulation) -> None:
+def test_only_platform_users_carry_edges(graph: SocialGraph, pop: Population) -> None:
     for name, layer in graph.layers.items():
         uses = pop.platform_use[:, PLATFORM_INDEX[name]]
         if isinstance(layer, DirectedLayer):
@@ -96,7 +96,7 @@ def test_friendship_symmetric_csr(graph: SocialGraph) -> None:
     assert (m != m.T).nnz == 0
 
 
-def test_homophily_shares(graph: SocialGraph, pop: StubPopulation) -> None:
+def test_homophily_shares(graph: SocialGraph, pop: Population) -> None:
     main = np.argmax(pop.interests, axis=1)
     tw = graph.layers["twitter"]
     assert isinstance(tw, DirectedLayer)
@@ -108,14 +108,14 @@ def test_homophily_shares(graph: SocialGraph, pop: StubPopulation) -> None:
     assert same_comm > 0.6
 
 
-def test_triadic_closure_raises_clustering(pop: StubPopulation) -> None:
+def test_triadic_closure_raises_clustering(pop: Population) -> None:
     cfg_off, cfg_on = GraphConfig(triadic_closure=0.0), GraphConfig(triadic_closure=0.5)
     off = build_friendship(pop, cfg_off, np.random.default_rng(3)).stats()["clustering"]
     on = build_friendship(pop, cfg_on, np.random.default_rng(3)).stats()["clustering"]
     assert on > off
 
 
-def test_youtube_creators_are_top_influence(graph: SocialGraph, pop: StubPopulation) -> None:
+def test_youtube_creators_are_top_influence(graph: SocialGraph, pop: Population) -> None:
     yt = graph.layers["youtube"]
     assert isinstance(yt, YouTubeLayer)
     assert len(yt.creators) == round(GraphConfig().youtube_creator_share * len(yt.users))
@@ -151,14 +151,14 @@ def test_edge_push_matches_matrix_product(graph: SocialGraph, name: str) -> None
     x[sharers] = 1.0
     expected = layer.reach * (_dense_adjacency(layer).T @ x)
     got = graph.push(name, sharers)
-    assert got.dtype == np.float32 and got.shape == (N,)
+    assert got.dtype == np.float32 and got.shape == (layer.n,)
     np.testing.assert_allclose(got, expected, rtol=1e-6)
 
 
 def test_push_with_no_sharers_is_zero(graph: SocialGraph) -> None:
     for name in graph.layers:
         out = graph.push(name, np.zeros(0, np.int64))
-        assert out.shape == (N,) and not out.any(), name
+        assert out.shape == (graph.n,) and not out.any(), name
 
 
 def test_reddit_push_matches_formula(graph: SocialGraph) -> None:
@@ -173,7 +173,7 @@ def test_reddit_push_matches_formula(graph: SocialGraph) -> None:
     np.testing.assert_allclose(rd.push(sharers), m @ intensity, rtol=1e-5)
 
 
-def test_tiktok_push(graph: SocialGraph, pop: StubPopulation) -> None:
+def test_tiktok_push(graph: SocialGraph, pop: Population) -> None:
     tk = graph.layers["tiktok"]
     assert isinstance(tk, TikTokLayer)
     e1 = tk.push(np.arange(4), topic=2)
@@ -201,7 +201,7 @@ def test_layer_stats(graph: SocialGraph) -> None:
     assert "[twitter]" in text and "[overlap]" in text
 
 
-def test_same_seed_same_graph(pop: StubPopulation) -> None:
+def test_same_seed_same_graph(pop: Population) -> None:
     g1 = SocialGraph.build(pop, GraphConfig(), np.random.default_rng(11), platforms=ALL_PLATFORMS)
     g2 = SocialGraph.build(pop, GraphConfig(), np.random.default_rng(11), platforms=ALL_PLATFORMS)
     for name in g1.layers:
@@ -223,14 +223,15 @@ def test_sample_targets_respects_groups_and_weights() -> None:
 
 
 def test_add_nodes_keeps_graph_valid() -> None:
-    pop = StubPopulation.generate(4_000, seed=2)
+    pop = Population.build(Config(n_agents=4_000, seed=2))
+    n0 = pop.n
     rng = np.random.default_rng(5)
     g = SocialGraph.build(pop, GraphConfig(), rng, platforms=ALL_PLATFORMS)
     before = {name: layer.edge_keys() for name, layer in g.layers.items()}
-    new_ids = pop.add_agents(500, rng)
+    new_ids = pop.add_agents(500)
     g.add_nodes(pop, new_ids, rng)
 
-    assert g.n == pop.n == 4_500
+    assert g.n == pop.n == n0 + 500
     for name, layer in g.layers.items():
         assert layer.n == pop.n, name
         out = g.push(name, layer.users[:10])
@@ -240,7 +241,7 @@ def test_add_nodes_keeps_graph_valid() -> None:
         old = before[name]
         if old is not None:
             # never removed: every old edge survives (keys re-based to the new N)
-            a, b = old // 4_000, old % 4_000
+            a, b = old // n0, old % n0
             assert np.isin(a * pop.n + b, layer.edge_keys()).all(), name  # type: ignore[arg-type]
 
     for layer in _directed(g):
@@ -256,3 +257,35 @@ def test_add_nodes_keeps_graph_valid() -> None:
     rd = g.layers["reddit"]
     assert isinstance(rd, RedditLayer)
     assert np.isin(np.intersect1d(new_ids, rd.users), rd.member).all()
+
+
+# ----------------------------------------------------------------- the real population (#2)
+
+
+def test_population_satisfies_graph_protocol(pop: Population) -> None:
+    from marketsim.graph import GraphPopulation
+
+    p: GraphPopulation = pop  # checked by mypy as well as at runtime
+    assert p.n == len(pop.community) == pop.platform_use.shape[0]
+    assert pop.platform_use.shape[1] == len(ALL_PLATFORMS)
+
+
+def test_media_outlets(graph: SocialGraph, pop: Population) -> None:
+    media = np.flatnonzero(pop.category == MEDIA)
+    assert len(media) > 0
+    fr = graph.layers["friendship"]
+    assert isinstance(fr, FriendshipLayer)
+    assert not np.isin(media, fr.users).any()  # outlets have no offline friends
+    tw = graph.layers["twitter"]
+    assert isinstance(tw, DirectedLayer)
+    ind = tw.in_degree()
+    assert np.median(ind[media]) > 5 * np.median(ind[tw.users])  # influence x50 draws followers
+
+
+def test_negative_group_draws_from_whole_pool() -> None:
+    """Community -1 (media) must not be read as 'the last community'."""
+    rng = np.random.default_rng(0)
+    pool = np.arange(10)
+    pool_group = np.repeat([0, 1], 5)
+    t = sample_targets(rng, np.full(20_000, -1), pool, np.ones(10), pool_group, homophily=1.0)
+    assert abs((t >= 5).mean() - 0.5) < 0.02  # both groups, evenly; not all from group 1

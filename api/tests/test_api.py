@@ -123,7 +123,7 @@ def test_schema_covers_every_config_field(client: TestClient) -> None:
         for name in names:
             meta = by_section[section][name]
             assert meta["description"], f"{section}.{name} has no description"
-            if meta["kind"] in ("int", "float", "map"):
+            if meta["kind"] in ("int", "float", "map", "list"):
                 assert f"{section}.{name}" in FIELD_RANGES, f"{section}.{name} has no range"
     assert by_section["population"]["investor_share"]["placeholder"] is True
     assert by_section["graph"]["twitter_mean_out"]["placeholder"] is False
@@ -293,3 +293,41 @@ def test_parameters_in_run_override_defaults(client: TestClient) -> None:
     run = client.post(f"{V1}/runs", json={"scenario": scenario(), "parameters": params}).json()
     assert run["spec"]["parameters"]["trading"]["risk_aversion"] == 5.0
     assert TradingConfig().risk_aversion == 2.0  # the engine default is untouched
+
+
+def test_nested_population_fields_round_trip_and_build() -> None:
+    """Population settings from #2 (nested tuples / dicts) survive JSON and build a population."""
+    from marketsim.config import LONG_TERM
+    from marketsim.population import Population
+
+    data = default_parameters().model_dump()
+    data["population"]["marginals"]["age"] = ["beta", 2.5, 3.0, 18.0, 67.0]
+    data["population"]["category_logits"]["long_term"] = [0.2, {"age": 1.0}]
+    data["population"]["peak_hour_mix"] = [[0.8, 21.0, 2.0], [0.2, 12.0, 2.0]]
+    data["population"]["intensity_beta"] = [1.5, 3.0]
+    cfg = parameters_to_engine(type(default_parameters()).model_validate(data), 2_000, 4)
+    pc = cfg.population
+    assert pc.marginals["age"] == ("beta", 2.5, 3.0, 18.0, 67.0)
+    assert pc.category_logits[LONG_TERM] == (0.2, {"age": 1.0})
+    assert pc.peak_hour_mix == ((0.8, 21.0, 2.0), (0.2, 12.0, 2.0))
+    assert pc.intensity_beta == (1.5, 3.0)
+    pop = Population.build(cfg)
+    assert pop.n >= 2_000
+
+
+@pytest.mark.parametrize(
+    "patch",
+    [
+        ("marginals", {"age": ["beta", 2.0, 3.0, 18.0, 67.0]}),  # missing traits
+        ("platform_params", {"twitter": {"target": 0.2}}),  # missing platforms
+        ("intensity_beta", [0.0, 3.0]),  # below range
+        ("intensity_beta", [2.0, 3.0, 4.0]),  # wrong length
+    ],
+)
+def test_invalid_population_fields_rejected(patch: tuple[str, Any]) -> None:
+    from pydantic import ValidationError
+
+    data = default_parameters().model_dump()
+    data["population"][patch[0]] = patch[1]
+    with pytest.raises(ValidationError):
+        type(default_parameters()).model_validate(data)
