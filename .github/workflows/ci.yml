@@ -20,13 +20,15 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.11", "3.12"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}   # every uv step (not just sync) uses the matrix Python
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.4.0
         with:
           enable-cache: true
       - name: Install
-        run: uv sync --locked --all-extras --python ${{ matrix.python }}
+        run: uv sync --locked --all-extras
       - name: Ruff lint
         run: uv run ruff check .
       - name: Ruff format
