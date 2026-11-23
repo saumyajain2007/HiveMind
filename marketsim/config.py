@@ -32,6 +32,60 @@ class PopulationConfig:
         ("impulsiveness", "belief_tolerance"): 0.20, ("knowledge", "belief_tolerance"): -0.15,
         ("risk_tolerance", "loss_aversion"): -0.30,
     })
+    # Marginals for the copula traits (HANDOFF section 4, M1). All PLACEHOLDER, not fitted to data.
+    #   ("beta", a, b, loc, scale) -> loc + scale * Beta(a, b)
+    #   ("lognormal", median, sigma) -> exp(log(median) + sigma * Z)
+    #   ("gamma", shape, scale, loc) -> loc + Gamma(shape, scale)
+    marginals: dict = field(default_factory=lambda: {
+        "age": ("beta", 2.0, 3.0, 18.0, 67.0),
+        "wealth": ("lognormal", 50_000.0, 1.3),          # investable wealth
+        "impulsiveness": ("beta", 2.0, 5.0, 0.0, 1.0),
+        "risk_tolerance": ("beta", 2.0, 2.5, 0.0, 1.0),
+        "knowledge": ("beta", 2.0, 4.0, 0.0, 1.0),
+        "belief_tolerance": ("beta", 3.0, 3.0, 0.2, 1.0),   # 0.2 to 1.2
+        "media_attention": ("beta", 2.0, 3.0, 0.0, 1.0),
+        "loss_aversion": ("gamma", 2.0, 0.6, 1.0),          # 1 + Gamma(2, 0.6)
+    })
+    psd_eps: float = 1e-6                 # eigenvalue floor when repairing the correlation matrix
+    # Investor logit on the latent (standard-normal) copula scores; intercept solved to hit investor_share
+    investor_logit: dict = field(default_factory=lambda: {      # PLACEHOLDER
+        "wealth": 1.0, "knowledge": 0.6, "risk_tolerance": 0.4})
+    # Category softmax among investors: (intercept, {trait: coef on latent score}); swing is the baseline
+    category_logits: dict = field(default_factory=lambda: {     # PLACEHOLDER
+        LONG_TERM: (0.0, {"age": 0.8, "knowledge": 0.8, "impulsiveness": -0.3}),
+        SWING: (0.4, {}),
+        DAY_TRADER: (-1.0, {"age": -0.8, "impulsiveness": 0.8, "risk_tolerance": 0.5}),
+    })
+    # Platform usage: logistic on latent age/knowledge scores and on interests; intercept solved to hit `target`.
+    # interest term = sum_t coef_t * (len(TOPICS) * interests_t - 1)
+    platform_params: dict = field(default_factory=lambda: {     # PLACEHOLDER: roughly Pew / Ofcom shaped
+        "twitter": {"target": 0.25, "age": -0.3, "knowledge": 0.2,
+                    "interests": {"finance": 0.3, "tech": 0.3, "crypto": 0.3, "politics": 0.3}},
+        "reddit": {"target": 0.22, "age": -0.5, "knowledge": 0.3,
+                   "interests": {"tech": 0.3, "crypto": 0.3, "finance": 0.2, "sports": 0.2}},
+        "friendship": {"target": 0.90, "age": -0.1, "knowledge": 0.0, "interests": {}},
+        "instagram": {"target": 0.40, "age": -0.8, "knowledge": 0.0,
+                      "interests": {"entertainment": 0.3, "sports": 0.2}},
+        "tiktok": {"target": 0.35, "age": -0.9, "knowledge": 0.0, "interests": {"entertainment": 0.4}},
+        "youtube": {"target": 0.80, "age": -0.3, "knowledge": 0.0, "interests": {}},
+    })
+    intensity_beta: tuple = (2.0, 3.0)    # PLACEHOLDER: Beta(a, b) usage intensity for platform users
+    # Activity hours: mixture of (weight, mean hour, sd hours) for each agent's peak hour (mostly evening)
+    peak_hour_mix: tuple = ((0.70, 20.5, 2.0), (0.20, 12.5, 2.5), (0.10, 7.5, 1.5))   # PLACEHOLDER
+    online_width: float = 3.0             # PLACEHOLDER: sd (hours) of the gaussian bump around the peak hour
+    # Latent attributes
+    community_size_sigma: float = 0.8     # PLACEHOLDER: lognormal sigma of community sizes
+    community_age_noise: float = 4.0      # PLACEHOLDER: years of noise when sorting agents into communities
+    interest_concentration: float = 0.5   # PLACEHOLDER: Dirichlet concentration (individual and community)
+    community_interest_mix: float = 0.4   # PLACEHOLDER: weight of the community preference in interests
+    influence_alpha: float = 1.5          # Pareto tail exponent
+    media_influence_mult: float = 50.0
+    media_credibility_beta: tuple = (6.0, 3.0)   # PLACEHOLDER
+    media_bias_sd: float = 0.3            # PLACEHOLDER
+    # Initial state
+    confidence_sd: float = 0.1
+    long_term_initial_position: float = 0.5   # PLACEHOLDER: share of wealth long-term investors hold in stock
+    perceived_value_noise: float = 0.05   # PLACEHOLDER: sd of log(perceived_value / price), scaled by (1 - knowledge)
 
 
 @dataclass
