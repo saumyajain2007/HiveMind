@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design tokens (issues.md §5). Dark "night-mode trading terminal" is the default;
+ * the full design system is built out in issue #19.
+ */
+:root {
+  --radius: 0.75rem;
+  --background: #f7f8fb;
+  --foreground: #0f1420;
+  --card: #ffffff;
+  --card-foreground: #0f1420;
+  --popover: #ffffff;
+  --popover-foreground: #0f1420;
+  --primary: #0d9488;
+  --primary-foreground: #ffffff;
+  --secondary: #eef1f6;
+  --secondary-foreground: #0f1420;
+  --muted: #eef1f6;
+  --muted-foreground: #5b6476;
+  --accent: #eef1f6;
+  --accent-foreground: #0f1420;
+  --destructive: #e11d48;
+  --border: #dde2ea;
+  --input: #dde2ea;
+  --ring: #0d9488;
+
+  --bull: #0d9488;
+  --bear: #e11d48;
+  --narrative: #7c3aed;
+  --official: #d97706;
+  --fundamental: #0284c7;
+}
+
+.dark {
+  --background: #0a0d13;
+  --foreground: #e6e9ef;
+  --card: #11151d;
+  --card-foreground: #e6e9ef;
+  --popover: #11151d;
+  --popover-foreground: #e6e9ef;
+  --primary: #2dd4bf;
+  --primary-foreground: #04201c;
+  --secondary: #1a202b;
+  --secondary-foreground: #e6e9ef;
+  --muted: #1a202b;
+  --muted-foreground: #8a93a6;
+  --accent: #1a202b;
+  --accent-foreground: #e6e9ef;
+  --destructive: #fb7185;
+  --border: #1e2430;
+  --input: #1e2430;
+  --ring: #2dd4bf;
+
+  --bull: #2dd4bf;
+  --bear: #fb7185;
+  --narrative: #a78bfa;
+  --official: #fbbf24;
+  --fundamental: #7dd3fc;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-bull: var(--bull);
+  --color-bear: var(--bear);
+  --color-narrative: var(--narrative);
+  --color-official: var(--official);
+  --color-fundamental: var(--fundamental);
+
+  /* Platform colours, fixed across the app. */
+  --color-twitter: #38bdf8;
+  --color-reddit: #fb923c;
+  --color-friendship: #4ade80;
+  --color-instagram: #f472b6;
+  --color-tiktok: #22d3ee;
+  --color-youtube: #f87171;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

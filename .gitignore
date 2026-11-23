@@ -2,3 +2,14 @@ outputs/
 __pycache__/
 *.pyc
 .pytest_cache/
+runs/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+web/node_modules/
+web/dist/
+web/coverage/
+web/test-results/
+web/playwright-report/

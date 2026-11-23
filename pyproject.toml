@@ -1,0 +1,86 @@
+[project]
+name = "marketsim"
+version = "0.1.0"
+description = "Agent-based single-stock market simulator: social diffusion, beliefs, batch-auction market, Monte Carlo forecasts."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+# HTTP service around the engine (issues #16-#18).
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-benchmark>=4",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "psutil>=5.9",
+    "pre-commit>=3.7",
+    "httpx2>=2.16.2",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Two importable packages from one project: the engine and the API service.
+packages = ["marketsim", "api/marketsim_api"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests", "api/tests"]
+addopts = "-ra --strict-markers --import-mode=importlib"
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["web"]
+force-exclude = true   # honour excludes even when pre-commit passes file names
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "NPY", "SIM", "RUF"]
+ignore = [
+    "E741",    # short maths names (l, I) are fine in numeric code
+    "RUF001",  # unicode in strings (σ, ×) is intentional
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"marketsim/config.py" = ["E501"]   # hand-written source of truth; long dict literals kept as-is
+
+[tool.ruff.lint.isort]
+known-first-party = ["marketsim", "marketsim_api"]
+
+[tool.ruff.format]
+# config.py is the hand-written source of truth from the design phase; keep its layout.
+exclude = ["marketsim/config.py"]
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.11"
+packages = ["marketsim", "marketsim_api"]
+mypy_path = "$MYPY_CONFIG_FILE_DIR:$MYPY_CONFIG_FILE_DIR/api"
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = ["scipy.*", "matplotlib.*"]
+ignore_missing_imports = true
