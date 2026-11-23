@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { Tag } from "@/components/badges";
 import { cn } from "@/lib/utils";
+import { useMotionTransition } from "@/lib/motion";
 
 /** Centered empty / not-yet-built state: glowing icon, title, one line of context, actions. */
 export function EmptyState({
@@ -24,11 +25,12 @@ export function EmptyState({
   children?: ReactNode;
   className?: string;
 }) {
+  const transition = useMotionTransition({ duration: 0.4, ease: [0.22, 1, 0.36, 1] });
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      transition={transition}
       className={cn("flex flex-col items-center justify-center px-6 py-12 text-center", className)}
     >
       <div className="relative mb-5">

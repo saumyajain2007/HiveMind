@@ -4,6 +4,7 @@ import { useId } from "react";
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { useMotionTransition } from "@/lib/motion";
 
 export interface PanelProps {
   title?: ReactNode;
@@ -32,12 +33,17 @@ export function Panel({
 }: PanelProps) {
   const Comp = motion[as];
   const autoId = useId();
+  const transition = useMotionTransition({
+    duration: 0.35,
+    delay: Math.min(index, 8) * 0.05,
+    ease: [0.22, 1, 0.36, 1],
+  });
   const headingId = title ? `${autoId}-title` : undefined;
   return (
     <Comp
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      transition={transition}
       aria-labelledby={headingId}
       className={cn(
         "panel-highlight flex min-w-0 flex-col rounded-xl border bg-card text-card-foreground",

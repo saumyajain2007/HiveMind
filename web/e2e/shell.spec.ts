@@ -82,13 +82,22 @@ test("reduced motion: no running CSS animations on the cockpit", async ({ browse
   await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
     timeout: 10_000,
   });
-  const long = await page.evaluate(
-    () =>
-      document.getAnimations().filter((a) => {
+  await page.waitForTimeout(500);
+  const long = await page.evaluate(() =>
+    document
+      .getAnimations()
+      .filter((a) => {
         const t = a.effect?.getComputedTiming();
-        return t && (t.iterations === Infinity || Number(t.duration) > 1);
-      }).length,
+        return (
+          t && a.playState === "running" && (t.iterations === Infinity || Number(t.duration) > 1)
+        );
+      })
+      .map((a) => {
+        const target = (a.effect as KeyframeEffect | null)?.target as Element | null;
+        const name = "animationName" in a ? String(a.animationName) : a.constructor.name;
+        return `${name} on <${target?.tagName.toLowerCase()} class="${target?.getAttribute("class")?.slice(0, 80)}">`;
+      }),
   );
-  expect(long).toBe(0);
+  expect(long).toEqual([]);
   await ctx.close();
 });

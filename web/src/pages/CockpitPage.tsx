@@ -21,6 +21,7 @@ import {
 import { disconnectRun, series, useLive, useLiveVersion } from "@/lib/live/store";
 import type { FeedItem } from "@/lib/live/types";
 import { cn } from "@/lib/utils";
+import { useMotionTransition } from "@/lib/motion";
 
 const MAX_POINTS = 600;
 
@@ -85,6 +86,7 @@ function LiveCockpit() {
     };
   }, [version]);
 
+  const progressTransition = useMotionTransition({ duration: 0.3 });
   const days = meta?.days ?? 5;
   const progress = last ? (last.tick + 1) / (days * TICKS_PER_DAY) : 0;
 
@@ -119,7 +121,7 @@ function LiveCockpit() {
         <motion.div
           className="h-full rounded-full bg-primary"
           animate={{ width: `${progress * 100}%` }}
-          transition={{ duration: 0.3 }}
+          transition={progressTransition}
         />
       </div>
 
@@ -249,12 +251,13 @@ function FeedRow({ item, aware }: { item: FeedItem; aware: number | undefined })
   const origin = item.type === "event" ? ORIGIN.event : ORIGIN[item.origin];
   const Icon = origin.icon;
   const parent = item.type === "narrative" && item.parent >= 0 ? item.parent : null;
+  const rowTransition = useMotionTransition({ duration: 0.3 });
   return (
     <motion.li
       layout
       initial={{ opacity: 0, y: -6, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={rowTransition}
       className="rounded-lg border bg-surface-2/50 p-3"
     >
       <div className="flex items-center gap-2 text-xs">

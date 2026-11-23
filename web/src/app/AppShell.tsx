@@ -16,6 +16,7 @@ import { CommandPalette } from "./CommandPalette";
 import { DESIGN_NAV, NAV } from "./nav";
 import { TickerStrip } from "./TickerStrip";
 import { useDemoReplay } from "./useDemoReplay";
+import { useMotionTransition } from "@/lib/motion";
 
 export const MOCK_API = import.meta.env.VITE_API_MOCK === "true";
 
@@ -158,6 +159,7 @@ function NavRail({ onOpenPalette }: { onOpenPalette: () => void }) {
 function RailLink({ item }: { item: (typeof NAV)[number] }) {
   // Active state from useMatch (not NavLink's render props): the tooltip trigger clones the
   // link, and plain props survive that reliably.
+  const spring = useMotionTransition({ type: "spring", stiffness: 500, damping: 38 });
   const isActive = useMatch({ path: item.path, end: item.path === "/" }) != null;
   return (
     <WithTooltip
@@ -183,14 +185,14 @@ function RailLink({ item }: { item: (typeof NAV)[number] }) {
           <motion.span
             layoutId="rail-active"
             className="absolute inset-0 rounded-lg bg-primary/12 ring-1 ring-primary/30"
-            transition={{ type: "spring", stiffness: 500, damping: 38 }}
+            transition={spring}
           />
         )}
         {isActive && (
           <motion.span
             layoutId="rail-bar"
             className="absolute top-2 -left-[15px] h-6 w-[3px] rounded-r-full bg-primary"
-            transition={{ type: "spring", stiffness: 500, damping: 38 }}
+            transition={spring}
           />
         )}
         <item.icon className="relative size-[18px]" aria-hidden />
