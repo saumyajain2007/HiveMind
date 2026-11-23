@@ -20,7 +20,7 @@ import dataclasses
 import inspect
 import io
 import tokenize
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, create_model, field_validator, model_validator
 
@@ -264,8 +264,9 @@ def _field_spec(section: str, f: dataclasses.Field[Any], default_json: Any) -> t
     if section == "population" and f.name == "correlations":
         return list[Correlation], field()
     if section == "graph" and f.name == "platforms":
-        extra["enum"] = list(engine_config.ALL_PLATFORMS)
-        return list[str], field(min_length=1)
+        # Literal items put the enum on each array item (not on the array) in the JSON schema.
+        platform: Any = Literal.__getitem__(tuple(engine_config.ALL_PLATFORMS))
+        return list[platform], field(min_length=1)
     if section == "graph" and f.name == "youtube_lag_ticks":
         extra.update(minimum=lo, maximum=hi)
         return tuple[int, int], field()
@@ -335,7 +336,7 @@ def _build_section_model(section: str, cls: type) -> type[BaseModel]:
     model = create_model(
         f"{section.capitalize()}Params",
         __config__=ConfigDict(extra="forbid", validate_default=True),
-        __doc__=(cls.__doc__ or f"{section} parameters").strip().splitlines()[0],
+        __doc__=f"{section.capitalize()} parameters (generated from config.{cls.__name__}).",
         __validators__=_validators(section, defaults),
         **fields,
     )

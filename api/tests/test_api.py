@@ -20,7 +20,7 @@ from marketsim_api.config_schema import (
     engine_to_parameters,
     parameters_to_engine,
 )
-from marketsim_api.export_openapi import OUT, render
+from marketsim_api.export_openapi import render_all
 from marketsim_api.log import JsonFormatter
 from marketsim_api.main import create_app
 from marketsim_api.schemas import RunStatus
@@ -81,7 +81,9 @@ def test_cors(client: TestClient) -> None:
 
 
 def test_openapi_file_is_current() -> None:
-    assert OUT.read_text(encoding="utf-8") == render(), "run: uv run python -m marketsim_api.export_openapi"
+    for path, text in render_all().items():
+        stale = f"stale {path.name}; run: uv run python -m marketsim_api.export_openapi"
+        assert path.read_text(encoding="utf-8") == text, stale
 
 
 def test_json_log_formatter() -> None:

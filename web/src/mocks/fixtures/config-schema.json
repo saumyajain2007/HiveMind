@@ -1,0 +1,799 @@
+{
+  "sections": [
+    {
+      "name": "population",
+      "fields": [
+        {
+          "name": "investor_share",
+          "key": "population.investor_share",
+          "kind": "float",
+          "default": 0.15,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of agents holding a brokerage account",
+          "placeholder": true
+        },
+        {
+          "name": "media_per_100k",
+          "key": "population.media_per_100k",
+          "kind": "float",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 1000.0,
+          "description": "Media outlet nodes per 100k agents",
+          "placeholder": false
+        },
+        {
+          "name": "community_mean_size",
+          "key": "population.community_mean_size",
+          "kind": "float",
+          "default": 60.0,
+          "min": 2.0,
+          "max": 1000.0,
+          "description": "Offline communities (school, work)",
+          "placeholder": false
+        },
+        {
+          "name": "correlations",
+          "key": "population.correlations",
+          "kind": "list",
+          "default": [
+            {
+              "a": "age",
+              "b": "wealth",
+              "rho": 0.45
+            },
+            {
+              "a": "age",
+              "b": "impulsiveness",
+              "rho": -0.3
+            },
+            {
+              "a": "age",
+              "b": "risk_tolerance",
+              "rho": -0.25
+            },
+            {
+              "a": "age",
+              "b": "knowledge",
+              "rho": 0.2
+            },
+            {
+              "a": "age",
+              "b": "media_attention",
+              "rho": 0.3
+            },
+            {
+              "a": "wealth",
+              "b": "knowledge",
+              "rho": 0.3
+            },
+            {
+              "a": "wealth",
+              "b": "risk_tolerance",
+              "rho": 0.1
+            },
+            {
+              "a": "impulsiveness",
+              "b": "risk_tolerance",
+              "rho": 0.35
+            },
+            {
+              "a": "impulsiveness",
+              "b": "knowledge",
+              "rho": -0.2
+            },
+            {
+              "a": "impulsiveness",
+              "b": "belief_tolerance",
+              "rho": 0.2
+            },
+            {
+              "a": "knowledge",
+              "b": "belief_tolerance",
+              "rho": -0.15
+            },
+            {
+              "a": "risk_tolerance",
+              "b": "loss_aversion",
+              "rho": -0.3
+            }
+          ],
+          "min": -0.99,
+          "max": 0.99,
+          "description": "Trait correlations for the Gaussian copula (repaired to PSD before use).",
+          "placeholder": true
+        }
+      ]
+    },
+    {
+      "name": "graph",
+      "fields": [
+        {
+          "name": "platforms",
+          "key": "graph.platforms",
+          "kind": "list",
+          "default": [
+            "twitter",
+            "reddit",
+            "friendship"
+          ],
+          "min": null,
+          "max": null,
+          "description": "Platforms switched on. The v1 default is Twitter, Reddit and Friendship.",
+          "placeholder": false
+        },
+        {
+          "name": "twitter_mean_out",
+          "key": "graph.twitter_mean_out",
+          "kind": "float",
+          "default": 40.0,
+          "min": 0.0,
+          "max": 1000.0,
+          "description": "Mean number of accounts a Twitter user follows (scaled by activity).",
+          "placeholder": false
+        },
+        {
+          "name": "twitter_homophily",
+          "key": "graph.twitter_homophily",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of follows inside the agent's main-interest cluster",
+          "placeholder": false
+        },
+        {
+          "name": "instagram_mean_out",
+          "key": "graph.instagram_mean_out",
+          "kind": "float",
+          "default": 60.0,
+          "min": 0.0,
+          "max": 1000.0,
+          "description": "Mean number of accounts an Instagram user follows (scaled by activity).",
+          "placeholder": false
+        },
+        {
+          "name": "instagram_homophily",
+          "key": "graph.instagram_homophily",
+          "kind": "float",
+          "default": 0.6,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of follows inside the offline community",
+          "placeholder": false
+        },
+        {
+          "name": "friendship_mean_degree",
+          "key": "graph.friendship_mean_degree",
+          "kind": "float",
+          "default": 20.0,
+          "min": 0.0,
+          "max": 500.0,
+          "description": "Mean number of friends per person.",
+          "placeholder": false
+        },
+        {
+          "name": "friendship_homophily",
+          "key": "graph.friendship_homophily",
+          "kind": "float",
+          "default": 0.8,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of friendships inside the person's offline community.",
+          "placeholder": false
+        },
+        {
+          "name": "triadic_closure",
+          "key": "graph.triadic_closure",
+          "kind": "float",
+          "default": 0.15,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "Extra edges closing triangles, as a share of edges",
+          "placeholder": false
+        },
+        {
+          "name": "reddit_mean_memberships",
+          "key": "graph.reddit_mean_memberships",
+          "kind": "float",
+          "default": 3.0,
+          "min": 1.0,
+          "max": 50.0,
+          "description": "Mean number of subreddits a Reddit user belongs to.",
+          "placeholder": false
+        },
+        {
+          "name": "reddit_agents_per_sub",
+          "key": "graph.reddit_agents_per_sub",
+          "kind": "float",
+          "default": 400.0,
+          "min": 10.0,
+          "max": 1000000.0,
+          "description": "Agents per subreddit; the number of subreddits is N divided by this.",
+          "placeholder": false
+        },
+        {
+          "name": "youtube_creator_share",
+          "key": "graph.youtube_creator_share",
+          "kind": "float",
+          "default": 0.01,
+          "min": 0.0001,
+          "max": 1.0,
+          "description": "Share of YouTube users who are creators (the most influential).",
+          "placeholder": false
+        },
+        {
+          "name": "youtube_mean_subs",
+          "key": "graph.youtube_mean_subs",
+          "kind": "float",
+          "default": 15.0,
+          "min": 1.0,
+          "max": 500.0,
+          "description": "Mean number of creators a YouTube user subscribes to.",
+          "placeholder": false
+        },
+        {
+          "name": "youtube_lag_ticks",
+          "key": "graph.youtube_lag_ticks",
+          "kind": "other",
+          "default": [
+            16,
+            96
+          ],
+          "min": 0.0,
+          "max": 960.0,
+          "description": "Videos appear 4h to 1 day after a creator decides to cover it",
+          "placeholder": false
+        },
+        {
+          "name": "youtube_homophily",
+          "key": "graph.youtube_homophily",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of subscriptions to creators of the agent's main interest",
+          "placeholder": true
+        },
+        {
+          "name": "degree_sigma",
+          "key": "graph.degree_sigma",
+          "kind": "float",
+          "default": 0.8,
+          "min": 0.0,
+          "max": 3.0,
+          "description": "Lognormal sigma of out-degree / friend count (before activity scaling)",
+          "placeholder": true
+        },
+        {
+          "name": "reddit_zipf",
+          "key": "graph.reddit_zipf",
+          "kind": "float",
+          "default": 1.0,
+          "min": 0.0,
+          "max": 3.0,
+          "description": "Zipf exponent of subreddit popularity within a topic",
+          "placeholder": true
+        },
+        {
+          "name": "reach",
+          "key": "graph.reach",
+          "kind": "map",
+          "default": {
+            "twitter": 0.08,
+            "instagram": 0.05,
+            "friendship": 0.25,
+            "reddit": 0.6,
+            "tiktok": 0.002,
+            "youtube": 0.15
+          },
+          "min": 0.0,
+          "max": 10.0,
+          "description": "Exposure per sharer per tick on each platform.",
+          "placeholder": false
+        },
+        {
+          "name": "trust",
+          "key": "graph.trust",
+          "kind": "map",
+          "default": {
+            "twitter": 0.8,
+            "instagram": 0.7,
+            "friendship": 1.3,
+            "reddit": 0.9,
+            "tiktok": 0.6,
+            "youtube": 1.0
+          },
+          "min": 0.0,
+          "max": 5.0,
+          "description": "How much people trust what reaches them on each platform (belief weight).",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "diffusion",
+      "fields": [
+        {
+          "name": "base_online",
+          "key": "diffusion.base_online",
+          "kind": "float",
+          "default": 0.12,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Chance an agent checks social media in a 15-min tick at peak hour",
+          "placeholder": false
+        },
+        {
+          "name": "attention_slots",
+          "key": "diffusion.attention_slots",
+          "kind": "int",
+          "default": 3,
+          "min": 1.0,
+          "max": 50.0,
+          "description": "New items an agent can take in per tick",
+          "placeholder": false
+        },
+        {
+          "name": "base_share",
+          "key": "diffusion.base_share",
+          "kind": "float",
+          "default": 0.25,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Base probability of sharing an item just seen.",
+          "placeholder": false
+        },
+        {
+          "name": "broadcast_rate",
+          "key": "diffusion.broadcast_rate",
+          "kind": "float",
+          "default": 0.15,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "TV / push alerts, scaled by salience x media_attention",
+          "placeholder": false
+        },
+        {
+          "name": "salience_decay",
+          "key": "diffusion.salience_decay",
+          "kind": "float",
+          "default": 0.97,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Per tick (half-life ~6h)",
+          "placeholder": false
+        },
+        {
+          "name": "retire_salience",
+          "key": "diffusion.retire_salience",
+          "kind": "float",
+          "default": 0.03,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Items below this salience with no sharers are retired.",
+          "placeholder": false
+        },
+        {
+          "name": "max_items",
+          "key": "diffusion.max_items",
+          "kind": "int",
+          "default": 128,
+          "min": 8.0,
+          "max": 4096.0,
+          "description": "Active items kept in memory",
+          "placeholder": false
+        },
+        {
+          "name": "mutate_rate",
+          "key": "diffusion.mutate_rate",
+          "kind": "float",
+          "default": 0.04,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Base probability that a sharer mutates a narrative.",
+          "placeholder": false
+        },
+        {
+          "name": "invent_rate",
+          "key": "diffusion.invent_rate",
+          "kind": "float",
+          "default": 0.002,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Base probability of inventing a narrative after a big unexplained move.",
+          "placeholder": false
+        },
+        {
+          "name": "invent_threshold",
+          "key": "diffusion.invent_threshold",
+          "kind": "float",
+          "default": 0.03,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "|1-day return| that makes agents look for an explanation",
+          "placeholder": false
+        },
+        {
+          "name": "price_news_threshold",
+          "key": "diffusion.price_news_threshold",
+          "kind": "float",
+          "default": 0.04,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "|move| since last price headline that makes outlets report it",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "belief",
+      "fields": [
+        {
+          "name": "mu0",
+          "key": "belief.mu0",
+          "kind": "float",
+          "default": 0.35,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "Base belief step size",
+          "placeholder": false
+        },
+        {
+          "name": "impact_to_sentiment",
+          "key": "belief.impact_to_sentiment",
+          "kind": "float",
+          "default": 10.0,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "How knowledgeable agents translate true_impact into sentiment",
+          "placeholder": false
+        },
+        {
+          "name": "adopt_rate",
+          "key": "belief.adopt_rate",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Base probability of adopting a narrative that moved the agent's belief.",
+          "placeholder": false
+        },
+        {
+          "name": "narrative_pull",
+          "key": "belief.narrative_pull",
+          "kind": "float",
+          "default": 0.02,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Per tick pull of Confidence toward held narrative",
+          "placeholder": false
+        },
+        {
+          "name": "confidence_decay",
+          "key": "belief.confidence_decay",
+          "kind": "float",
+          "default": 0.002,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Per tick forgetting toward 0",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "trading",
+      "fields": [
+        {
+          "name": "strategy_prior",
+          "key": "trading.strategy_prior",
+          "kind": "map",
+          "default": {
+            "long_term": [
+              0.7,
+              0.1,
+              0.2
+            ],
+            "swing": [
+              0.3,
+              0.4,
+              0.3
+            ],
+            "day_trader": [
+              0.1,
+              0.5,
+              0.4
+            ]
+          },
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Strategy mix (fundamentalist, chartist, sentiment) per investor category.",
+          "placeholder": true
+        },
+        {
+          "name": "horizon_days",
+          "key": "trading.horizon_days",
+          "kind": "map",
+          "default": {
+            "long_term": 60.0,
+            "swing": 5.0,
+            "day_trader": 0.5
+          },
+          "min": 0.01,
+          "max": 1000.0,
+          "description": "Holding horizon per investor category, in days.",
+          "placeholder": false
+        },
+        {
+          "name": "momentum_ticks",
+          "key": "trading.momentum_ticks",
+          "kind": "map",
+          "default": {
+            "long_term": 960,
+            "swing": 192,
+            "day_trader": 8
+          },
+          "min": 1.0,
+          "max": 100000.0,
+          "description": "Momentum look-back per investor category, in ticks.",
+          "placeholder": false
+        },
+        {
+          "name": "sentiment_scale",
+          "key": "trading.sentiment_scale",
+          "kind": "float",
+          "default": 0.05,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Full conviction (Confidence = 1) = 5% expected excess return",
+          "placeholder": false
+        },
+        {
+          "name": "switching",
+          "key": "trading.switching",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "How far weights move toward recently profitable strategies",
+          "placeholder": false
+        },
+        {
+          "name": "switching_intensity",
+          "key": "trading.switching_intensity",
+          "kind": "float",
+          "default": 200.0,
+          "min": 0.0,
+          "max": 10000.0,
+          "description": "How sharply strategy weights favour the best recent performer.",
+          "placeholder": false
+        },
+        {
+          "name": "risk_aversion",
+          "key": "trading.risk_aversion",
+          "kind": "float",
+          "default": 2.0,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Risk aversion in position sizing.",
+          "placeholder": false
+        },
+        {
+          "name": "panic_loss",
+          "key": "trading.panic_loss",
+          "kind": "float",
+          "default": 0.1,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Unrealised loss that triggers loss-aversion behaviour",
+          "placeholder": false
+        },
+        {
+          "name": "panic_rate",
+          "key": "trading.panic_rate",
+          "kind": "float",
+          "default": 0.05,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Base probability of selling out once the panic loss is reached.",
+          "placeholder": false
+        },
+        {
+          "name": "trading_online_boost",
+          "key": "trading.trading_online_boost",
+          "kind": "float",
+          "default": 2.0,
+          "min": 0.0,
+          "max": 20.0,
+          "description": "Investors check the market more often during trading hours",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "market",
+      "fields": [
+        {
+          "name": "initial_price",
+          "key": "market.initial_price",
+          "kind": "float",
+          "default": 100.0,
+          "min": 0.01,
+          "max": 1000000.0,
+          "description": "Starting share price.",
+          "placeholder": false
+        },
+        {
+          "name": "implied_vol",
+          "key": "market.implied_vol",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.01,
+          "max": 5.0,
+          "description": "Annualised; options used as a signal only in v1",
+          "placeholder": false
+        },
+        {
+          "name": "impact_Y",
+          "key": "market.impact_Y",
+          "kind": "float",
+          "default": 0.7,
+          "min": 0.01,
+          "max": 10.0,
+          "description": "Square-root law prefactor",
+          "placeholder": false
+        },
+        {
+          "name": "adv_turnover",
+          "key": "market.adv_turnover",
+          "kind": "float",
+          "default": 0.01,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Average daily volume as a share of shares held",
+          "placeholder": false
+        },
+        {
+          "name": "noise_frac",
+          "key": "market.noise_frac",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.0,
+          "max": 5.0,
+          "description": "Unmodelled order flow, as a share of per-tick vol",
+          "placeholder": false
+        },
+        {
+          "name": "circuit_breaker",
+          "key": "market.circuit_breaker",
+          "kind": "float",
+          "default": 0.15,
+          "min": 0.001,
+          "max": 1.0,
+          "description": "Max |log move| per tick",
+          "placeholder": false
+        },
+        {
+          "name": "option_maturity_days",
+          "key": "market.option_maturity_days",
+          "kind": "float",
+          "default": 30.0,
+          "min": 1.0,
+          "max": 3650.0,
+          "description": "Maturity of the logged ATM call (calendar days)",
+          "placeholder": true
+        },
+        {
+          "name": "risk_free_rate",
+          "key": "market.risk_free_rate",
+          "kind": "float",
+          "default": 0.0,
+          "min": -0.1,
+          "max": 0.5,
+          "description": "Annualised, continuously compounded",
+          "placeholder": true
+        },
+        {
+          "name": "vol_ewma_lambda",
+          "key": "market.vol_ewma_lambda",
+          "kind": "float",
+          "default": 0.94,
+          "min": 0.0,
+          "max": 0.999,
+          "description": "RiskMetrics decay for realised daily vol",
+          "placeholder": true
+        },
+        {
+          "name": "trading_days_per_year",
+          "key": "market.trading_days_per_year",
+          "kind": "int",
+          "default": 252,
+          "min": 200.0,
+          "max": 366.0,
+          "description": "Trading days per year, for annualising volatility.",
+          "placeholder": false
+        },
+        {
+          "name": "n_prop_firms",
+          "key": "market.n_prop_firms",
+          "kind": "int",
+          "default": 5,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Number of prop-trading firms (short-horizon momentum).",
+          "placeholder": false
+        },
+        {
+          "name": "n_funds",
+          "key": "market.n_funds",
+          "kind": "int",
+          "default": 3,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Number of funds (fundamental value, known with a 1-day lag).",
+          "placeholder": false
+        },
+        {
+          "name": "firm_capital_share",
+          "key": "market.firm_capital_share",
+          "kind": "float",
+          "default": 0.15,
+          "min": 0.0,
+          "max": 10.0,
+          "description": "Firms' capital vs total investor wealth",
+          "placeholder": false
+        }
+      ]
+    }
+  ],
+  "enums": {
+    "kinds": [
+      "earnings",
+      "macro",
+      "regulatory",
+      "product",
+      "rumour",
+      "leak",
+      "statement"
+    ],
+    "seedings": [
+      "official",
+      "outlet",
+      "influencer",
+      "insider",
+      "anonymous"
+    ],
+    "topics": [
+      "finance",
+      "tech",
+      "crypto",
+      "energy",
+      "politics",
+      "sports",
+      "entertainment",
+      "health"
+    ],
+    "platforms": [
+      "twitter",
+      "reddit",
+      "friendship",
+      "instagram",
+      "tiktok",
+      "youtube"
+    ],
+    "categories": [
+      "non_investor",
+      "long_term",
+      "swing",
+      "day_trader",
+      "media"
+    ]
+  },
+  "clock": {
+    "ticks_per_day": 96,
+    "minutes_per_tick": 15,
+    "market_open_tick": 38,
+    "market_close_tick": 64
+  }
+}

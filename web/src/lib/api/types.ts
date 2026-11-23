@@ -169,7 +169,7 @@ export interface components {
   schemas: {
     /**
      * BeliefParams
-     * @description BeliefConfig(mu0: float = 0.35, impact_to_sentiment: float = 10.0, adopt_rate: float = 0.5, narrative_pull: float = 0.02, confidence_decay: float = 0.002)
+     * @description Belief parameters (generated from config.BeliefConfig).
      */
     BeliefParams: {
       /**
@@ -258,7 +258,7 @@ export interface components {
     };
     /**
      * DiffusionParams
-     * @description DiffusionConfig(base_online: float = 0.12, attention_slots: int = 3, base_share: float = 0.25, broadcast_rate: float = 0.15, salience_decay: float = 0.97, retire_salience: float = 0.03, max_items: int = 128, mutate_rate: float = 0.04, invent_rate: float = 0.002, invent_threshold: float = 0.03, price_news_threshold: float = 0.04)
+     * @description Diffusion parameters (generated from config.DiffusionConfig).
      */
     DiffusionParams: {
       /**
@@ -488,7 +488,7 @@ export interface components {
     };
     /**
      * GraphParams
-     * @description GraphConfig(platforms: tuple = ('twitter', 'reddit', 'friendship'), twitter_mean_out: float = 40.0, twitter_homophily: float = 0.5, instagram_mean_out: float = 60.0, instagram_homophily: float = 0.6, friendship_mean_degree: float = 20.0, friendship_homophily: float = 0.8, triadic_closure: float = 0.15, reddit_mean_memberships: float = 3.0, reddit_agents_per_sub: float = 400.0, youtube_creator_share: float = 0.01, youtube_mean_subs: float = 15.0, youtube_lag_ticks: tuple = (16, 96), youtube_homophily: float = 0.5, degree_sigma: float = 0.8, reddit_zipf: float = 1.0, reach: dict = <factory>, trust: dict = <factory>)
+     * @description Graph parameters (generated from config.GraphConfig).
      */
     GraphParams: {
       /**
@@ -499,9 +499,8 @@ export interface components {
        *       "reddit",
        *       "friendship"
        *     ]
-       * @enum {array}
        */
-      platforms: "twitter" | "reddit" | "friendship" | "instagram" | "tiktok" | "youtube";
+      platforms: ("twitter" | "reddit" | "friendship" | "instagram" | "tiktok" | "youtube")[];
       /**
        * Twitter Mean Out
        * @description Mean number of accounts a Twitter user follows (scaled by activity).
@@ -646,7 +645,7 @@ export interface components {
     };
     /**
      * MarketParams
-     * @description MarketConfig(initial_price: float = 100.0, implied_vol: float = 0.3, impact_Y: float = 0.7, adv_turnover: float = 0.01, noise_frac: float = 0.3, circuit_breaker: float = 0.15, option_maturity_days: float = 30.0, risk_free_rate: float = 0.0, vol_ewma_lambda: float = 0.94, trading_days_per_year: int = 252, n_prop_firms: int = 5, n_funds: int = 3, firm_capital_share: float = 0.15)
+     * @description Market parameters (generated from config.MarketConfig).
      */
     MarketParams: {
       /**
@@ -742,7 +741,7 @@ export interface components {
     };
     /**
      * PopulationParams
-     * @description PopulationConfig(investor_share: float = 0.15, media_per_100k: float = 50.0, community_mean_size: float = 60.0, correlations: dict = <factory>)
+     * @description Population parameters (generated from config.PopulationConfig).
      */
     PopulationParams: {
       /**
@@ -1037,7 +1036,7 @@ export interface components {
     };
     /**
      * TradingParams
-     * @description TradingConfig(strategy_prior: dict = <factory>, horizon_days: dict = <factory>, momentum_ticks: dict = <factory>, sentiment_scale: float = 0.05, switching: float = 0.3, switching_intensity: float = 200.0, risk_aversion: float = 2.0, panic_loss: float = 0.1, panic_rate: float = 0.05, trading_online_boost: float = 2.0)
+     * @description Trading parameters (generated from config.TradingConfig).
      */
     TradingParams: {
       /**
