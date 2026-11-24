@@ -40,6 +40,42 @@ pnpm -C web build
 uv run pre-commit install
 ```
 
+## Engine
+
+```bash
+uv run python -m marketsim.run_demo --agents 10000 --days 5 --runs 20   # plots + summary.json in outputs/
+uv run python -m marketsim.calibration          # parameter-recovery test (≈1 min)
+uv run python -m marketsim.backtest             # backtest on a synthetic series
+```
+
+### Backtesting on real data
+
+Prices are a CSV with a header and one row per trading day, oldest first:
+
+```csv
+date,close
+2024-01-02,185.64
+2024-01-03,184.25
+```
+
+Events are a JSON list (or `{"events": [...]}`) in the same format as scenario events, except that `tick` is replaced by `date` (a date in the CSV) or `day` (a row index), plus an optional `time` (`"HH:MM"`, default `"09:00"`). Only events at or before each origin's close are used for that origin's forecast.
+
+```json
+[{"date": "2024-02-01", "time": "16:30", "kind": "earnings", "true_impact": -0.04,
+  "sentiment": -0.6, "credibility": 0.95, "salience": 0.8, "complexity": 0.4, "seeding": "official"}]
+```
+
+```python
+from marketsim.backtest import backtest, load_dated_events, load_price_csv
+
+dates, closes = load_price_csv("prices.csv")
+events = load_dated_events("events.json", dates)
+res = backtest(closes, events, origins=range(30, len(closes) - 1), horizon=1, runs=20, dates=dates)
+print(res.skill)   # 1 − mean CRPS(model) / mean CRPS(random walk); > 0 beats the random walk
+```
+
+For historical events, `true_impact` should come from `event_parser.abnormal_return_impact` (an event study) for *calibration only*; using it as a forecast input is lookahead leakage.
+
 ## API
 
 FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives under `/api/v1`:
