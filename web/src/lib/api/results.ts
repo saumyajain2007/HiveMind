@@ -75,6 +75,8 @@ export interface StylizedSummary {
 export interface PathsResponse {
   seeds: number[];
   every: number;
+  /** Tick of each column (the last column is always the final tick). */
+  tick?: number[];
   paths: number[][];
 }
 

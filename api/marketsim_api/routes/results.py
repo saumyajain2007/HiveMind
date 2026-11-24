@@ -149,8 +149,12 @@ def paths(
 ) -> dict[str, Any]:
     """Up to `sample` simulated price paths (the first ones, in seed order)."""
     mc = _mc(store, _finished(store, run_id))
-    p = mc.paths[:sample, ::every]
-    return {"seeds": mc.seeds[:sample], "every": every, "paths": pack(p, encoding)}
+    n = mc.paths.shape[1]
+    idx = np.arange(0, n, every)
+    if idx[-1] != n - 1:  # always end on the final tick (terminal prices)
+        idx = np.r_[idx, n - 1]
+    p = mc.paths[:sample][:, idx]
+    return {"seeds": mc.seeds[:sample], "every": every, "tick": idx.tolist(), "paths": pack(p, encoding)}
 
 
 # --------------------------------------------------------------------------- narratives

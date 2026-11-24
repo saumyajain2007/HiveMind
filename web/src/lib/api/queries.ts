@@ -167,8 +167,8 @@ export const useSeries = (id?: string | null, every = 1) =>
   useResult<R.SeriesResponse>("/api/v1/runs/{run_id}/series", id, { every });
 export const useQuantiles = (id?: string | null) =>
   useResult<R.QuantilesResponse>("/api/v1/runs/{run_id}/quantiles", id);
-export const usePaths = (id?: string | null, sample = 20) =>
-  useResult<R.PathsResponse>("/api/v1/runs/{run_id}/paths", id, { sample, every: 2 });
+export const usePaths = (id?: string | null, sample = 20, every = 2) =>
+  useResult<R.PathsResponse>("/api/v1/runs/{run_id}/paths", id, { sample, every });
 export const useAwareness = (id?: string | null) =>
   useResult<R.AwarenessResponse>("/api/v1/runs/{run_id}/awareness", id, { every: 2 });
 export const useLineage = (id?: string | null) =>
