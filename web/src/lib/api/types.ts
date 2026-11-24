@@ -202,6 +202,24 @@ export interface components {
        * @default 0.002
        */
       confidence_decay: number;
+      /**
+       * Adopt Step
+       * @description How far narrative_bias moves toward an adopted item's sentiment
+       * @default 0.5
+       */
+      adopt_step: number;
+      /**
+       * Invent Credibility
+       * @description Credibility of an invented explanation
+       * @default 0.25
+       */
+      invent_credibility: number;
+      /**
+       * Invent Salience
+       * @description Salience of an invented explanation at birth
+       * @default 0.6
+       */
+      invent_salience: number;
     };
     /** Clock */
     Clock: {

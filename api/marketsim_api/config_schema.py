@@ -114,6 +114,9 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "belief.adopt_rate": (0.0, 1.0),
     "belief.narrative_pull": (0.0, 1.0),
     "belief.confidence_decay": (0.0, 1.0),
+    "belief.adopt_step": (0.0, 1.0),
+    "belief.invent_credibility": (0.0, 1.0),
+    "belief.invent_salience": (0.0, 1.0),
     # trading
     "trading.strategy_prior": (0.0, 1.0),
     "trading.horizon_days": (0.01, 1000.0),

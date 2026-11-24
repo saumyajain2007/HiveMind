@@ -239,6 +239,23 @@ class ItemStore:
             self.lineage[int(self.item_id[slot])].total_shares += len(agents)
         return agents
 
+    def withdraw_shares(self, slot: int, agents: np.ndarray) -> None:
+        """Take `agents`' pending or live shares of `slot` out of the feeds (a mutator posts its
+        own version instead). They stay marked as having shared it, so they never share it again."""
+        agents = np.asarray(agents, np.int64)
+        if len(agents) == 0:
+            return
+        removed = 0
+        log = []
+        for start, batch in self.share_log[slot]:
+            drop = np.isin(batch, agents)
+            removed += int(drop.sum())
+            if not drop.all():
+                log.append((start, batch[~drop]))
+        self.share_log[slot] = log
+        self.total_shares[slot] -= removed
+        self.lineage[int(self.item_id[slot])].total_shares -= removed
+
     def live_sharers(self, slot: int, tick: int) -> np.ndarray:
         """Agents whose share of `slot` is in feeds at `tick`; drops expired batches."""
         log = [(s, a) for s, a in self.share_log[slot] if s + self.share_ttl > tick]

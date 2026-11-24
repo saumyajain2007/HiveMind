@@ -300,7 +300,10 @@
       "impact_to_sentiment": 10.0,
       "adopt_rate": 0.5,
       "narrative_pull": 0.02,
-      "confidence_decay": 0.002
+      "confidence_decay": 0.002,
+      "adopt_step": 0.5,
+      "invent_credibility": 0.25,
+      "invent_salience": 0.6
     },
     "trading": {
       "strategy_prior": {

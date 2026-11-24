@@ -137,6 +137,9 @@ class BeliefConfig:
     adopt_rate: float = 0.5
     narrative_pull: float = 0.02          # per tick pull of Confidence toward held narrative
     confidence_decay: float = 0.002       # per tick forgetting toward 0
+    adopt_step: float = 0.5               # PLACEHOLDER: how far narrative_bias moves toward an adopted item's sentiment
+    invent_credibility: float = 0.25      # PLACEHOLDER: credibility of an invented explanation
+    invent_salience: float = 0.6          # PLACEHOLDER: salience of an invented explanation at birth
 
 
 @dataclass

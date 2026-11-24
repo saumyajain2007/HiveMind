@@ -44,6 +44,7 @@ from .population import Population
 
 MINUTES_PER_TICK = 24 * 60 // TICKS_PER_DAY
 BROADCAST_EXPOSURE = 1.0  # exposure added for an agent reached by TV / push alerts
+BROADCAST_TRUST = 1.0  # trust weight of TV / push alerts (layers carry their own `trust`)
 
 
 @dataclass
@@ -52,12 +53,14 @@ class DiffusionResult:
 
     seen_slots: np.ndarray  # newly aware
     seen_agents: np.ndarray
+    seen_trust: np.ndarray  # exposure-weighted trust of the layers that delivered each pair
     share_slots: np.ndarray  # decided to share (goes out next step)
     share_agents: np.ndarray
     online: int = 0
     candidates: int = 0  # (item, agent) pairs that passed the p_see draw before the cap
     exposure_pairs: int = 0
     retired: list[int] = field(default_factory=list)
+    online_mask: np.ndarray | None = None  # who was online this tick
 
 
 def _empty() -> np.ndarray:
@@ -126,16 +129,18 @@ class Diffusion:
         slot_parts: list[np.ndarray] = []
         agent_parts: list[np.ndarray] = []
         w_parts: list[np.ndarray] = []
+        t_parts: list[np.ndarray] = []
 
         forced_parts: list[np.ndarray] = []  # (slot * n + agent) keys reached by broadcast
 
         scale = dc.exposure_scale
 
-        def add(slot: int, agents: np.ndarray, w: np.ndarray, social: bool = True) -> None:
+        def add(slot: int, agents: np.ndarray, w: np.ndarray, trust: float, social: bool = True) -> None:
             if len(agents):
                 slot_parts.append(np.full(len(agents), slot, np.int64))
                 agent_parts.append(agents)
                 w_parts.append(w * scale if social else w)
+                t_parts.append(np.full(len(agents), trust, np.float32))
 
         due_yt = self._due_youtube(tick)
         tiktok = self.graph.layers.get("tiktok")
@@ -149,29 +154,38 @@ class Diffusion:
                 for name, layer in self.graph.layers.items():
                     if name in ("youtube", "tiktok"):
                         continue
-                    add(slot, *layer.receivers(sharers))
+                    add(slot, *layer.receivers(sharers), layer.trust)
                 if tiktok is not None:
                     on_tiktok = int(np.isin(sharers, tiktok.users).sum())
                     if on_tiktok:
-                        add(slot, *tiktok.receivers(sharers, topic=topic, popularity=on_tiktok))
+                        add(slot, *tiktok.receivers(sharers, topic=topic, popularity=on_tiktok), tiktok.trust)
             creators = due_yt.get(int(items.item_id[slot]))
             if creators is not None:
-                add(slot, *self.graph.layers["youtube"].receivers(creators))
+                yt = self.graph.layers["youtube"]
+                add(slot, *yt.receivers(creators), yt.trust)
             if items.born[slot] == tick and items.broadcast[slot]:
                 hits = broadcast_hits(
                     float(items.salience[slot]), pop.media_attention, dc.broadcast_rate, rng
                 )
-                add(slot, hits, np.full(len(hits), BROADCAST_EXPOSURE, np.float32), social=False)
+                add(
+                    slot,
+                    hits,
+                    np.full(len(hits), BROADCAST_EXPOSURE, np.float32),
+                    BROADCAST_TRUST,
+                    social=False,
+                )
                 forced_parts.append(np.full(len(hits), slot, np.int64) * n + hits)
 
         # Shares that start now schedule their creators' YouTube uploads.
         for slot, sharers in sharing_now.items():
             self._queue_youtube(tick, int(items.item_id[slot]), sharers)
 
-        result = DiffusionResult(_empty(), _empty(), _empty(), _empty(), online=int(online.sum()))
+        result = DiffusionResult(
+            _empty(), _empty(), np.zeros(0), _empty(), _empty(), online=int(online.sum()), online_mask=online
+        )
         if slot_parts:
             forced = np.concatenate(forced_parts) if forced_parts else np.zeros(0, np.int64)
-            self._absorb(tick, slot_parts, agent_parts, w_parts, online, forced, result)
+            self._absorb(tick, slot_parts, agent_parts, w_parts, t_parts, online, forced, result)
 
         # 7. decay and retirement
         items.decay(dc.salience_decay)
@@ -185,6 +199,7 @@ class Diffusion:
         slot_parts: list[np.ndarray],
         agent_parts: list[np.ndarray],
         w_parts: list[np.ndarray],
+        t_parts: list[np.ndarray],
         online: np.ndarray,
         forced: np.ndarray,
         result: DiffusionResult,
@@ -195,6 +210,7 @@ class Diffusion:
         slots = np.concatenate(slot_parts)
         agents = np.concatenate(agent_parts)
         w = np.concatenate(w_parts).astype(np.float64)
+        tw = w * np.concatenate(t_parts)
 
         # keep agents who are online (or reached by broadcast) and have not seen the item,
         # then sum exposure per (item, agent)
@@ -202,34 +218,35 @@ class Diffusion:
         if len(forced):
             reached |= np.isin(slots * n + agents, forced)
         keep = reached & ~items.aware[slots, agents]
-        slots, agents, w = slots[keep], agents[keep], w[keep]
+        slots, agents, w, tw = slots[keep], agents[keep], w[keep], tw[keep]
         if len(slots) == 0:
             return
         keys, inv = np.unique(slots * n + agents, return_inverse=True)
         exposure = np.bincount(inv, weights=w)
+        trust = np.bincount(inv, weights=tw) / np.maximum(exposure, 1e-12)
         slots, agents = keys // n, keys % n
         result.exposure_pairs = len(keys)
 
         # 3. p_see
         score = exposure * items.salience[slots]
         hit = rng.random(len(score)) < 1.0 - np.exp(-score)
-        slots, agents, score = slots[hit], agents[hit], score[hit]
+        slots, agents, score, trust = slots[hit], agents[hit], score[hit], trust[hit]
         result.candidates = len(slots)
         if len(slots) == 0:
             return
 
         # 4. attention cap: per agent, highest score first
         order = np.lexsort((-score, agents))
-        slots, agents = slots[order], agents[order]
+        slots, agents, trust = slots[order], agents[order], trust[order]
         run_start = np.r_[0, np.flatnonzero(np.diff(agents)) + 1]
         run_len = np.diff(np.r_[run_start, len(agents)])
         rank = np.arange(len(agents)) - np.repeat(run_start, run_len)
         take = rank < dc.attention_slots
-        slots, agents = slots[take], agents[take]
+        slots, agents, trust = slots[take], agents[take], trust[take]
 
         # 5. awareness
         items.mark_aware(slots, agents)
-        result.seen_slots, result.seen_agents = slots, agents
+        result.seen_slots, result.seen_agents, result.seen_trust = slots, agents, trust
 
         # 6. sharing (goes out from the next tick)
         sent = items.sentiment[slots]

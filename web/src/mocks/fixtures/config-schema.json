@@ -842,6 +842,36 @@
           "max": 1.0,
           "description": "Per tick forgetting toward 0",
           "placeholder": false
+        },
+        {
+          "name": "adopt_step",
+          "key": "belief.adopt_step",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "How far narrative_bias moves toward an adopted item's sentiment",
+          "placeholder": true
+        },
+        {
+          "name": "invent_credibility",
+          "key": "belief.invent_credibility",
+          "kind": "float",
+          "default": 0.25,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Credibility of an invented explanation",
+          "placeholder": true
+        },
+        {
+          "name": "invent_salience",
+          "key": "belief.invent_salience",
+          "kind": "float",
+          "default": 0.6,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Salience of an invented explanation at birth",
+          "placeholder": true
         }
       ]
     },
