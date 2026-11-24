@@ -32,7 +32,6 @@ export const NAV: NavItem[] = [
     label: "Builder",
     icon: SlidersHorizontal,
     description: "Parameters and the event timeline",
-    issue: "#20",
     shortcut: "G B",
   },
   {
@@ -40,7 +39,6 @@ export const NAV: NavItem[] = [
     label: "Cockpit",
     icon: Activity,
     description: "Watch a run as it happens",
-    issue: "#21",
     shortcut: "G C",
   },
   {
@@ -48,7 +46,6 @@ export const NAV: NavItem[] = [
     label: "Monte Carlo",
     icon: ChartSpline,
     description: "Fan chart and price distribution",
-    issue: "#22",
     shortcut: "G M",
   },
   {
@@ -56,7 +53,6 @@ export const NAV: NavItem[] = [
     label: "Network",
     icon: Network,
     description: "Rumours spreading through the platforms",
-    issue: "#23",
     shortcut: "G N",
   },
   {
@@ -64,7 +60,6 @@ export const NAV: NavItem[] = [
     label: "Narratives",
     icon: GitBranch,
     description: "Lineage tree and awareness",
-    issue: "#24",
     shortcut: "G T",
   },
   {
@@ -72,7 +67,6 @@ export const NAV: NavItem[] = [
     label: "Analysis",
     icon: FlaskConical,
     description: "Calibration and backtests",
-    issue: "#25",
     shortcut: "G A",
   },
 ];

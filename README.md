@@ -2,17 +2,43 @@
 
 An agent-based simulator for a single stock. Agents with correlated traits live on several social platforms. News and rumours spread between them, change what they believe, and they trade on those beliefs in a batch auction. Running it many times gives a distribution of price paths, which is then calibrated against history and backtested against a random walk.
 
-> **Status.** The engine (issues #2–#15) is complete: population, social graph, events, diffusion, beliefs and narratives, trading and firms, the batch-auction market, the simulation loop, Monte Carlo, calibration with a parameter-recovery test, a CRPS backtest and an offline headline parser. The API and web app are being built in #16–#25. See [`issues.md`](issues.md) for the plan and [`HANDOFF.md`](HANDOFF.md) for the engine spec.
+![The live Cockpit during the demo run](docs/screenshots/cockpit.png)
+
+**Run it:** `docker compose up --build` (or `make up`), then open <http://localhost:8080>. Press **Run demo**: an anonymous takeover rumour spreads through Twitter, Reddit and friendships, the company denies it two days later, and a real earnings miss lands on day 4; watch the price, beliefs and news move tick by tick.
+
+The product has three parts, all complete (issues #1–#25 in [`issues.md`](issues.md)):
+
+1. **Engine** (`marketsim/`, spec in [`HANDOFF.md`](HANDOFF.md)): a vectorised NumPy simulator with a Monte Carlo runner, calibration with a parameter-recovery test, and a CRPS backtest against a random walk.
+2. **API** (`api/`): FastAPI. Scenarios and runs, a process-pool job runner, live WebSocket streaming, and every result, calibration and backtest as JSON.
+3. **Web app** (`web/`): a night-mode trading-terminal dashboard. Build a scenario, watch it live, then study Monte Carlo fans, the network, narrative lineages, calibrations and backtests.
+
+| | |
+|---|---|
+| ![Scenario Builder](docs/screenshots/builder.png) | ![Monte Carlo](docs/screenshots/monte-carlo.png) |
+| **Builder:** parameters with placeholder badges, an event timeline, headline import, presets | **Monte Carlo:** quantile fan, terminal distribution vs a random walk, stylised facts |
+| ![Network](docs/screenshots/network.png) | ![Narratives](docs/screenshots/narratives.png) |
+| **Network:** a rumour lighting up a sampled social graph (WebGL) | **Narratives:** lineage tree, family awareness, who heard it |
 
 ## Repository layout
 
 ```
 marketsim/        engine package (pure Python + NumPy, no web code)
 api/marketsim_api FastAPI service around the engine
-web/              React + TypeScript + Vite front end
+web/              React + TypeScript + Vite front end   (e2e/: Playwright)
 tests/            engine tests        api/tests/  API tests
-docs/             design notes (source of truth, not edited)
+benchmarks/       engine benchmark (10k / 100k / 1M agents)
+deploy/           Dockerfiles and the Caddyfile           docker-compose.yml, Makefile
+docs/             design notes (source of truth, not edited), screenshots
 ```
+
+## Full stack in Docker
+
+```bash
+docker compose up --build        # or: make up
+# open http://localhost:8080
+```
+
+Two containers: `api` (uvicorn + the engine, jobs in a process pool, results in the `runs-data` volume) and `web` (the static build served by Caddy, which proxies `/api`, the live WebSocket included). The CI `docker` job builds both, starts them, and checks the app and a real run through Caddy on :8080. `make dev` runs the API on :8000 and the Vite dev server against it instead; `make test`, `make e2e`, `make demo` and `make fixtures` wrap the other common commands.
 
 ## Development setup
 
@@ -181,7 +207,21 @@ React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Q
 - **Mock API.** `web/.env.development` sets `VITE_API_MOCK=true`, so `pnpm dev` runs against an in-browser mock of the FastAPI routes plus a replayed live stream (MSW, `web/src/mocks`). A "MOCK DATA" tag in the top bar says so. Set `VITE_API_MOCK=false` and run the API on :8000 to use the real backend; Vite proxies `/api`. Production builds never include the mocks.
 - **Live data.** `WS /api/v1/runs/{id}/stream` messages are defined in `web/src/lib/live/types.ts`, and the API sends exactly those shapes. Frames go into ring buffers outside React state, and subscribers re-render at most once per animation frame.
 - **Shortcuts.** `Ctrl/⌘ K` opens the command palette. Charts can be read with the keyboard: focus a chart, then use ← →.
-- **Accessibility.** The e2e suite runs axe (WCAG 2.1 AA, including colour contrast) on every page in both themes. Animations respect `prefers-reduced-motion`.
+- **Accessibility.** The e2e suite runs axe (WCAG 2.1 AA, including colour contrast) on every page in both themes and on the live / interactive states. Animations respect `prefers-reduced-motion`.
+
+| Page | What it does |
+|---|---|
+| **Runs** | Every run with status, spec hash, sparkline and final move; open, duplicate into the Builder, delete; tick two to compare them (paths on one axis + the settings that differ) |
+| **Builder** | Parameters generated from `/config/schema` (ranges, placeholder badges, reset, diff), platform cards, a drag-and-drop event timeline, Hawkes random shocks, headline import through an LLM, presets, save / load, **Run live** and **Monte Carlo ×R** |
+| **Cockpit** | Candles in market hours with event markers and the hidden fundamental value, confidence gauge, IV / ATM call, market-maker inventory, order imbalance, live news feed and top-5 awareness; pause, scrub, cancel, replay with the same seed |
+| **Monte Carlo** | Fan chart that fills in while runs finish, terminal-price distribution vs a random walk, return distribution, ACF of r and \|r\|, volatility clustering; PNG / SVG / CSV export |
+| **Network** | A sampled subgraph (Sigma.js + ForceAtlas2 in a Web Worker), per-platform layers, a chosen story lighting up node by node, agent hover cards, layer statistics |
+| **Narratives** | Story strip, lineage tree (born × sentiment, shape = origin), family awareness curves, who-heard-it heat map, item cards with credibility decay |
+| **Analysis** | Upload a `date,close` CSV and events, calibrate (live trial log, best fit, recovery-test report) and backtest (CRPS per origin, skill vs the random walk) |
+
+**Mock data is real engine output.** The fixtures in `web/src/mocks/fixtures/results/` come from `make fixtures` (`python -m marketsim_api.export_fixtures`), which runs a demo, a Monte Carlo run, a calibration and a backtest through the API and saves each endpoint's response.
+
+**Tests.** `pnpm -C web test` (Vitest), `pnpm -C web e2e` (Playwright + axe: every page in both themes, the builder, cockpit, Monte Carlo, network, narratives, analysis and library flows, and one end-to-end pass: build the demo → run it live → markers → Monte Carlo → fan → lineage). Visual-regression snapshots are opt-in because screenshots differ between operating systems: `VISUAL=1 pnpm -C web e2e visual --update-snapshots` records baselines, `VISUAL=1 pnpm -C web e2e visual` compares.
 
 ## CI
 
@@ -192,14 +232,15 @@ React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Q
 | `engine` | ruff check, ruff format --check, mypy, pytest `tests/` |
 | `api` | OpenAPI spec up to date, pytest `api/tests/` |
 | `web` | pnpm install --frozen-lockfile, API types up to date, eslint, prettier --check, tsc, vitest, vite build |
-| `e2e` | Playwright + axe on every page in both themes, live-stream smoke test (mock API) |
+| `e2e` | Playwright + axe on every page in both themes and every feature flow (mock API) |
+| `docker` | `docker compose up --build`, then the app, a client-side route and a real run through Caddy on :8080 |
 
 ## Branch protection (recommended)
 
 The repo's owner chose to push the early skeleton work straight to `main`. Once the engine work starts, protect `main` under **Settings → Branches → Add rule**:
 
 - Require a pull request before merging (1 approval, or 0 for a solo repo).
-- Require status checks to pass: `engine`, `api`, `web`, `e2e`.
+- Require status checks to pass: `engine`, `api`, `web`, `e2e`, `docker`.
 - Require branches to be up to date before merging.
 - Block force pushes and deletions.
 

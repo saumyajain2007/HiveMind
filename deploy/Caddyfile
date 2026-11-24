@@ -1,0 +1,15 @@
+# One origin for the app: static files, and /api (REST and the live WebSocket) proxied to the API.
+:8080 {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		root * /srv
+		# client-side routes (/builder, /cockpit, ...) fall back to the app shell
+		try_files {path} /index.html
+		file_server
+	}
+}

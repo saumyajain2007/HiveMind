@@ -332,7 +332,7 @@ function LiveCockpit() {
               title="Price"
               subtitle="15-minute candles in market hours · dashed: hidden fundamental value · markers: news"
               icon={CandlestickChart}
-              className="min-h-[380px] flex-1"
+              className="min-h-[420px] flex-1"
               actions={
                 <>
                   <span className="tabular mr-2 font-mono text-sm font-semibold">
@@ -371,35 +371,39 @@ function LiveCockpit() {
                 </>
               }
             >
-              <PriceChart
-                ticks={data.ticks}
-                price={data.price}
-                vTrue={data.vTrue}
-                volume={data.volume}
-                events={data.items}
-                mode={mode}
-                pulseKey={data.items.filter((i) => i.origin !== "price_news").length}
-              />
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5">
-                  <span
-                    className="h-0 w-4 border-t-2 border-dashed border-fundamental"
-                    aria-hidden
-                  />{" "}
-                  Fundamental value (hidden from agents)
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="size-2.5 rounded-full bg-official" aria-hidden /> Official / news
-                  (arrow)
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="size-2.5 rounded-full bg-narrative" aria-hidden /> Rumour /
-                  narrative (circle)
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="size-2.5 rounded-[2px] bg-muted-foreground" aria-hidden /> Price
-                  headline (square)
-                </span>
+              <div className="flex h-full flex-col">
+                <div className="min-h-[300px] flex-1">
+                  <PriceChart
+                    ticks={data.ticks}
+                    price={data.price}
+                    vTrue={data.vTrue}
+                    volume={data.volume}
+                    events={data.items}
+                    mode={mode}
+                    pulseKey={data.items.filter((i) => i.origin !== "price_news").length}
+                  />
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span
+                      className="h-0 w-4 border-t-2 border-dashed border-fundamental"
+                      aria-hidden
+                    />{" "}
+                    Fundamental value (hidden from agents)
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="size-2.5 rounded-full bg-official" aria-hidden /> Official /
+                    news (arrow)
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="size-2.5 rounded-full bg-narrative" aria-hidden /> Rumour /
+                    narrative (circle)
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="size-2.5 rounded-[2px] bg-muted-foreground" aria-hidden />{" "}
+                    Price headline (square)
+                  </span>
+                </div>
               </div>
             </Panel>
             <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-4">

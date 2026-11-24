@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { RunsPage } from "@/pages/RunsPage";
 
 import { AppShell } from "./AppShell";
-import { NAV } from "./nav";
 
 // The Runs page ships with the shell; every other page is split into its own chunk.
 const CockpitPage = lazy(() =>
@@ -25,14 +24,14 @@ const NetworkPage = lazy(() =>
 const NarrativesPage = lazy(() =>
   import("@/pages/NarrativesPage").then((m) => ({ default: m.NarrativesPage })),
 );
+const AnalysisPage = lazy(() =>
+  import("@/pages/AnalysisPage").then((m) => ({ default: m.AnalysisPage })),
+);
 const DesignPage = lazy(() =>
   import("@/pages/DesignPage").then((m) => ({ default: m.DesignPage })),
 );
-const PlannedPage = lazy(() =>
-  import("@/pages/PlannedPage").then((m) => ({ default: m.PlannedPage })),
-);
 const NotFoundPage = lazy(() =>
-  import("@/pages/PlannedPage").then((m) => ({ default: m.NotFoundPage })),
+  import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })),
 );
 
 function PageFallback() {
@@ -61,9 +60,6 @@ function page<P extends object>(C: LazyExoticComponent<ComponentType<P>>, props:
   );
 }
 
-const BUILT = ["/", "/cockpit", "/builder", "/monte-carlo", "/network", "/narratives"];
-const planned = NAV.filter((n) => !BUILT.includes(n.path));
-
 export const routes: RouteObject[] = [
   {
     path: "/",
@@ -75,10 +71,7 @@ export const routes: RouteObject[] = [
       { path: "monte-carlo", element: page(MonteCarloPage, {}) },
       { path: "network", element: page(NetworkPage, {}) },
       { path: "narratives", element: page(NarrativesPage, {}) },
-      ...planned.map((item) => ({
-        path: item.path.slice(1),
-        element: page(PlannedPage, { item }),
-      })),
+      { path: "analysis", element: page(AnalysisPage, {}) },
       { path: "design", element: page(DesignPage, {}) },
       { path: "*", element: page(NotFoundPage, {}) },
     ],

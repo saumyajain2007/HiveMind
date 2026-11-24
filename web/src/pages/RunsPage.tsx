@@ -1,5 +1,7 @@
-import { Library, Play, RefreshCw } from "lucide-react";
-import { useMemo } from "react";
+import { Copy, ExternalLink, Library, Play, RefreshCw, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 import { useDemoReplay } from "@/app/useDemoReplay";
 import { StatusPill, Tag } from "@/components/badges";
@@ -11,7 +13,12 @@ import { Stat } from "@/components/Stat";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { RunRecord } from "@/lib/api/client";
-import { useRuns } from "@/lib/api/queries";
+import { useDeleteRun, useRuns } from "@/lib/api/queries";
+import { api, unwrap } from "@/lib/api/client";
+import type { Schemas } from "@/lib/api/client";
+import { builderStore } from "@/features/builder/store";
+import type { Parameters } from "@/features/builder/store";
+import { RunCompare } from "@/features/runs/RunCompare";
 import {
   formatCompact,
   formatPrice,
@@ -28,6 +35,9 @@ export function RunsPage() {
   const runs = useRuns();
   const demo = useDemoReplay();
   const items = useMemo(() => runs.data?.items ?? [], [runs.data]);
+  const [compare, setCompare] = useState<string[]>([]);
+  const toggleCompare = (id: string) =>
+    setCompare((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id].slice(-2)));
 
   const stats = useMemo(() => {
     const done = items.filter((r) => r.status === "done");
@@ -138,17 +148,106 @@ export function RunsPage() {
             }
           />
         ) : (
-          <RunsTable items={items} />
+          <RunsTable items={items} compare={compare} onToggleCompare={toggleCompare} />
         )}
       </Panel>
+      {compare.length === 2 && <RunCompare a={compare[0]!} b={compare[1]!} />}
     </div>
   );
 }
 
-function RunsTable({ items }: { items: RunRecord[] }) {
+const OPEN: Record<string, (id: string) => string> = {
+  single: (id) => `/narratives?run=${id}`,
+  montecarlo: (id) => `/monte-carlo?run=${id}`,
+  calibration: () => "/analysis",
+  backtest: () => "/analysis",
+};
+
+function RowActions({ r }: { r: RunRecord }) {
+  const del = useDeleteRun();
+  const navigate = useNavigate();
+  const [confirm, setConfirm] = useState(false);
+  const active = r.status === "running" || r.status === "queued";
+  async function duplicate() {
+    try {
+      const d = unwrap(
+        await api.GET("/api/v1/runs/{run_id}", { params: { path: { run_id: r.id } } }),
+      );
+      builderStore
+        .getState()
+        .load(
+          { ...d.spec.scenario, name: `${d.spec.scenario.name} (copy)` } as Schemas["ScenarioSpec"],
+          null,
+          d.spec.parameters as unknown as Parameters,
+        );
+      navigate("/builder");
+      toast.success("Copied into the Builder", { description: r.name });
+    } catch (e) {
+      toast.error("Could not load the run", { description: (e as Error).message });
+    }
+  }
+  return (
+    <div className="flex items-center justify-end gap-1">
+      <Button variant="ghost" size="icon" className="size-7" asChild aria-label={`Open ${r.name}`}>
+        <Link to={(OPEN[r.mode] ?? OPEN.single!)(r.id)}>
+          <ExternalLink />
+        </Link>
+      </Button>
+      {(r.mode === "single" || r.mode === "montecarlo") && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-7"
+          onClick={() => void duplicate()}
+          aria-label={`Duplicate ${r.name} into the Builder`}
+        >
+          <Copy />
+        </Button>
+      )}
+      {confirm ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 text-bear-text"
+          onClick={() =>
+            del.mutate(r.id, {
+              onSuccess: () => toast.success("Run deleted"),
+              onError: (e) => toast.error("Could not delete", { description: e.message }),
+            })
+          }
+          onBlur={() => setConfirm(false)}
+          autoFocus
+        >
+          Delete?
+        </Button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-7"
+          disabled={active}
+          onClick={() => setConfirm(true)}
+          aria-label={active ? `${r.name} is still running` : `Delete ${r.name}`}
+        >
+          <Trash2 />
+        </Button>
+      )}
+    </div>
+  );
+}
+
+function RunsTable({
+  items,
+  compare,
+  onToggleCompare,
+}: {
+  items: RunRecord[];
+  compare: string[];
+  onToggleCompare: (id: string) => void;
+}) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[860px] text-sm">
+      <table className="w-full min-w-[1000px] text-sm">
         <thead>
           <tr className="border-b text-left text-xs text-muted-foreground">
             <th scope="col" className="px-4 py-2.5 font-medium">
@@ -172,8 +271,14 @@ function RunsTable({ items }: { items: RunRecord[] }) {
             <th scope="col" className="px-3 py-2.5 font-medium">
               Spec
             </th>
-            <th scope="col" className="px-4 py-2.5 text-right font-medium">
+            <th scope="col" className="px-3 py-2.5 text-right font-medium">
               Created
+            </th>
+            <th scope="col" className="px-2 py-2.5 text-center font-medium">
+              Compare
+            </th>
+            <th scope="col" className="px-4 py-2.5 text-right font-medium">
+              <span className="sr-only">Actions</span>
             </th>
           </tr>
         </thead>
@@ -193,7 +298,7 @@ function RunsTable({ items }: { items: RunRecord[] }) {
                   <div className="font-medium">{r.name}</div>
                   <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
                     <span className="font-mono">{r.id}</span>
-                    <Tag>{r.mode === "montecarlo" ? `MC ×${r.runs}` : "single"}</Tag>
+                    <Tag>{r.mode === "montecarlo" ? `MC ×${r.runs}` : r.mode}</Tag>
                     <span className="font-mono">seed {r.seed}</span>
                   </div>
                 </th>
@@ -236,8 +341,19 @@ function RunsTable({ items }: { items: RunRecord[] }) {
                     {shortHash(r.spec_hash)}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right text-xs whitespace-nowrap text-muted-foreground">
+                <td className="px-3 py-3 text-right text-xs whitespace-nowrap text-muted-foreground">
                   <time dateTime={r.created_at}>{formatRelative(r.created_at)}</time>
+                </td>
+                <td className="px-2 py-3 text-center">
+                  <input
+                    type="checkbox"
+                    checked={compare.includes(r.id)}
+                    onChange={() => onToggleCompare(r.id)}
+                    aria-label={`Compare ${r.name}`}
+                  />
+                </td>
+                <td className="px-4 py-3">
+                  <RowActions r={r} />
                 </td>
               </tr>
             );

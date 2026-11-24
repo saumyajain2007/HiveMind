@@ -56,10 +56,9 @@ describe("app shell", () => {
     expect(screen.getByPlaceholderText("Go to a page or run an action…")).toBeInTheDocument();
   });
 
-  it("shows planned pages with their issue number", async () => {
-    renderAt("/analysis");
-    expect(await screen.findByText(/calibrat/i)).toBeInTheDocument();
-    expect(screen.getAllByText("#25").length).toBeGreaterThan(0);
+  it("shows a not-found page for unknown addresses", async () => {
+    renderAt("/no-such-page");
+    expect(await screen.findByText("Page not found")).toBeInTheDocument();
   });
 
   it("cockpit streams the mock run into the ticker", async () => {

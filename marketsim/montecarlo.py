@@ -68,6 +68,11 @@ class MonteCarloResult:
                 "final_price_quantiles": {f"{q:g}": float(np.quantile(final, q)) for q in QUANTILES},
                 "v_true_final": float(self.v_true[:, -1].mean()),
                 "p_below_start": float((final < p0).mean()),
+                "final_price": float(np.median(final)),
+                "return": float(np.median(final / p0) - 1.0),
+                "price_spark": [
+                    round(float(np.median(p[:, t])), 4) for t in range(63, p.shape[1], TICKS_PER_DAY)
+                ],
                 "mean_log_return": float(log_ret.mean()),
                 "var_95": float(-np.quantile(final / p0 - 1.0, 0.05)),
                 "median_max_drawdown": float(np.median([s["max_drawdown"] for s in self.summaries])),

@@ -1,0 +1,27 @@
+# The full stack on http://localhost:8080:  docker compose up --build   (or: make up)
+services:
+  api:
+    build:
+      context: .
+      dockerfile: deploy/api.Dockerfile
+    environment:
+      MARKETSIM_DATA_DIR: /data
+      MARKETSIM_MAX_JOBS: "2"
+      # MARKETSIM_LLM_PROVIDER: anthropic   # optional headline parsing; needs ANTHROPIC_API_KEY and the llm extra
+    volumes:
+      - runs-data:/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: deploy/web.Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  runs-data:

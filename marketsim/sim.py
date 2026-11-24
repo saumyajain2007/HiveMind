@@ -448,6 +448,8 @@ def summarize(
         "return": float(price[-1] / p0 - 1.0) if len(price) and p0 else 0.0,
         "v_true_final": float(series["v_true"][-1]) if len(price) else 0.0,
         "max_drawdown": max_drawdown(price),
+        # daily closes (last open tick of each day) for sparklines in the run library
+        "price_spark": [round(float(price[t]), 4) for t in range(63, len(price), TICKS_PER_DAY)],
         "total_volume": float(series["volume"].sum()),
         "mean_confidence_final": float(series["confidence"][-1]) if len(price) else 0.0,
         "n_items": len(lineage),
