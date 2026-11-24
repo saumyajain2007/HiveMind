@@ -18,9 +18,11 @@ async function setTheme(page: Page, theme: "dark" | "light") {
 }
 
 async function settle(page: Page) {
-  await page.waitForLoadState("networkidle");
-  // let entry animations finish so axe measures final colours
-  await page.waitForTimeout(700);
+  // not "networkidle": pages poll run status, and WebGL / worker pages never go fully quiet
+  await page.waitForLoadState("load");
+  await page.locator("main h2, main [role=img], main h1").first().waitFor({ timeout: 15_000 });
+  // let entry animations and mock requests finish so axe measures the final page
+  await page.waitForTimeout(1200);
 }
 
 for (const theme of ["dark", "light"] as const) {

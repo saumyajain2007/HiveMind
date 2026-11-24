@@ -51,6 +51,7 @@ export function SentimentChip({
         "inline-flex items-center gap-2 rounded-full border bg-surface-2 px-2 py-0.5 text-xs",
         className,
       )}
+      role="img"
       aria-label={`Sentiment ${sentimentLabel(v)} (${formatSigned(v)})`}
     >
       <span aria-hidden className="relative h-1.5 w-10 overflow-hidden rounded-full bg-muted">

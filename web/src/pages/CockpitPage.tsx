@@ -86,7 +86,9 @@ function ClockBadge({ tick }: { tick: number }) {
       <span
         className={cn(
           "rounded-full px-2 py-0.5 text-[11px] font-semibold",
-          c.open ? "bg-status-good/15 text-status-good-text" : "bg-muted text-muted-foreground",
+          c.open
+            ? "border border-status-good/50 text-status-good-text"
+            : "border text-muted-foreground",
         )}
       >
         {c.open ? "Market open" : "Market closed"}
