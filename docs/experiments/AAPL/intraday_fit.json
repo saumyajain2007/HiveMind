@@ -1,0 +1,1814 @@
+{
+ "ticker": "AAPL",
+ "n_agents": 100000,
+ "survey": "us",
+ "days_per_run": 6,
+ "seeds": 3,
+ "implied_vol": 0.2267088917319984,
+ "real": {
+  "acf1": -0.008903597206402629,
+  "acf_abs1": 0.22286239456501436,
+  "kurtosis": 3.346922294823883,
+  "intraday_share": 0.7510465004848373,
+  "sd_15m": 0.0021035286737295473,
+  "vr_day": 0.6734949295515101,
+  "days": 59
+ },
+ "defaults": {
+  "params": {
+   "market.impact_Y": 0.7,
+   "market.noise_frac": 0.3,
+   "market.noise_vol_feedback": 0.0,
+   "market.prop_momentum_k": 30.0,
+   "market.mm_flow_anticipation": 0.0,
+   "market.noise_permanence": 0.0,
+   "news.rate_per_tick": 0.0,
+   "news.impact_sd": 0.0
+  },
+  "moments": {
+   "acf1": 0.43471466357552657,
+   "acf_abs1": 0.2066866954025387,
+   "kurtosis": -0.9832791519486275,
+   "intraday_share": 1.0413489747428983,
+   "sd_15m": 0.0019146289624833721,
+   "vr_day": 0.547815149526724
+  },
+  "distance": 228.19729533847405
+ },
+ "best": {
+  "params": {
+   "market.impact_Y": 0.057140370526409676,
+   "market.noise_frac": 0.6725829469408959,
+   "market.noise_vol_feedback": 0.08931954195728047,
+   "market.prop_momentum_k": 9.0040428084042,
+   "market.mm_flow_anticipation": 0.1784608800224591,
+   "market.noise_permanence": 0.8604315143055341,
+   "news.rate_per_tick": 0.06554473794463361,
+   "news.impact_sd": 0.005892036310742916
+  },
+  "moments": {
+   "acf1": -0.05128647896884992,
+   "acf_abs1": 0.030399365635414274,
+   "kurtosis": 6.855848223084118,
+   "intraday_share": 0.7075274378866714,
+   "sd_15m": 0.002479053157925445,
+   "vr_day": 1.1471332103234306
+  },
+  "distance": 33.454497746866934,
+  "recheck_distance": 76.98547059155734,
+  "recheck_moments": {
+   "acf1": -0.10277299654963873,
+   "acf_abs1": 0.001775646766451703,
+   "kurtosis": 13.343303698918223,
+   "intraday_share": 0.7109545525638411,
+   "sd_15m": 0.0020689307423292984,
+   "vr_day": 0.9426062126901796
+  }
+ },
+ "search": [
+  {
+   "params": {
+    "market.impact_Y": 0.7,
+    "market.noise_frac": 0.3,
+    "market.noise_vol_feedback": 0.0,
+    "market.prop_momentum_k": 30.0,
+    "market.mm_flow_anticipation": 0.0,
+    "market.noise_permanence": 0.0,
+    "news.rate_per_tick": 0.0,
+    "news.impact_sd": 0.0
+   },
+   "moments": {
+    "acf1": 0.43471466357552657,
+    "acf_abs1": 0.2066866954025387,
+    "kurtosis": -0.9832791519486275,
+    "intraday_share": 1.0413489747428983,
+    "sd_15m": 0.0019146289624833721,
+    "vr_day": 0.547815149526724
+   },
+   "distance": 228.19729533847405
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9578273687604966,
+    "market.noise_frac": 1.0786888924987343,
+    "market.noise_vol_feedback": 0.7436506665326957,
+    "market.prop_momentum_k": 0.8660432246524836,
+    "market.mm_flow_anticipation": 0.4094151837020094,
+    "market.noise_permanence": 0.9068975804618467,
+    "news.rate_per_tick": 0.0482988055934651,
+    "news.impact_sd": 0.006889105462168447
+   },
+   "moments": {
+    "acf1": 0.085588930164305,
+    "acf_abs1": 0.48678489649663875,
+    "kurtosis": 5.365166166936541,
+    "intraday_share": 0.7328977730863994,
+    "sd_15m": 0.041463995569322634,
+    "vr_day": 1.5544523065813625
+   },
+   "distance": 469.09084956284215
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5943218891611415,
+    "market.noise_frac": 0.48703529551668556,
+    "market.noise_vol_feedback": 0.13299230767069675,
+    "market.prop_momentum_k": 27.2627606329792,
+    "market.mm_flow_anticipation": 0.3669400542364646,
+    "market.noise_permanence": 0.13899283270558604,
+    "news.rate_per_tick": 0.07054554754876817,
+    "news.impact_sd": 0.014316771416722586
+   },
+   "moments": {
+    "acf1": 0.2117143991104163,
+    "acf_abs1": 0.06739211905137042,
+    "kurtosis": 12.463952209943969,
+    "intraday_share": 0.7892534281785897,
+    "sd_15m": 0.004609650863272131,
+    "vr_day": 1.2265089884811922
+   },
+   "distance": 141.63866589996525
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.1289810476160766,
+    "market.noise_frac": 0.5554560056178355,
+    "market.noise_vol_feedback": 0.5132280239029414,
+    "market.prop_momentum_k": 34.63919616419413,
+    "market.mm_flow_anticipation": 0.07143683381247076,
+    "market.noise_permanence": 0.6245413586216216,
+    "news.rate_per_tick": 0.03760999585976771,
+    "news.impact_sd": 0.0021160614673096816
+   },
+   "moments": {
+    "acf1": 0.07705951474023719,
+    "acf_abs1": 0.0763158403405836,
+    "kurtosis": 2.098040876191977,
+    "intraday_share": 0.8278850855705703,
+    "sd_15m": 0.000910503948037942,
+    "vr_day": 1.4611049560003655
+   },
+   "distance": 76.2286707628822
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.280843770178351,
+    "market.noise_frac": 1.4616504397990875,
+    "market.noise_vol_feedback": 0.12010121089835604,
+    "market.prop_momentum_k": 55.387055533926656,
+    "market.mm_flow_anticipation": 0.34788485220169424,
+    "market.noise_permanence": 0.4757544721409606,
+    "news.rate_per_tick": 0.07810036293514158,
+    "news.impact_sd": 0.010946185138997179
+   },
+   "moments": {
+    "acf1": 0.11466354193834122,
+    "acf_abs1": 0.06597208837761093,
+    "kurtosis": 2.9342757014690823,
+    "intraday_share": 0.6373905380964099,
+    "sd_15m": 0.0072257127288236234,
+    "vr_day": 1.5070215967293044
+   },
+   "distance": 125.4466952805162
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5045057592352877,
+    "market.noise_frac": 0.6238650569567972,
+    "market.noise_vol_feedback": 0.20125614256134086,
+    "market.prop_momentum_k": 36.61041095760226,
+    "market.mm_flow_anticipation": 0.057253817057086695,
+    "market.noise_permanence": 0.7085774765028497,
+    "news.rate_per_tick": 0.022419645847743416,
+    "news.impact_sd": 0.009128623918320256
+   },
+   "moments": {
+    "acf1": 0.365272829999034,
+    "acf_abs1": 0.17916091318445682,
+    "kurtosis": 0.3932052034952527,
+    "intraday_share": 0.6121057172884236,
+    "sd_15m": 0.002237130674712604,
+    "vr_day": 1.5944200999535236
+   },
+   "distance": 198.0679017184196
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.2619344418677037,
+    "market.noise_frac": 0.7861232825351749,
+    "market.noise_vol_feedback": 0.8335637757276462,
+    "market.prop_momentum_k": 73.55386829736668,
+    "market.mm_flow_anticipation": 0.15042592397882135,
+    "market.noise_permanence": 0.10763257264781032,
+    "news.rate_per_tick": 0.0002965977671880188,
+    "news.impact_sd": 0.003226998928735221
+   },
+   "moments": {
+    "acf1": 0.2387255542762298,
+    "acf_abs1": 0.0407043587746639,
+    "kurtosis": 0.9401848099625836,
+    "intraday_share": 0.9141064451765097,
+    "sd_15m": 0.0012982972982873706,
+    "vr_day": 0.9278769905748413
+   },
+   "distance": 97.20620600015434
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.654767676617685,
+    "market.noise_frac": 0.5998023996147455,
+    "market.noise_vol_feedback": 0.06186378755538809,
+    "market.prop_momentum_k": 20.940391834214736,
+    "market.mm_flow_anticipation": 0.12107139708705184,
+    "market.noise_permanence": 0.7029228339267182,
+    "news.rate_per_tick": 0.06444096926181159,
+    "news.impact_sd": 0.00606288387243165
+   },
+   "moments": {
+    "acf1": 0.28996261192629463,
+    "acf_abs1": 0.07685505230261874,
+    "kurtosis": 1.2635210929519527,
+    "intraday_share": 0.5286511275587474,
+    "sd_15m": 0.003441010946917548,
+    "vr_day": 2.4396382698283157
+   },
+   "distance": 259.10076285229854
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.225889325839282,
+    "market.noise_frac": 1.1699227945095148,
+    "market.noise_vol_feedback": 0.1767602057466674,
+    "market.prop_momentum_k": 54.37613791030212,
+    "market.mm_flow_anticipation": 0.15970189895583964,
+    "market.noise_permanence": 0.6409171951245805,
+    "news.rate_per_tick": 0.07408039396290819,
+    "news.impact_sd": 0.00747409776726378
+   },
+   "moments": {
+    "acf1": 0.12757275632191092,
+    "acf_abs1": 0.09119913195842894,
+    "kurtosis": 1.703741283861265,
+    "intraday_share": 0.7057323532849593,
+    "sd_15m": 0.0045507563600923765,
+    "vr_day": 1.663098486241675
+   },
+   "distance": 98.820584134411
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.46190537832811474,
+    "market.noise_frac": 1.067947357460284,
+    "market.noise_vol_feedback": 0.9034084486004499,
+    "market.prop_momentum_k": 33.676391025675926,
+    "market.mm_flow_anticipation": 0.005965684077260186,
+    "market.noise_permanence": 0.23021720039465118,
+    "news.rate_per_tick": 0.030734210924633364,
+    "news.impact_sd": 0.00801781342583847
+   },
+   "moments": {
+    "acf1": 0.13037143625736392,
+    "acf_abs1": 0.35541270387455187,
+    "kurtosis": 23.908941739470887,
+    "intraday_share": 0.91955650678161,
+    "sd_15m": 0.01935121712334354,
+    "vr_day": 0.6745050905356716
+   },
+   "distance": 435.3604564380936
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.11029388482551578,
+    "market.noise_frac": 0.46425261538326434,
+    "market.noise_vol_feedback": 0.1437866609055104,
+    "market.prop_momentum_k": 5.987274315239871,
+    "market.mm_flow_anticipation": 0.5481005307608224,
+    "market.noise_permanence": 0.04698354740664471,
+    "news.rate_per_tick": 0.034451912863660755,
+    "news.impact_sd": 0.008753164550182584
+   },
+   "moments": {
+    "acf1": 0.033693024643307805,
+    "acf_abs1": 0.07388263869890474,
+    "kurtosis": 9.5005445386598,
+    "intraday_share": 0.8243596308130944,
+    "sd_15m": 0.0022695008765103645,
+    "vr_day": 1.051794730338023
+   },
+   "distance": 34.340682746673295,
+   "recheck_distance": 129.17149729850146,
+   "recheck_moments": {
+    "acf1": -0.04769292855998408,
+    "acf_abs1": 0.011361607833965812,
+    "kurtosis": 19.036452796644696,
+    "intraday_share": 0.9210100510814141,
+    "sd_15m": 0.0021054518565232438,
+    "vr_day": 0.6061478460106384
+   }
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.18469046856552257,
+    "market.noise_frac": 0.39864514851581767,
+    "market.noise_vol_feedback": 0.7079163057276953,
+    "market.prop_momentum_k": 65.43210040360223,
+    "market.mm_flow_anticipation": 0.20350152374003422,
+    "market.noise_permanence": 0.7682386490808095,
+    "news.rate_per_tick": 0.03180411536542419,
+    "news.impact_sd": 0.0026639944006483095
+   },
+   "moments": {
+    "acf1": 0.17245187234518766,
+    "acf_abs1": 0.021613402519461013,
+    "kurtosis": 5.035677860555095,
+    "intraday_share": 0.7291231018111092,
+    "sd_15m": 0.0007898447585507249,
+    "vr_day": 1.4992924507682521
+   },
+   "distance": 126.96467171087414
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.37576595197002827,
+    "market.noise_frac": 0.8646560176154823,
+    "market.noise_vol_feedback": 0.34498936998064617,
+    "market.prop_momentum_k": 17.739641567734576,
+    "market.mm_flow_anticipation": 0.2739429243017523,
+    "market.noise_permanence": 0.2056682516820824,
+    "news.rate_per_tick": 0.022594995234963448,
+    "news.impact_sd": 0.0010458380733551628
+   },
+   "moments": {
+    "acf1": 0.16705447585736863,
+    "acf_abs1": 0.05981135843104149,
+    "kurtosis": 0.8493711187113409,
+    "intraday_share": 0.753232789983585,
+    "sd_15m": 0.002332263164871796,
+    "vr_day": 1.2847555751099982
+   },
+   "distance": 64.8877335103204
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.7509718199261363,
+    "market.noise_frac": 1.396491544337276,
+    "market.noise_vol_feedback": 0.9476208676154366,
+    "market.prop_momentum_k": 16.704835835426024,
+    "market.mm_flow_anticipation": 0.3297016681964626,
+    "market.noise_permanence": 0.5952292512353019,
+    "news.rate_per_tick": 0.001578845711323943,
+    "news.impact_sd": 0.004318615968371126
+   },
+   "moments": {
+    "acf1": 0.1221142720775808,
+    "acf_abs1": 0.5050224187986522,
+    "kurtosis": 2.36787604641649,
+    "intraday_share": 0.8348450942539166,
+    "sd_15m": 0.05315478563478376,
+    "vr_day": 1.2096202727834615
+   },
+   "distance": 527.6866671743345
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.057140370526409676,
+    "market.noise_frac": 0.6725829469408959,
+    "market.noise_vol_feedback": 0.08931954195728047,
+    "market.prop_momentum_k": 9.0040428084042,
+    "market.mm_flow_anticipation": 0.1784608800224591,
+    "market.noise_permanence": 0.8604315143055341,
+    "news.rate_per_tick": 0.06554473794463361,
+    "news.impact_sd": 0.005892036310742916
+   },
+   "moments": {
+    "acf1": -0.05128647896884992,
+    "acf_abs1": 0.030399365635414274,
+    "kurtosis": 6.855848223084118,
+    "intraday_share": 0.7075274378866714,
+    "sd_15m": 0.002479053157925445,
+    "vr_day": 1.1471332103234306
+   },
+   "distance": 33.454497746866934,
+   "recheck_distance": 76.98547059155734,
+   "recheck_moments": {
+    "acf1": -0.10277299654963873,
+    "acf_abs1": 0.001775646766451703,
+    "kurtosis": 13.343303698918223,
+    "intraday_share": 0.7109545525638411,
+    "sd_15m": 0.0020689307423292984,
+    "vr_day": 0.9426062126901796
+   }
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5351299180682925,
+    "market.noise_frac": 1.2015729232533976,
+    "market.noise_vol_feedback": 0.6602273597756438,
+    "market.prop_momentum_k": 58.35722468702373,
+    "market.mm_flow_anticipation": 0.5865756347210819,
+    "market.noise_permanence": 0.6799483907384891,
+    "news.rate_per_tick": 0.04362707979589447,
+    "news.impact_sd": 0.013493541117071298
+   },
+   "moments": {
+    "acf1": 0.08639826426378418,
+    "acf_abs1": 0.4506578588814602,
+    "kurtosis": 12.567637418888646,
+    "intraday_share": 0.9866635297895757,
+    "sd_15m": 0.026581204293142664,
+    "vr_day": 0.6212190190624803
+   },
+   "distance": 354.7247085268774
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5724328720080458,
+    "market.noise_frac": 1.4356044498664475,
+    "market.noise_vol_feedback": 0.21195799395586154,
+    "market.prop_momentum_k": 59.97512775968584,
+    "market.mm_flow_anticipation": 0.2716633628172306,
+    "market.noise_permanence": 0.07167609945837805,
+    "news.rate_per_tick": 0.03344858282207969,
+    "news.impact_sd": 0.011652559607193615
+   },
+   "moments": {
+    "acf1": 0.21703627231235376,
+    "acf_abs1": 0.21309298034217675,
+    "kurtosis": 3.3588261863468905,
+    "intraday_share": 0.6818935625988976,
+    "sd_15m": 0.00912430441711948,
+    "vr_day": 1.3885968054262814
+   },
+   "distance": 175.1775807251531
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.14103573321373086,
+    "market.noise_frac": 1.342542974602771,
+    "market.noise_vol_feedback": 0.9110275692345865,
+    "market.prop_momentum_k": 22.94870310379119,
+    "market.mm_flow_anticipation": 0.4233401641620766,
+    "market.noise_permanence": 0.031380213629872436,
+    "news.rate_per_tick": 0.061067058023947185,
+    "news.impact_sd": 0.009906856237252456
+   },
+   "moments": {
+    "acf1": 0.06534349984409878,
+    "acf_abs1": 0.5169873514484502,
+    "kurtosis": 2.194168576959359,
+    "intraday_share": 0.9195062420979214,
+    "sd_15m": 0.05369055643699303,
+    "vr_day": 1.011386237174519
+   },
+   "distance": 512.8446019966569
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9221029665977124,
+    "market.noise_frac": 0.43665052080218414,
+    "market.noise_vol_feedback": 0.49089675841242497,
+    "market.prop_momentum_k": 35.22012823199831,
+    "market.mm_flow_anticipation": 0.43689539938842625,
+    "market.noise_permanence": 0.6693625215093968,
+    "news.rate_per_tick": 0.042223530641765754,
+    "news.impact_sd": 0.002954268568234337
+   },
+   "moments": {
+    "acf1": 0.42552121530575754,
+    "acf_abs1": -0.015073937093700838,
+    "kurtosis": -0.7672046128572645,
+    "intraday_share": 1.361031266751497,
+    "sd_15m": 0.0033776823223103185,
+    "vr_day": 0.5302245233022048
+   },
+   "distance": 250.7424404632645
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.4694913042271838,
+    "market.noise_frac": 0.7068999681494932,
+    "market.noise_vol_feedback": 0.01760493907680469,
+    "market.prop_momentum_k": 51.920376426073965,
+    "market.mm_flow_anticipation": 0.4979085907083899,
+    "market.noise_permanence": 0.8834429608642115,
+    "news.rate_per_tick": 0.011927654897665984,
+    "news.impact_sd": 0.001950895167534852
+   },
+   "moments": {
+    "acf1": 0.32234806234504837,
+    "acf_abs1": 0.11717496427444843,
+    "kurtosis": 0.3462450720371981,
+    "intraday_share": 0.7063726938706605,
+    "sd_15m": 0.002564802866438694,
+    "vr_day": 1.5216575704089113
+   },
+   "distance": 164.10887571000242
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9458128081197534,
+    "market.noise_frac": 0.9508334236364906,
+    "market.noise_vol_feedback": 0.8512663652003619,
+    "market.prop_momentum_k": 44.25954704928497,
+    "market.mm_flow_anticipation": 0.14168169545309878,
+    "market.noise_permanence": 0.2856607810097658,
+    "news.rate_per_tick": 0.07730883293618528,
+    "news.impact_sd": 0.009743871929762431
+   },
+   "moments": {
+    "acf1": 0.1630649308489181,
+    "acf_abs1": 0.45187078064208697,
+    "kurtosis": 8.398588166794827,
+    "intraday_share": 0.7528747541918395,
+    "sd_15m": 0.029978824608768634,
+    "vr_day": 1.261159545533014
+   },
+   "distance": 394.2604819716528
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9758518518187895,
+    "market.noise_frac": 1.2725776434795222,
+    "market.noise_vol_feedback": 0.8105265268880666,
+    "market.prop_momentum_k": 50.272624379707416,
+    "market.mm_flow_anticipation": 0.5650669793025119,
+    "market.noise_permanence": 0.026500626004949734,
+    "news.rate_per_tick": 0.016632512248909707,
+    "news.impact_sd": 0.004271471071438977
+   },
+   "moments": {
+    "acf1": 0.16033237481919163,
+    "acf_abs1": 0.410097187623879,
+    "kurtosis": 6.852914405475081,
+    "intraday_share": 0.9654919304187387,
+    "sd_15m": 0.03243817244387246,
+    "vr_day": 0.9736944646542219
+   },
+   "distance": 387.94371815363
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.20385668986627337,
+    "market.noise_frac": 1.1949412962763821,
+    "market.noise_vol_feedback": 0.6360514457576629,
+    "market.prop_momentum_k": 12.767057770217152,
+    "market.mm_flow_anticipation": 0.2143685674294858,
+    "market.noise_permanence": 0.739511293563563,
+    "news.rate_per_tick": 0.04638759289870269,
+    "news.impact_sd": 0.012823472360957124
+   },
+   "moments": {
+    "acf1": 0.007489805972883497,
+    "acf_abs1": 0.4530261254947775,
+    "kurtosis": 21.57841894348566,
+    "intraday_share": 0.9974382780670195,
+    "sd_15m": 0.022749442849032412,
+    "vr_day": 0.497319539322595
+   },
+   "distance": 422.54267306742247
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.35358186919348455,
+    "market.noise_frac": 0.9868686164014187,
+    "market.noise_vol_feedback": 0.7542403389852496,
+    "market.prop_momentum_k": 63.552390818155054,
+    "market.mm_flow_anticipation": 0.5556329606498991,
+    "market.noise_permanence": 0.1694920726186931,
+    "news.rate_per_tick": 0.05629134788037909,
+    "news.impact_sd": 0.001713707382635779
+   },
+   "moments": {
+    "acf1": 0.2608137625576039,
+    "acf_abs1": 0.31333766303078464,
+    "kurtosis": 10.512862111009145,
+    "intraday_share": 0.8654150733156597,
+    "sd_15m": 0.006372700115369815,
+    "vr_day": 0.7982046279042855
+   },
+   "distance": 162.2215045519365
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.15627354022084433,
+    "market.noise_frac": 0.6083943714244299,
+    "market.noise_vol_feedback": 0.6461068253902155,
+    "market.prop_momentum_k": 47.99344678631953,
+    "market.mm_flow_anticipation": 0.3923582127792009,
+    "market.noise_permanence": 0.9465556273226294,
+    "news.rate_per_tick": 0.05575680868679522,
+    "news.impact_sd": 0.013991567143352892
+   },
+   "moments": {
+    "acf1": 0.13490870529887797,
+    "acf_abs1": 0.20150385706710905,
+    "kurtosis": 2.8239114138287826,
+    "intraday_share": 0.7635911359247062,
+    "sd_15m": 0.006843176901100738,
+    "vr_day": 1.2879321257013805
+   },
+   "distance": 101.90952447068987
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.29949413493919286,
+    "market.noise_frac": 0.5156584252500085,
+    "market.noise_vol_feedback": 0.7929063109116303,
+    "market.prop_momentum_k": 47.392742511340174,
+    "market.mm_flow_anticipation": 0.4838625991710252,
+    "market.noise_permanence": 0.9911743545479558,
+    "news.rate_per_tick": 0.025329528570931223,
+    "news.impact_sd": 0.014762000555649982
+   },
+   "moments": {
+    "acf1": 0.19659029615577825,
+    "acf_abs1": 0.19105989286810174,
+    "kurtosis": 2.8089551823517604,
+    "intraday_share": 0.6859470665096302,
+    "sd_15m": 0.001841051924473508,
+    "vr_day": 1.3653766129468652
+   },
+   "distance": 69.51794572381333
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.8629164329318345,
+    "market.noise_frac": 1.1587411266598433,
+    "market.noise_vol_feedback": 0.4722093664399002,
+    "market.prop_momentum_k": 70.54587131886653,
+    "market.mm_flow_anticipation": 0.4676586909160876,
+    "market.noise_permanence": 0.4569686084608099,
+    "news.rate_per_tick": 0.06851739556235817,
+    "news.impact_sd": 0.008336579316107224
+   },
+   "moments": {
+    "acf1": 0.17320123495147896,
+    "acf_abs1": 0.4950309545041689,
+    "kurtosis": 13.121024356340826,
+    "intraday_share": 0.9076506920728851,
+    "sd_15m": 0.02623084751017218,
+    "vr_day": 0.7473624344072646
+   },
+   "distance": 392.1629311411384
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.09777844099195414,
+    "market.noise_frac": 1.4132898553884683,
+    "market.noise_vol_feedback": 0.5793161202186081,
+    "market.prop_momentum_k": 32.09134392385772,
+    "market.mm_flow_anticipation": 0.24118992003176726,
+    "market.noise_permanence": 0.516077727207544,
+    "news.rate_per_tick": 0.05912676812470812,
+    "news.impact_sd": 0.003136917306454433
+   },
+   "moments": {
+    "acf1": 0.06629896073709836,
+    "acf_abs1": 0.4699919703122546,
+    "kurtosis": 20.05734280143213,
+    "intraday_share": 1.1052915290703265,
+    "sd_15m": 0.022594156952580453,
+    "vr_day": 0.4454769843681032
+   },
+   "distance": 407.6288464709082
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.4240678796816054,
+    "market.noise_frac": 0.8163184974719604,
+    "market.noise_vol_feedback": 0.3250918590405195,
+    "market.prop_momentum_k": 6.962461198171245,
+    "market.mm_flow_anticipation": 0.09489583235105617,
+    "market.noise_permanence": 0.498580755876796,
+    "news.rate_per_tick": 0.058433392910712034,
+    "news.impact_sd": 0.0039673301804828975
+   },
+   "moments": {
+    "acf1": 0.20101962373683707,
+    "acf_abs1": 0.11795862090541119,
+    "kurtosis": 2.816694584215277,
+    "intraday_share": 0.534822783020398,
+    "sd_15m": 0.0028927169674134432,
+    "vr_day": 2.143760919258903
+   },
+   "distance": 154.0766155905303
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.48540937456750816,
+    "market.noise_frac": 0.31091831476713555,
+    "market.noise_vol_feedback": 0.6154927742749382,
+    "market.prop_momentum_k": 42.6483642784434,
+    "market.mm_flow_anticipation": 0.394895031531821,
+    "market.noise_permanence": 0.18820798454118026,
+    "news.rate_per_tick": 0.006462940804402855,
+    "news.impact_sd": 0.01374122125073048
+   },
+   "moments": {
+    "acf1": 0.17267938317272072,
+    "acf_abs1": 0.10019895198308877,
+    "kurtosis": 1.2654813454603095,
+    "intraday_share": 0.8682046022875889,
+    "sd_15m": 0.0015201537915926783,
+    "vr_day": 0.4118991135518356
+   },
+   "distance": 52.31025818937106,
+   "recheck_distance": 14694.500648692445,
+   "recheck_moments": {
+    "acf1": 0.3050088556826739,
+    "acf_abs1": 0.2306549611086175,
+    "kurtosis": 184.33962135972095,
+    "intraday_share": 1.2377200094545624,
+    "sd_15m": 0.004417093064876634,
+    "vr_day": 0.5053975190355104
+   }
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.44536759988291585,
+    "market.noise_frac": 1.3233781471292243,
+    "market.noise_vol_feedback": 0.07172717207185347,
+    "market.prop_momentum_k": 2.2775115288358894,
+    "market.mm_flow_anticipation": 0.31964191726888497,
+    "market.noise_permanence": 0.36545159506637814,
+    "news.rate_per_tick": 0.018849116450246912,
+    "news.impact_sd": 0.00787285552722706
+   },
+   "moments": {
+    "acf1": 0.10780865572398098,
+    "acf_abs1": 0.06721630466359754,
+    "kurtosis": 2.891574623250553,
+    "intraday_share": 0.696412463702082,
+    "sd_15m": 0.004436220813904961,
+    "vr_day": 1.8004240102733868
+   },
+   "distance": 106.1072041443549
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.704294600684317,
+    "market.noise_frac": 0.33874396117270006,
+    "market.noise_vol_feedback": 0.5953789483236149,
+    "market.prop_momentum_k": 45.487361311516835,
+    "market.mm_flow_anticipation": 0.5134040945284147,
+    "market.noise_permanence": 0.27002988317862486,
+    "news.rate_per_tick": 0.024677257931575915,
+    "news.impact_sd": 0.011113531335808568
+   },
+   "moments": {
+    "acf1": 0.4039864225888271,
+    "acf_abs1": 0.23589645083492825,
+    "kurtosis": -0.7995341311916664,
+    "intraday_share": 0.9194927226687974,
+    "sd_15m": 0.0026684775852405963,
+    "vr_day": 0.8453484250305704
+   },
+   "distance": 200.95734939653963
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.6183258518828901,
+    "market.noise_frac": 1.1338392811935543,
+    "market.noise_vol_feedback": 0.0949215676248482,
+    "market.prop_momentum_k": 66.81109354392738,
+    "market.mm_flow_anticipation": 0.089845977873416,
+    "market.noise_permanence": 0.8566339841487943,
+    "news.rate_per_tick": 0.05007020074041594,
+    "news.impact_sd": 0.005112481606363243
+   },
+   "moments": {
+    "acf1": 0.33512170983292555,
+    "acf_abs1": 0.12820707481806054,
+    "kurtosis": 0.97373049174564,
+    "intraday_share": 0.6391457251955218,
+    "sd_15m": 0.004342618866425938,
+    "vr_day": 1.7622636743914901
+   },
+   "distance": 213.62816412705064
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9045496193286765,
+    "market.noise_frac": 1.4733437674260152,
+    "market.noise_vol_feedback": 0.5476731952154237,
+    "market.prop_momentum_k": 3.599851645838765,
+    "market.mm_flow_anticipation": 0.22759999587570778,
+    "market.noise_permanence": 0.9772886823265976,
+    "news.rate_per_tick": 0.028173281775988778,
+    "news.impact_sd": 0.007105329526197177
+   },
+   "moments": {
+    "acf1": 0.11885775010909969,
+    "acf_abs1": 0.6257314203947654,
+    "kurtosis": 3.7600323526223463,
+    "intraday_share": 0.684589389543606,
+    "sd_15m": 0.051498350433059455,
+    "vr_day": 1.8357950175573547
+   },
+   "distance": 597.6992006721563
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.6081460182333136,
+    "market.noise_frac": 1.0123379557218026,
+    "market.noise_vol_feedback": 0.40987726729280227,
+    "market.prop_momentum_k": 25.82771335765584,
+    "market.mm_flow_anticipation": 0.1366577717240872,
+    "market.noise_permanence": 0.7892739985600142,
+    "news.rate_per_tick": 0.04453452591748921,
+    "news.impact_sd": 0.007245442259604245
+   },
+   "moments": {
+    "acf1": 0.21341723709527258,
+    "acf_abs1": 0.12858801965675068,
+    "kurtosis": 3.7393391151085638,
+    "intraday_share": 0.6074108069314,
+    "sd_15m": 0.004680126169569987,
+    "vr_day": 1.744820713184724
+   },
+   "distance": 137.97625709517305
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.3370311139077692,
+    "market.noise_frac": 0.7995296095242971,
+    "market.noise_vol_feedback": 0.43880299257349853,
+    "market.prop_momentum_k": 29.34877428307901,
+    "market.mm_flow_anticipation": 0.24799520439217737,
+    "market.noise_permanence": 0.3158317245348535,
+    "news.rate_per_tick": 0.05446011034165888,
+    "news.impact_sd": 0.014927794851371756
+   },
+   "moments": {
+    "acf1": 0.1193717815914896,
+    "acf_abs1": 0.14418654069589784,
+    "kurtosis": 8.54450820957587,
+    "intraday_share": 0.640941372331419,
+    "sd_15m": 0.005354460300619268,
+    "vr_day": 1.615477192194899
+   },
+   "distance": 110.99977423782727
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.8237306649402348,
+    "market.noise_frac": 0.9055684227951399,
+    "market.noise_vol_feedback": 0.3290941428478899,
+    "market.prop_momentum_k": 75.74645289252966,
+    "market.mm_flow_anticipation": 0.3757657885419637,
+    "market.noise_permanence": 0.9254594032179322,
+    "news.rate_per_tick": 0.040559831564229536,
+    "news.impact_sd": 0.012255068436065431
+   },
+   "moments": {
+    "acf1": 0.26364879854658557,
+    "acf_abs1": 0.09379202368071872,
+    "kurtosis": 3.0197851778172673,
+    "intraday_share": 0.6253443675504206,
+    "sd_15m": 0.005648363149832237,
+    "vr_day": 1.4558069797884405
+   },
+   "distance": 159.8126284790192
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.6293958983230019,
+    "market.noise_frac": 0.3740123563660136,
+    "market.noise_vol_feedback": 0.23796929141734258,
+    "market.prop_momentum_k": 42.01246405112765,
+    "market.mm_flow_anticipation": 0.4708331883334184,
+    "market.noise_permanence": 0.43118399541173624,
+    "news.rate_per_tick": 0.009190933804170584,
+    "news.impact_sd": 0.00763219078693266
+   },
+   "moments": {
+    "acf1": 0.33953195124286495,
+    "acf_abs1": 0.1150853696201724,
+    "kurtosis": 8.320301125757918,
+    "intraday_share": 1.2816023162662793,
+    "sd_15m": 0.002773844831187673,
+    "vr_day": 0.7855397054379711
+   },
+   "distance": 154.49523822588785
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.843760598209709,
+    "market.noise_frac": 0.32974348947914883,
+    "market.noise_vol_feedback": 0.9937216486533124,
+    "market.prop_momentum_k": 69.61062335395377,
+    "market.mm_flow_anticipation": 0.28376799393848356,
+    "market.noise_permanence": 0.17330628984982402,
+    "news.rate_per_tick": 0.004066688986320114,
+    "news.impact_sd": 0.001508965705119249
+   },
+   "moments": {
+    "acf1": 0.6114782202241761,
+    "acf_abs1": 0.2778695449414549,
+    "kurtosis": -0.9712210599306199,
+    "intraday_share": 1.1694032793302083,
+    "sd_15m": 0.0030571153146387647,
+    "vr_day": 0.5699957537228733
+   },
+   "distance": 443.82292022694327
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.41526570329580087,
+    "market.noise_frac": 1.245269712453906,
+    "market.noise_vol_feedback": 0.5673634650824546,
+    "market.prop_momentum_k": 10.122928714167593,
+    "market.mm_flow_anticipation": 0.4930934833740593,
+    "market.noise_permanence": 0.251718355077995,
+    "news.rate_per_tick": 0.03689611873657548,
+    "news.impact_sd": 0.008588078718492487
+   },
+   "moments": {
+    "acf1": 0.08418448641045942,
+    "acf_abs1": 0.38616518851921794,
+    "kurtosis": 28.381941232155704,
+    "intraday_share": 1.0932567698144742,
+    "sd_15m": 0.01718759358421663,
+    "vr_day": 0.47160061048731244
+   },
+   "distance": 496.7701756775868
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.8904991150101922,
+    "market.noise_frac": 0.7342447781835758,
+    "market.noise_vol_feedback": 0.005561898780769608,
+    "market.prop_momentum_k": 24.92616771394712,
+    "market.mm_flow_anticipation": 0.5258510000174912,
+    "market.noise_permanence": 0.7293556243619881,
+    "news.rate_per_tick": 0.003045508748944054,
+    "news.impact_sd": 0.012727953710784123
+   },
+   "moments": {
+    "acf1": 0.38919563307956995,
+    "acf_abs1": 0.026263476730312995,
+    "kurtosis": -0.3043658701104359,
+    "intraday_share": 0.6833815914840036,
+    "sd_15m": 0.004158962301701506,
+    "vr_day": 1.7373970251543134
+   },
+   "distance": 268.435008227806
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.7980317783227225,
+    "market.noise_frac": 1.2210709766139478,
+    "market.noise_vol_feedback": 0.30566242432057683,
+    "market.prop_momentum_k": 15.007631995813242,
+    "market.mm_flow_anticipation": 0.3643504328340478,
+    "market.noise_permanence": 0.5593553553363331,
+    "news.rate_per_tick": 0.05171719943177546,
+    "news.impact_sd": 0.002430045444903683
+   },
+   "moments": {
+    "acf1": 0.2748500042991928,
+    "acf_abs1": 0.07578183376987302,
+    "kurtosis": 0.6869760983908262,
+    "intraday_share": 0.7284391366811357,
+    "sd_15m": 0.005649876134785261,
+    "vr_day": 1.5311961036773722
+   },
+   "distance": 177.34131731986628
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.6664238591805758,
+    "market.noise_frac": 1.3683688635593998,
+    "market.noise_vol_feedback": 0.391308157078527,
+    "market.prop_momentum_k": 76.62210451976469,
+    "market.mm_flow_anticipation": 0.013190836001646413,
+    "market.noise_permanence": 0.7623033609868342,
+    "news.rate_per_tick": 0.029662515328610094,
+    "news.impact_sd": 0.009405110273291627
+   },
+   "moments": {
+    "acf1": 0.16716235526051634,
+    "acf_abs1": 0.4460105585314339,
+    "kurtosis": 8.542677161063649,
+    "intraday_share": 0.7586616936024656,
+    "sd_15m": 0.019694037669918167,
+    "vr_day": 1.5146173554842202
+   },
+   "distance": 320.1514440140421
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9259548123555476,
+    "market.noise_frac": 0.8371489488035144,
+    "market.noise_vol_feedback": 0.22510548624632107,
+    "market.prop_momentum_k": 18.896013830153382,
+    "market.mm_flow_anticipation": 0.19341566745559857,
+    "market.noise_permanence": 0.30382659845035576,
+    "news.rate_per_tick": 0.04913300565678698,
+    "news.impact_sd": 0.006527626330931027
+   },
+   "moments": {
+    "acf1": 0.35545642865958194,
+    "acf_abs1": 0.03259839103612111,
+    "kurtosis": 0.6819308794016736,
+    "intraday_share": 0.6833102824174387,
+    "sd_15m": 0.003944476330826854,
+    "vr_day": 1.2163317806057603
+   },
+   "distance": 195.8096219547495
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.08741842081933944,
+    "market.noise_frac": 1.0171437836714934,
+    "market.noise_vol_feedback": 0.9748951028571307,
+    "market.prop_momentum_k": 28.67745626956316,
+    "market.mm_flow_anticipation": 0.04197893757320863,
+    "market.noise_permanence": 0.8164607155908673,
+    "news.rate_per_tick": 0.0669015680511678,
+    "news.impact_sd": 0.010169414529514378
+   },
+   "moments": {
+    "acf1": 0.020817143962850868,
+    "acf_abs1": 0.4164536104981355,
+    "kurtosis": 7.050232647977939,
+    "intraday_share": 0.8916289242113563,
+    "sd_15m": 0.031194390231091836,
+    "vr_day": 0.9988250234193671
+   },
+   "distance": 349.96160763701596
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.730827137514814,
+    "market.noise_frac": 0.8564484363114679,
+    "market.noise_vol_feedback": 0.5452977449344047,
+    "market.prop_momentum_k": 53.44580093553213,
+    "market.mm_flow_anticipation": 0.3157513798383512,
+    "market.noise_permanence": 0.8348134097720254,
+    "news.rate_per_tick": 0.017686748868432776,
+    "news.impact_sd": 0.005753882552927925
+   },
+   "moments": {
+    "acf1": 0.3852006963318608,
+    "acf_abs1": 0.2481122985948848,
+    "kurtosis": 0.32036599626336626,
+    "intraday_share": 0.6455572658797132,
+    "sd_15m": 0.005044890640324166,
+    "vr_day": 1.8437079367614213
+   },
+   "distance": 271.77317138260287
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.3117585873970637,
+    "market.noise_frac": 0.7306477258296049,
+    "market.noise_vol_feedback": 0.3800155613393632,
+    "market.prop_momentum_k": 41.09592443465644,
+    "market.mm_flow_anticipation": 0.41454898981965693,
+    "market.noise_permanence": 0.24916026795039564,
+    "news.rate_per_tick": 0.014994749697808712,
+    "news.impact_sd": 0.013260318249271891
+   },
+   "moments": {
+    "acf1": 0.15125844909242092,
+    "acf_abs1": 0.022969984971095224,
+    "kurtosis": 25.77387383705698,
+    "intraday_share": 0.7768169579610225,
+    "sd_15m": 0.0031325950917582618,
+    "vr_day": 1.505821635860554
+   },
+   "distance": 305.8648262840183
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.3220062859799444,
+    "market.noise_frac": 0.6937174942348633,
+    "market.noise_vol_feedback": 0.890129869337242,
+    "market.prop_momentum_k": 22.088282246208927,
+    "market.mm_flow_anticipation": 0.5731357757650998,
+    "market.noise_permanence": 0.07822839955458312,
+    "news.rate_per_tick": 0.06281153832495943,
+    "news.impact_sd": 0.011487845064686742
+   },
+   "moments": {
+    "acf1": 0.10185607699542285,
+    "acf_abs1": 0.32267377070894415,
+    "kurtosis": 2.47957600001879,
+    "intraday_share": 1.036595355842804,
+    "sd_15m": 0.012742784351657795,
+    "vr_day": 1.14216670141396
+   },
+   "distance": 171.92833335076173
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5666353821653467,
+    "market.noise_frac": 0.6455343566501296,
+    "market.noise_vol_feedback": 0.9337692149309302,
+    "market.prop_momentum_k": 8.627848975030068,
+    "market.mm_flow_anticipation": 0.10593667956982462,
+    "market.noise_permanence": 0.3574124137779526,
+    "news.rate_per_tick": 0.03908692189129095,
+    "news.impact_sd": 0.010478153641395743
+   },
+   "moments": {
+    "acf1": 0.14177376118679647,
+    "acf_abs1": 0.23487240991277508,
+    "kurtosis": 11.166558559007296,
+    "intraday_share": 0.7651779188738919,
+    "sd_15m": 0.00491952121683361,
+    "vr_day": 0.8024954332584129
+   },
+   "distance": 85.28042915623239
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.16941381457688476,
+    "market.noise_frac": 1.2780034333964871,
+    "market.noise_vol_feedback": 0.3679822459623244,
+    "market.prop_momentum_k": 60.02992467197573,
+    "market.mm_flow_anticipation": 0.22074184779126577,
+    "market.noise_permanence": 0.58078093749313,
+    "news.rate_per_tick": 0.013435942358022162,
+    "news.impact_sd": 0.0034342468307563046
+   },
+   "moments": {
+    "acf1": 0.12064997667882872,
+    "acf_abs1": 0.07046900399261795,
+    "kurtosis": 1.7960329399480903,
+    "intraday_share": 0.7638609966860987,
+    "sd_15m": 0.004222499014773491,
+    "vr_day": 1.2850007664495515
+   },
+   "distance": 67.2068574397117
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.676510353565731,
+    "market.noise_frac": 0.7550418837792465,
+    "market.noise_vol_feedback": 0.29035499834217643,
+    "market.prop_momentum_k": 12.26060830822773,
+    "market.mm_flow_anticipation": 0.1758113528421071,
+    "market.noise_permanence": 0.3397068394904889,
+    "news.rate_per_tick": 0.03585214175185384,
+    "news.impact_sd": 0.011837608620454191
+   },
+   "moments": {
+    "acf1": 0.19660682017332995,
+    "acf_abs1": 0.036662136607783904,
+    "kurtosis": 3.0484265980530614,
+    "intraday_share": 0.7907320392843867,
+    "sd_15m": 0.0036255966976412876,
+    "vr_day": 1.3855610167026458
+   },
+   "distance": 96.54228639621363
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.7824295641197108,
+    "market.noise_frac": 1.1096224515544824,
+    "market.noise_vol_feedback": 0.7009959690550341,
+    "market.prop_momentum_k": 38.01148674416802,
+    "market.mm_flow_anticipation": 0.4560956969309208,
+    "market.noise_permanence": 0.7979418648032869,
+    "news.rate_per_tick": 0.026701099584324674,
+    "news.impact_sd": 0.01064696592662846
+   },
+   "moments": {
+    "acf1": 0.27273418363318247,
+    "acf_abs1": 0.3845838661837486,
+    "kurtosis": 11.529085170149326,
+    "intraday_share": 0.8878290455005181,
+    "sd_15m": 0.014607516396716841,
+    "vr_day": 1.068311853262735
+   },
+   "distance": 302.1898923105283
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.24823135403944369,
+    "market.noise_frac": 1.044998180630064,
+    "market.noise_vol_feedback": 0.2709553506938368,
+    "market.prop_momentum_k": 62.10273418038276,
+    "market.mm_flow_anticipation": 0.3011547125043177,
+    "market.noise_permanence": 0.11539017824417627,
+    "news.rate_per_tick": 0.015512599477552859,
+    "news.impact_sd": 0.005267604009174068
+   },
+   "moments": {
+    "acf1": 0.19130919095629148,
+    "acf_abs1": 0.07262155931523637,
+    "kurtosis": 0.9138672863176773,
+    "intraday_share": 0.7356599837682217,
+    "sd_15m": 0.00291936870533619,
+    "vr_day": 1.3569697624420183
+   },
+   "distance": 81.73493399829712
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.23151517295632718,
+    "market.noise_frac": 0.9318502032714695,
+    "market.noise_vol_feedback": 0.04503607938466458,
+    "market.prop_momentum_k": 49.7657874725074,
+    "market.mm_flow_anticipation": 0.028414467369197643,
+    "market.noise_permanence": 0.39825177498637504,
+    "news.rate_per_tick": 0.010430007460643303,
+    "news.impact_sd": 0.010312809496156726
+   },
+   "moments": {
+    "acf1": 0.13069066230179116,
+    "acf_abs1": 0.022116997959029844,
+    "kurtosis": 7.8761603765470785,
+    "intraday_share": 0.7289533344332074,
+    "sd_15m": 0.0031499413907748325,
+    "vr_day": 1.599395381052725
+   },
+   "distance": 92.23610001308471
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.7340488382610147,
+    "market.noise_frac": 0.5761807267213361,
+    "market.noise_vol_feedback": 0.9596371367001019,
+    "market.prop_momentum_k": 79.92988650843591,
+    "market.mm_flow_anticipation": 0.07517883158914435,
+    "market.noise_permanence": 0.14715224337275365,
+    "news.rate_per_tick": 0.07560837512167065,
+    "news.impact_sd": 0.013213049458668014
+   },
+   "moments": {
+    "acf1": 0.22421644805007043,
+    "acf_abs1": 0.15681907026897302,
+    "kurtosis": 4.622930804914293,
+    "intraday_share": 0.7553202889267867,
+    "sd_15m": 0.007852825427979443,
+    "vr_day": 1.2160107463138132
+   },
+   "distance": 153.0511614192118
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.818258872489353,
+    "market.noise_frac": 0.3784129108580384,
+    "market.noise_vol_feedback": 0.8641833525977298,
+    "market.prop_momentum_k": 78.41971626145552,
+    "market.mm_flow_anticipation": 0.3414347517509789,
+    "market.noise_permanence": 0.41036011174737685,
+    "news.rate_per_tick": 0.008663312816496523,
+    "news.impact_sd": 0.0014031865129923598
+   },
+   "moments": {
+    "acf1": 0.5902473435945395,
+    "acf_abs1": 0.16099062523975305,
+    "kurtosis": -0.8973210909792493,
+    "intraday_share": 0.9296297233764208,
+    "sd_15m": 0.0033604763015364124,
+    "vr_day": 0.797047759982528
+   },
+   "distance": 418.8382861771598
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5154315518366679,
+    "market.noise_frac": 1.4915538452134993,
+    "market.noise_vol_feedback": 0.8270186272552805,
+    "market.prop_momentum_k": 4.020696727673759,
+    "market.mm_flow_anticipation": 0.5991481575306209,
+    "market.noise_permanence": 0.45131988287571867,
+    "news.rate_per_tick": 0.053408111070246296,
+    "news.impact_sd": 0.009025075639674255
+   },
+   "moments": {
+    "acf1": 0.07672599937206434,
+    "acf_abs1": 0.4947015164229975,
+    "kurtosis": 2.5164636338802486,
+    "intraday_share": 0.9301436285146598,
+    "sd_15m": 0.05157315686635935,
+    "vr_day": 1.0040290075363556
+   },
+   "distance": 497.80415385435555
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.40157461660663524,
+    "market.noise_frac": 1.3789540750982627,
+    "market.noise_vol_feedback": 0.7747232605517855,
+    "market.prop_momentum_k": 30.246671085757065,
+    "market.mm_flow_anticipation": 0.05214944686576822,
+    "market.noise_permanence": 0.3855146702959303,
+    "news.rate_per_tick": 0.061856928905947975,
+    "news.impact_sd": 0.0048673435126725985
+   },
+   "moments": {
+    "acf1": 0.1118077341639999,
+    "acf_abs1": 0.5371737511083924,
+    "kurtosis": 3.4187487926596534,
+    "intraday_share": 1.0540607677989133,
+    "sd_15m": 0.04734346789518706,
+    "vr_day": 0.7592547989794414
+   },
+   "distance": 486.96180257891615
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.7693013147890161,
+    "market.noise_frac": 0.8963153286510459,
+    "market.noise_vol_feedback": 0.26126395514302025,
+    "market.prop_momentum_k": 73.86130549902083,
+    "market.mm_flow_anticipation": 0.4478372819608102,
+    "market.noise_permanence": 0.6294500631578728,
+    "news.rate_per_tick": 0.005101786969058239,
+    "news.impact_sd": 0.012401517382980388
+   },
+   "moments": {
+    "acf1": 0.41290373739364056,
+    "acf_abs1": 0.1475508195897742,
+    "kurtosis": 0.16479048966543441,
+    "intraday_share": 0.7367349520066117,
+    "sd_15m": 0.004120071659398951,
+    "vr_day": 1.1105561447391348
+   },
+   "distance": 233.03511853808942
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.38137174124133005,
+    "market.noise_frac": 0.5348370457585202,
+    "market.noise_vol_feedback": 0.6770344302494077,
+    "market.prop_momentum_k": 71.50430454053745,
+    "market.mm_flow_anticipation": 0.29783650088434954,
+    "market.noise_permanence": 0.8964652684551296,
+    "news.rate_per_tick": 0.07359239318517372,
+    "news.impact_sd": 0.006303484305404346
+   },
+   "moments": {
+    "acf1": 0.3056458746533799,
+    "acf_abs1": 0.1257005422402426,
+    "kurtosis": 4.951735288503221,
+    "intraday_share": 0.7933296345486567,
+    "sd_15m": 0.0026570050453391635,
+    "vr_day": 1.3675737096060347
+   },
+   "distance": 138.69150441381964
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.5500843272305841,
+    "market.noise_frac": 0.9629525651840751,
+    "market.noise_vol_feedback": 0.16952684961720155,
+    "market.prop_momentum_k": 57.05799830330258,
+    "market.mm_flow_anticipation": 0.521986825978242,
+    "market.noise_permanence": 0.5639509219697463,
+    "news.rate_per_tick": 0.04593921254917602,
+    "news.impact_sd": 0.0037025296251501517
+   },
+   "moments": {
+    "acf1": 0.33667624802063306,
+    "acf_abs1": 0.13133995182427852,
+    "kurtosis": 0.04912129121156994,
+    "intraday_share": 0.7381763641495851,
+    "sd_15m": 0.0035528463727965316,
+    "vr_day": 1.355851257188259
+   },
+   "distance": 173.78236626419883
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.6992684876398043,
+    "market.noise_frac": 1.1033475743625731,
+    "market.noise_vol_feedback": 0.5175375003436474,
+    "market.prop_momentum_k": 13.769179432364716,
+    "market.mm_flow_anticipation": 0.0258558280563563,
+    "market.noise_permanence": 0.5151332780822708,
+    "news.rate_per_tick": 0.06987547600396744,
+    "news.impact_sd": 0.0045952750149438545
+   },
+   "moments": {
+    "acf1": 0.20058268115511518,
+    "acf_abs1": 0.5006722300352532,
+    "kurtosis": 18.924617381902294,
+    "intraday_share": 0.8565782886911617,
+    "sd_15m": 0.023711375442665546,
+    "vr_day": 0.7523858154048206
+   },
+   "distance": 448.54717475016696
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.07721798754198618,
+    "market.noise_frac": 1.29419083969821,
+    "market.noise_vol_feedback": 0.45403913635081034,
+    "market.prop_momentum_k": 39.476830029141404,
+    "market.mm_flow_anticipation": 0.5393206945183189,
+    "market.noise_permanence": 0.012888777629910095,
+    "news.rate_per_tick": 0.020291814910791427,
+    "news.impact_sd": 0.014444958491848084
+   },
+   "moments": {
+    "acf1": 0.016618940458198624,
+    "acf_abs1": 0.067934796115564,
+    "kurtosis": 1.9947263197734078,
+    "intraday_share": 0.7730832104942731,
+    "sd_15m": 0.004744290880108493,
+    "vr_day": 1.060092671186094
+   },
+   "distance": 47.1799522192269,
+   "recheck_distance": 150.8484108040147,
+   "recheck_moments": {
+    "acf1": -0.08522639982821269,
+    "acf_abs1": 0.1303530484201912,
+    "kurtosis": 12.88656194312676,
+    "intraday_share": 1.3063745902172172,
+    "sd_15m": 0.009460479555986024,
+    "vr_day": 0.7027895326860101
+   }
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.8810941471857843,
+    "market.noise_frac": 0.49317699386392416,
+    "market.noise_vol_feedback": 0.7250696042319176,
+    "market.prop_momentum_k": 68.25940844017305,
+    "market.mm_flow_anticipation": 0.26245406814030303,
+    "market.noise_permanence": 0.9559803709555219,
+    "news.rate_per_tick": 0.07211371285741743,
+    "news.impact_sd": 0.012028105258287798
+   },
+   "moments": {
+    "acf1": 0.3383066549296018,
+    "acf_abs1": 0.08310905434739481,
+    "kurtosis": 2.431539137964938,
+    "intraday_share": 0.7576620345348116,
+    "sd_15m": 0.0049998670848863044,
+    "vr_day": 1.7009050253558895
+   },
+   "distance": 222.36465877368212
+  },
+  {
+   "params": {
+    "market.impact_Y": 0.9911045712173834,
+    "market.noise_frac": 0.41731527635026733,
+    "market.noise_vol_feedback": 0.42914719486674163,
+    "market.prop_momentum_k": 64.46851268648774,
+    "market.mm_flow_anticipation": 0.12555230970581038,
+    "market.noise_permanence": 0.5391516599197883,
+    "news.rate_per_tick": 0.07954499985152481,
+    "news.impact_sd": 0.0055613179670182785
+   },
+   "moments": {
+    "acf1": 0.5677618246039102,
+    "acf_abs1": 0.20171085200209982,
+    "kurtosis": 0.7386888042488446,
+    "intraday_share": 0.6799905610241822,
+    "sd_15m": 0.003686582697609726,
+    "vr_day": 1.7521169070764477
+   },
+   "distance": 438.3942572502933
+  }
+ ],
+ "seconds": 988.1933436000254,
+ "refined": {
+  "seeds": 4,
+  "days_per_run": 10,
+  "rows": [
+   {
+    "params": {
+     "market.impact_Y": 0.057140370526409676,
+     "market.noise_frac": 0.6725829469408959,
+     "market.noise_vol_feedback": 0.08931954195728047,
+     "market.prop_momentum_k": 9.0040428084042,
+     "market.mm_flow_anticipation": 0.1784608800224591,
+     "market.noise_permanence": 0.8604315143055341,
+     "news.rate_per_tick": 0.06554473794463361,
+     "news.impact_sd": 0.005892036310742916
+    },
+    "moments": {
+     "acf1": -0.005537550413026517,
+     "acf_abs1": 0.08706597793922186,
+     "kurtosis": 7.706483200496416,
+     "intraday_share": 0.7888602746953602,
+     "sd_15m": 0.002450639422564656,
+     "vr_day": 0.8313704568407198
+    },
+    "distance": 17.980397229537562
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.06561642387354281,
+     "market.noise_frac": 0.7101850695101541,
+     "market.noise_vol_feedback": 0.08803397344785377,
+     "market.prop_momentum_k": 5.042689918663252,
+     "market.mm_flow_anticipation": 0.1987888009904936,
+     "market.noise_permanence": 0.5056597832931137,
+     "news.rate_per_tick": 0.08,
+     "news.impact_sd": 0.006855786598370949
+    },
+    "moments": {
+     "acf1": -0.02215479744341956,
+     "acf_abs1": 0.1397696642057873,
+     "kurtosis": 8.972462706439753,
+     "intraday_share": 0.807323352617487,
+     "sd_15m": 0.0027774826847122825,
+     "vr_day": 0.7159199046388611
+    },
+    "distance": 20.535146387466092
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.07031780535307265,
+     "market.noise_frac": 0.8272029177222183,
+     "market.noise_vol_feedback": 0.09624037000900205,
+     "market.prop_momentum_k": 7.876812555268468,
+     "market.mm_flow_anticipation": 0.16527385839854652,
+     "market.noise_permanence": 1.0,
+     "news.rate_per_tick": 0.056666068196707116,
+     "news.impact_sd": 0.005565410298146992
+    },
+    "moments": {
+     "acf1": -0.015440998139814085,
+     "acf_abs1": 0.13218534905402354,
+     "kurtosis": 2.2473513856760787,
+     "intraday_share": 0.6183914198921231,
+     "sd_15m": 0.002911806480980148,
+     "vr_day": 1.4796662844953408
+    },
+    "distance": 37.45775736615854
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.05,
+     "market.noise_frac": 0.5909982821235044,
+     "market.noise_vol_feedback": 0.08272987881377708,
+     "market.prop_momentum_k": 9.600465519151214,
+     "market.mm_flow_anticipation": 0.1658204213853317,
+     "market.noise_permanence": 0.7874161650715877,
+     "news.rate_per_tick": 0.05617822034314224,
+     "news.impact_sd": 0.006025483818794805
+    },
+    "moments": {
+     "acf1": -0.004460828931964803,
+     "acf_abs1": 0.06179870764818125,
+     "kurtosis": 6.826098682409736,
+     "intraday_share": 0.5251311500213057,
+     "sd_15m": 0.002043243229634515,
+     "vr_day": 1.4920773348065464
+    },
+    "distance": 45.59717410066593
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.05,
+     "market.noise_frac": 0.6814151031573173,
+     "market.noise_vol_feedback": 0.12393121970769867,
+     "market.prop_momentum_k": 7.4331182745237845,
+     "market.mm_flow_anticipation": 0.17644716500645446,
+     "market.noise_permanence": 1.0,
+     "news.rate_per_tick": 0.05113986495171178,
+     "news.impact_sd": 0.0039287302428303965
+    },
+    "moments": {
+     "acf1": -0.0166610486560676,
+     "acf_abs1": 0.07903229255865109,
+     "kurtosis": 6.196200077090717,
+     "intraday_share": 0.7558854845750583,
+     "sd_15m": 0.0020395904924248526,
+     "vr_day": 1.2278775908468222
+    },
+    "distance": 25.651781951668582
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.11029388482551578,
+     "market.noise_frac": 0.46425261538326434,
+     "market.noise_vol_feedback": 0.1437866609055104,
+     "market.prop_momentum_k": 5.987274315239871,
+     "market.mm_flow_anticipation": 0.5481005307608224,
+     "market.noise_permanence": 0.04698354740664471,
+     "news.rate_per_tick": 0.034451912863660755,
+     "news.impact_sd": 0.008753164550182584
+    },
+    "moments": {
+     "acf1": 0.014913300708250275,
+     "acf_abs1": 0.1837427074310418,
+     "kurtosis": 26.63233724531851,
+     "intraday_share": 0.47405562946824303,
+     "sd_15m": 0.0021252854386589358,
+     "vr_day": 1.7862355639371938
+    },
+    "distance": 297.2603271018243
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.09913139580889535,
+     "market.noise_frac": 0.7293570035045361,
+     "market.noise_vol_feedback": 0.23915444521039458,
+     "market.prop_momentum_k": 4.4177894810998675,
+     "market.mm_flow_anticipation": 0.6,
+     "market.noise_permanence": 0.047036685654568255,
+     "news.rate_per_tick": 0.02973937224944106,
+     "news.impact_sd": 0.005381627531234564
+    },
+    "moments": {
+     "acf1": -0.00948716387809497,
+     "acf_abs1": 0.1121512975703486,
+     "kurtosis": 3.4806222790121835,
+     "intraday_share": 0.8637060945189635,
+     "sd_15m": 0.001951863269788387,
+     "vr_day": 1.0986259464351675
+    },
+    "distance": 13.19271003564783
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.14249322836835782,
+     "market.noise_frac": 0.3743885856530721,
+     "market.noise_vol_feedback": 0.15494691906033076,
+     "market.prop_momentum_k": 6.111118152765113,
+     "market.mm_flow_anticipation": 0.6,
+     "market.noise_permanence": 0.06304168552631896,
+     "news.rate_per_tick": 0.025809186795669712,
+     "news.impact_sd": 0.008197395721554486
+    },
+    "moments": {
+     "acf1": -0.03432704492881908,
+     "acf_abs1": 0.04040636749347647,
+     "kurtosis": 30.710139300545734,
+     "intraday_share": 0.5079118937192814,
+     "sd_15m": 0.001652708401543414,
+     "vr_day": 1.1168826954468605
+    },
+    "distance": 358.133227662917
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.14293076777799454,
+     "market.noise_frac": 0.33267801248002515,
+     "market.noise_vol_feedback": 0.13035462179788465,
+     "market.prop_momentum_k": 6.337790585040819,
+     "market.mm_flow_anticipation": 0.3659520012757654,
+     "market.noise_permanence": 0.03449909006077457,
+     "news.rate_per_tick": 0.022500674143268333,
+     "news.impact_sd": 0.009404226985977569
+    },
+    "moments": {
+     "acf1": -0.033504238202575004,
+     "acf_abs1": 0.01819820400322171,
+     "kurtosis": 172.81914439909966,
+     "intraday_share": 0.8038350124116772,
+     "sd_15m": 0.0020661420178261325,
+     "vr_day": 0.7988477274827882
+    },
+    "distance": 12782.955210570031
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.09584860028335372,
+     "market.noise_frac": 0.5855730296698556,
+     "market.noise_vol_feedback": 0.14793592531214475,
+     "market.prop_momentum_k": 6.907726603579381,
+     "market.mm_flow_anticipation": 0.536753930462298,
+     "market.noise_permanence": 0.05670023946311141,
+     "news.rate_per_tick": 0.03357343846307735,
+     "news.impact_sd": 0.006847371870800657
+    },
+    "moments": {
+     "acf1": -0.012789333191643625,
+     "acf_abs1": 0.1773162806980194,
+     "kurtosis": 12.483584194708516,
+     "intraday_share": 0.535582625310599,
+     "sd_15m": 0.00204144535647554,
+     "vr_day": 1.6742938149795938
+    },
+    "distance": 82.50352528752813
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.07721798754198618,
+     "market.noise_frac": 1.29419083969821,
+     "market.noise_vol_feedback": 0.45403913635081034,
+     "market.prop_momentum_k": 39.476830029141404,
+     "market.mm_flow_anticipation": 0.5393206945183189,
+     "market.noise_permanence": 0.012888777629910095,
+     "news.rate_per_tick": 0.020291814910791427,
+     "news.impact_sd": 0.014444958491848084
+    },
+    "moments": {
+     "acf1": -0.004503215601598575,
+     "acf_abs1": 0.6135869554437859,
+     "kurtosis": 8.715609498015596,
+     "intraday_share": 1.1761954775312244,
+     "sd_15m": 0.0341746375803331,
+     "vr_day": 0.6817882533206665
+    },
+    "distance": 419.33232668567655
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.10378531894036047,
+     "market.noise_frac": 1.5,
+     "market.noise_vol_feedback": 0.8001960028422055,
+     "market.prop_momentum_k": 38.09807231276156,
+     "market.mm_flow_anticipation": 0.46653605414559807,
+     "market.noise_permanence": 0.008976377063721964,
+     "news.rate_per_tick": 0.007732237053980871,
+     "news.impact_sd": 0.010414987508762017
+    },
+    "moments": {
+     "acf1": -0.013714259655006644,
+     "acf_abs1": 0.6193935135399222,
+     "kurtosis": 0.24640633770585119,
+     "intraday_share": 0.8347442613901427,
+     "sd_15m": 0.07626024392326294,
+     "vr_day": 1.3574142194757217
+    },
+    "distance": 660.957051705111
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.08721157533319704,
+     "market.noise_frac": 1.0371772914044675,
+     "market.noise_vol_feedback": 0.23733612800374007,
+     "market.prop_momentum_k": 45.960339748686145,
+     "market.mm_flow_anticipation": 0.46516677513906735,
+     "market.noise_permanence": 0.011776499268261237,
+     "news.rate_per_tick": 0.018217045522716045,
+     "news.impact_sd": 0.01396662928105625
+    },
+    "moments": {
+     "acf1": 0.02683166333370396,
+     "acf_abs1": 0.08917662352930443,
+     "kurtosis": 225.2164047289768,
+     "intraday_share": 0.9720140390674226,
+     "sd_15m": 0.0055605799827136955,
+     "vr_day": 0.7243460878618492
+    },
+    "distance": 21928.93252844365
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.08694219289940788,
+     "market.noise_frac": 0.8388331188546587,
+     "market.noise_vol_feedback": 0.4289773142793199,
+     "market.prop_momentum_k": 34.76345323630044,
+     "market.mm_flow_anticipation": 0.6,
+     "market.noise_permanence": 0.009949602924054208,
+     "news.rate_per_tick": 0.03055628704599724,
+     "news.impact_sd": 0.015
+    },
+    "moments": {
+     "acf1": 0.016381094841048202,
+     "acf_abs1": 0.4856431605573027,
+     "kurtosis": 25.762967608432355,
+     "intraday_share": 0.698300402865903,
+     "sd_15m": 0.011190653011101469,
+     "vr_day": 1.7322328969744722
+    },
+    "distance": 425.64314333994685
+   },
+   {
+    "params": {
+     "market.impact_Y": 0.11590759464128671,
+     "market.noise_frac": 1.0852000217835516,
+     "market.noise_vol_feedback": 0.5553904759019286,
+     "market.prop_momentum_k": 43.2280641876651,
+     "market.mm_flow_anticipation": 0.370885276171049,
+     "market.noise_permanence": 0.01207488296634717,
+     "news.rate_per_tick": 0.018120493137482825,
+     "news.impact_sd": 0.011345339227118695
+    },
+    "moments": {
+     "acf1": 0.01756489111481912,
+     "acf_abs1": 0.3746013985792416,
+     "kurtosis": 11.219550582375657,
+     "intraday_share": 1.1198464760711186,
+     "sd_15m": 0.010504614645154921,
+     "vr_day": 0.8548489029106405
+    },
+    "distance": 153.94271793511945
+   }
+  ],
+  "chosen": {
+   "params": {
+    "market.impact_Y": 0.09913139580889535,
+    "market.noise_frac": 0.7293570035045361,
+    "market.noise_vol_feedback": 0.23915444521039458,
+    "market.prop_momentum_k": 4.4177894810998675,
+    "market.mm_flow_anticipation": 0.6,
+    "market.noise_permanence": 0.047036685654568255,
+    "news.rate_per_tick": 0.02973937224944106,
+    "news.impact_sd": 0.005381627531234564
+   },
+   "moments": {
+    "acf1": -0.00948716387809497,
+    "acf_abs1": 0.1121512975703486,
+    "kurtosis": 3.4806222790121835,
+    "intraday_share": 0.8637060945189635,
+    "sd_15m": 0.001951863269788387,
+    "vr_day": 1.0986259464351675
+   },
+   "distance": 13.19271003564783
+  }
+ }
+}

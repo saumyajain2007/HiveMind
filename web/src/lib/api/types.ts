@@ -997,6 +997,12 @@ export interface components {
        */
       mutate_rate: number;
       /**
+       * Mutate Ref Agents
+       * @description Population size the mutation rate is set for (scaled down above it)
+       * @default 10000
+       */
+      mutate_ref_agents: number;
+      /**
        * Invent Rate
        * @description Base probability of inventing a narrative after a big unexplained move.
        * @default 0.002
@@ -1377,8 +1383,8 @@ export interface components {
       implied_vol: number;
       /**
        * Impact Y
-       * @description Square-root law prefactor
-       * @default 0.7
+       * @description Square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7
+       * @default 0.099
        */
       impact_Y: number;
       /**
@@ -1395,8 +1401,8 @@ export interface components {
       adv_ewma: number;
       /**
        * Noise Frac
-       * @description Unmodelled order flow, as a share of per-tick vol
-       * @default 0.3
+       * @description Unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3
+       * @default 0.729
        */
       noise_frac: number;
       /**
@@ -1405,6 +1411,96 @@ export interface components {
        * @default 1
        */
       mm_news_pass_through: number;
+      /**
+       * Mm Flow Anticipation
+       * @description FITTED (intraday_fit; at the top of its search range)
+       * @default 0.6
+       */
+      mm_flow_anticipation: number;
+      /**
+       * Flow Rho Ewma
+       * @description Per-open-tick EWMA weight of the market maker's rho estimate
+       * @default 0.98
+       */
+      flow_rho_ewma: number;
+      /**
+       * Noise Vol Feedback
+       * @description FITTED (intraday_fit)
+       * @default 0.239
+       */
+      noise_vol_feedback: number;
+      /**
+       * Intraday Vol Ewma
+       * @description Per-open-tick EWMA weight of recent |r| for the feedback
+       * @default 0.9
+       */
+      intraday_vol_ewma: number;
+      /**
+       * Noise Permanence
+       * @description FITTED (intraday_fit)
+       * @default 0.047
+       */
+      noise_permanence: number;
+      /**
+       * Noise Intraday Profile
+       * @description Time-of-day shape of the unmodelled flow (sd multiplier per open tick, 09:30 .. 15:45, RMS 1): measured on AAPL's 15-minute bars (U-shape: busy open, quiet lunch, pick-up at the close).
+       * @default [
+       *       1.896,
+       *       1.62,
+       *       1.277,
+       *       1.115,
+       *       1.144,
+       *       1.096,
+       *       1.077,
+       *       1.01,
+       *       0.934,
+       *       0.858,
+       *       0.915,
+       *       0.762,
+       *       0.648,
+       *       0.791,
+       *       0.82,
+       *       0.762,
+       *       0.724,
+       *       0.915,
+       *       0.648,
+       *       0.715,
+       *       0.934,
+       *       0.724,
+       *       0.619,
+       *       0.762,
+       *       1.058,
+       *       1.058
+       *     ]
+       */
+      noise_intraday_profile: [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+      ];
       /**
        * Circuit Breaker
        * @description Max |log move| per tick
@@ -1461,8 +1557,8 @@ export interface components {
       prop_momentum_ticks: number;
       /**
        * Prop Momentum K
-       * @description Prop target = capital * tanh(k * momentum + k2 * imbalance)
-       * @default 30
+       * @description FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)
+       * @default 4.42
        */
       prop_momentum_k: number;
       /**

@@ -99,7 +99,9 @@ def test_results_shape_and_metrics(world: World) -> None:
     denial = next(rec for rec in r["lineage"] if rec["kind"] == "statement")
     assert denial["parent"] == rumour and denial["root"] == rumour
     # the earnings miss moved V_true
-    assert r["series"]["v_true"][-1] == pytest.approx(100 * np.exp(-0.05))
+    # real events move V_true by exactly their true impact; the informed share of the unmodelled
+    # flow (market.noise_permanence) adds a small random walk on top
+    assert r["series"]["v_true"][-1] == pytest.approx(100 * np.exp(-0.05), rel=0.02)
     json.dumps(r["summary"])  # valid JSON (NaN replaced)
 
 

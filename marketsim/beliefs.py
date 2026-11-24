@@ -141,6 +141,10 @@ class Beliefs:
         if len(s) == 0:
             return []
         p = self.cfg.diffusion.mutate_rate * pop.impulsiveness[a] * (1.0 - pop.knowledge[a])
+        # per-capita rate: a population larger than `mutate_ref_agents` does not mutate a story
+        # proportionally more often (at 1M agents every popular story used to mutate every tick)
+        n_people = max(int(pop.n), 1)
+        p = p * min(1.0, self.cfg.diffusion.mutate_ref_agents / n_people)
         hit = self.rng.random(len(s)) < p
         children = []
         for parent_slot in np.unique(s[hit]):

@@ -206,13 +206,38 @@ def fetch_one(ticker: str, start: str, market_rows: list[tuple[str, float, float
     return len(rows)
 
 
+def intraday(ticker: str) -> Path:
+    from marketsim.realdata import utc_to_new_york
+
+    """The last 60 days of 15-minute bars (Yahoo keeps no more at this interval), New York time,
+    regular hours: `data/<T>/intraday_15m.csv` for `marketsim.intraday_fit`."""
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=15m&range=60d"
+    d = get_json(url)["chart"]["result"][0]
+    q = d["indicators"]["quote"][0]
+    out = ROOT / ticker.upper() / "intraday_15m.csv"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8", newline="\n") as f:
+        f.write("time,close,volume\n")
+        for t, c, v in zip(d["timestamp"], q["close"], q["volume"], strict=True):
+            if c is None:
+                continue
+            ny = utc_to_new_york(datetime.fromtimestamp(t, UTC).replace(tzinfo=None))  # EST / EDT
+            f.write(f"{ny.isoformat(timespec='minutes')},{c:.4f},{v or 0}\n")
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("tickers", nargs="*", help="tickers to fetch (default: the built-in universe)")
     ap.add_argument("--start", default="2015-01-01")
     ap.add_argument("--market", default="SPY")
     ap.add_argument("--force", action="store_true", help="re-download tickers already in data/")
+    ap.add_argument("--intraday", action="store_true", help="only fetch the last 60 days of 15-min bars")
     args = ap.parse_args()
+    if args.intraday:
+        for t in args.tickers or ["AAPL"]:
+            print(f"wrote {intraday(t.upper())}")
+        return
     tickers = [t.upper() for t in (args.tickers or UNIVERSE)]
     print(f"prices {args.market} …")
     market_rows = prices(args.market, args.start)

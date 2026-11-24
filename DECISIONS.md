@@ -372,3 +372,52 @@ A small framework instead of a third-party one (backtesting.py is AGPL; vectorbt
 The recalibration was fitted on those very training origins. Deflated Sharpe over the 6 rules: buy and hold 0.38, volatility targeting 0.35, direction rules 0.00–0.02.
 
 **On overfitting experiments (agreed scope).** Fitting the model hard to many custom events for one stock is fine as an experiment, as long as every result reports in-sample and out-of-sample side by side and the deflated Sharpe uses the real number of trials. Results are never fabricated or tuned on the test period.
+
+### Tick dynamics fitted to real 15-minute bars (`marketsim.intraday_fit`)
+
+The 1M-agent census run showed the market's tick dynamics were wrong: 15-minute returns with lag-1 autocorrelation +0.31 (real ≈ 0), excess kurtosis 42 (inflated by the demo's shocks) and weak volatility clustering. Stories also mutated almost every tick.
+
+**Targets.** 59 days of real AAPL 15-minute bars (`fetch_market_data.py AAPL --intraday`, regular hours, overnight gaps excluded):
+
+- lag-1 autocorrelation −0.009;
+- |r| lag-1 autocorrelation 0.22;
+- excess kurtosis 3.35;
+- 15-min sd 0.21%;
+- open-to-close variance ratio 0.67.
+
+**What changed in the engine**
+
+- **Mutation per capita** (`diffusion.mutate_ref_agents = 10,000`): above that size each sharer's mutation chance is scaled by 10,000 / N, so a popular story does not mutate every tick at 1M agents. It changes nothing at ≤ 10k agents.
+- **Efficient market maker** (`market.mm_flow_anticipation`): agents hear news over hours, so the auction's impact x_t is persistent. The market maker estimates its persistence ρ online and prices in the predictable rest of the flow, so the return is x_t + k·ρ/(1−ρ)·(x_t − x_{t−1}); for k = 1 only the surprise moves the price. An earlier version that only scaled x_t up was wrong: it added noise without removing the autocorrelation, and was dropped.
+- **Volatility feedback** (`market.noise_vol_feedback`): the unmodelled flow scales with recent intraday |r|, anchored to implied (not realised) volatility; the realised anchor ran away in testing.
+- **Informed unmodelled flow** (`market.noise_permanence`): this share of the noise also moves V_true and every agent's perceived value. Without it, value investors trade noise straight back and intraday moves revert within the day.
+- **Intraday volatility profile** (`market.noise_intraday_profile`): AAPL's measured U-shape, 2.0× at the open and 0.65–0.8× over lunch.
+- **Background news.** Self-exciting synthetic events (`events.hawkes_events`, rate 0.0297 per tick ≈ 2.9 a day, impact sd 0.54%) are a *scenario* input. Without news every simulated day is alike, and neither the fat tails nor day-to-day volatility differences appear.
+
+**Fit.** A 64-point Latin-hypercube search at 100,000 agents (3 seeds × 6 days). The 3 best candidates and 12 perturbations were then re-scored on 4 fresh seeds × 10 days, because the first pass is noisy once news adds fat tails. The chosen values are now the defaults:
+
+| setting | was | fitted |
+|---|---|---|
+| `market.impact_Y` (how far the agents' own flow moves the price) | 0.7 | 0.099 |
+| `market.noise_frac` | 0.3 | 0.729 |
+| `market.noise_vol_feedback` | (new) | 0.239 |
+| `market.prop_momentum_k` | 30 | 4.42 |
+| `market.mm_flow_anticipation` | (new) | 0.6 (top of its range) |
+| `market.noise_permanence` | (new) | 0.047 |
+
+| 15-min moment | real AAPL | old defaults (quiet) | fitted (with news) |
+|---|---|---|---|
+| lag-1 autocorrelation | −0.009 | +0.43 | −0.009 |
+| excess kurtosis | 3.35 | −0.98 | 3.48 |
+| sd | 0.21% | 0.19% | 0.20% |
+| \|r\| lag-1 autocorrelation | 0.22 | 0.21 | 0.11 |
+| open-to-close variance ratio | 0.67 | 0.55 | 1.10 |
+| intraday share of daily sd (not fitted: no overnight news) | 0.75 | 1.04 | 0.86 |
+
+Distance 228 → 13.
+
+**What it means.**
+
+- **The agents' own flow is too persistent.** To make prices behave like AAPL's, that flow has to move the price about 7× less than before: most 15-minute variance comes from flow the model does not represent, plus news. Rumours with no real impact therefore move the simulated price much less than before.
+- **Gaps that remain.** Volatility clustering is about half the real level, and the fitted market reverts less within the day than AAPL does.
+- **Ranges and sources.** `mm_flow_anticipation` sits at the top of its range. All targets come from one stock over 59 days.

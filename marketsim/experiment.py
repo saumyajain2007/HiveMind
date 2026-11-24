@@ -704,8 +704,8 @@ def main(argv: list[str] | None = None) -> dict[str, Any]:
         out_dir=args.out,
     )
     agents = load_agent_params(cfg.ticker) if not cfg.data_root else {}
-    if "market.noise_frac" in agents:  # re-tune the unmodelled flow around the fitted value
-        n = agents["market.noise_frac"]
+    if not cfg.data_root:  # re-tune the unmodelled flow around the fitted value (agent fit or intraday fit)
+        n = agents.get("market.noise_frac", Config().market.noise_frac)
         cfg.grid = {"market.noise_frac": [round(n * f, 3) for f in (0.6, 1.0, 1.5)]}
     if args.quick:
         cfg.grid = {"market.noise_frac": [0.6, 1.5]}

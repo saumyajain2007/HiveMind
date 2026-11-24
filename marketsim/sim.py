@@ -235,6 +235,12 @@ class Simulation:
             )
             buy = q > 0
             res = market.clear(q[buy], lim[buy], -q[~buy], lim[~buy], held, self.market_rng)
+            perm = self.cfg.market.noise_permanence
+            if perm > 0 and market.last_noise != 0.0:
+                # the informed part of the unmodelled flow: everyone's valuation moves with it
+                shift = math.exp(perm * market.last_noise)
+                market.v_true *= shift
+                pop.perceived_value *= shift
             self.trading.settle(retail, res.price)
             self.props.settle(firm_p, res.price)
             self.funds.settle(firm_f, res.price)

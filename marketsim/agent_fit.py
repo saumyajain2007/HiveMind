@@ -48,15 +48,14 @@ ROOT = Path(__file__).resolve().parents[1]
 WINDOW_DAYS = 63
 
 # parameter -> (low, high); every one is read by the simulation at run time
+# market.noise_frac and market.prop_momentum_k are fitted to 15-minute bars by marketsim.intraday_fit
 SPACE: dict[str, tuple[float, float]] = {
     "trading.sentiment_scale": (0.01, 0.15),
     "trading.switching": (0.05, 0.8),
     "trading.risk_aversion": (0.5, 6.0),
     "market.firm_capital_share": (0.02, 0.4),
-    "market.prop_momentum_k": (5.0, 80.0),
     "market.fund_value_k": (1.0, 15.0),
     "diffusion.base_share": (0.05, 0.5),
-    "market.noise_frac": (0.2, 1.2),
 }
 MOMENTS = ("sd", "kurtosis", "acf1", "acf_abs", "earnings_ratio", "volume_corr")
 # a gap of one `scale` costs 1: roughly the sampling error of each moment over ~500 days

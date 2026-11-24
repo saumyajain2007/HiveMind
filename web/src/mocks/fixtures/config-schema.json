@@ -799,6 +799,16 @@
           "placeholder": false
         },
         {
+          "name": "mutate_ref_agents",
+          "key": "diffusion.mutate_ref_agents",
+          "kind": "float",
+          "default": 10000.0,
+          "min": 100.0,
+          "max": 10000000.0,
+          "description": "Population size the mutation rate is set for (scaled down above it)",
+          "placeholder": false
+        },
+        {
           "name": "invent_rate",
           "key": "diffusion.invent_rate",
           "kind": "float",
@@ -1081,10 +1091,10 @@
           "name": "impact_Y",
           "key": "market.impact_Y",
           "kind": "float",
-          "default": 0.7,
+          "default": 0.099,
           "min": 0.01,
           "max": 10.0,
-          "description": "Square-root law prefactor",
+          "description": "Square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7",
           "placeholder": false
         },
         {
@@ -1111,10 +1121,10 @@
           "name": "noise_frac",
           "key": "market.noise_frac",
           "kind": "float",
-          "default": 0.3,
+          "default": 0.729,
           "min": 0.0,
           "max": 5.0,
-          "description": "Unmodelled order flow, as a share of per-tick vol",
+          "description": "Unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3",
           "placeholder": false
         },
         {
@@ -1126,6 +1136,93 @@
           "max": 2.0,
           "description": "Share of a public real event's true_impact the market maker re-quotes at once",
           "placeholder": true
+        },
+        {
+          "name": "mm_flow_anticipation",
+          "key": "market.mm_flow_anticipation",
+          "kind": "float",
+          "default": 0.6,
+          "min": 0.0,
+          "max": 1.5,
+          "description": "FITTED (intraday_fit; at the top of its search range)",
+          "placeholder": false
+        },
+        {
+          "name": "flow_rho_ewma",
+          "key": "market.flow_rho_ewma",
+          "kind": "float",
+          "default": 0.98,
+          "min": 0.5,
+          "max": 0.999,
+          "description": "Per-open-tick EWMA weight of the market maker's rho estimate",
+          "placeholder": false
+        },
+        {
+          "name": "noise_vol_feedback",
+          "key": "market.noise_vol_feedback",
+          "kind": "float",
+          "default": 0.239,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "FITTED (intraday_fit)",
+          "placeholder": false
+        },
+        {
+          "name": "intraday_vol_ewma",
+          "key": "market.intraday_vol_ewma",
+          "kind": "float",
+          "default": 0.9,
+          "min": 0.5,
+          "max": 0.995,
+          "description": "Per-open-tick EWMA weight of recent |r| for the feedback",
+          "placeholder": false
+        },
+        {
+          "name": "noise_permanence",
+          "key": "market.noise_permanence",
+          "kind": "float",
+          "default": 0.047,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "FITTED (intraday_fit)",
+          "placeholder": false
+        },
+        {
+          "name": "noise_intraday_profile",
+          "key": "market.noise_intraday_profile",
+          "kind": "json",
+          "default": [
+            1.896,
+            1.62,
+            1.277,
+            1.115,
+            1.144,
+            1.096,
+            1.077,
+            1.01,
+            0.934,
+            0.858,
+            0.915,
+            0.762,
+            0.648,
+            0.791,
+            0.82,
+            0.762,
+            0.724,
+            0.915,
+            0.648,
+            0.715,
+            0.934,
+            0.724,
+            0.619,
+            0.762,
+            1.058,
+            1.058
+          ],
+          "min": 0.0,
+          "max": 5.0,
+          "description": "Time-of-day shape of the unmodelled flow (sd multiplier per open tick, 09:30 .. 15:45, RMS 1): measured on AAPL's 15-minute bars (U-shape: busy open, quiet lunch, pick-up at the close).",
+          "placeholder": false
         },
         {
           "name": "circuit_breaker",
@@ -1221,11 +1318,11 @@
           "name": "prop_momentum_k",
           "key": "market.prop_momentum_k",
           "kind": "float",
-          "default": 30.0,
+          "default": 4.42,
           "min": 0.0,
           "max": 10000.0,
-          "description": "Prop target = capital * tanh(k * momentum + k2 * imbalance)",
-          "placeholder": true
+          "description": "FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)",
+          "placeholder": false
         },
         {
           "name": "prop_imbalance_k",

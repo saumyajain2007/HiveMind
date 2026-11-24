@@ -29,7 +29,7 @@ def test_with_params_sets_fields_in_their_sections() -> None:
         0.03,
     )
     assert with_params(CFG, {"market.noise_frac": 0.1}).market.noise_frac == 0.1
-    assert CFG.market.impact_Y == 0.7  # the original is untouched
+    assert CFG.market.impact_Y == Config().market.impact_Y  # the original is untouched
     with pytest.raises(KeyError):
         with_params(CFG, {"market.nope": 1.0})
 

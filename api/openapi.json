@@ -2323,6 +2323,15 @@
             "default": 0.04,
             "placeholder": false
           },
+          "mutate_ref_agents": {
+            "type": "number",
+            "maximum": 10000000.0,
+            "minimum": 100.0,
+            "title": "Mutate Ref Agents",
+            "description": "Population size the mutation rate is set for (scaled down above it)",
+            "default": 10000.0,
+            "placeholder": false
+          },
           "invent_rate": {
             "type": "number",
             "maximum": 1.0,
@@ -2986,8 +2995,8 @@
             "maximum": 10.0,
             "minimum": 0.01,
             "title": "Impact Y",
-            "description": "Square-root law prefactor",
-            "default": 0.7,
+            "description": "Square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7",
+            "default": 0.099,
             "placeholder": false
           },
           "adv_turnover": {
@@ -3013,8 +3022,8 @@
             "maximum": 5.0,
             "minimum": 0.0,
             "title": "Noise Frac",
-            "description": "Unmodelled order flow, as a share of per-tick vol",
-            "default": 0.3,
+            "description": "Unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3",
+            "default": 0.729,
             "placeholder": false
           },
           "mm_news_pass_through": {
@@ -3025,6 +3034,169 @@
             "description": "Share of a public real event's true_impact the market maker re-quotes at once",
             "default": 1.0,
             "placeholder": true
+          },
+          "mm_flow_anticipation": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.0,
+            "title": "Mm Flow Anticipation",
+            "description": "FITTED (intraday_fit; at the top of its search range)",
+            "default": 0.6,
+            "placeholder": false
+          },
+          "flow_rho_ewma": {
+            "type": "number",
+            "maximum": 0.999,
+            "minimum": 0.5,
+            "title": "Flow Rho Ewma",
+            "description": "Per-open-tick EWMA weight of the market maker's rho estimate",
+            "default": 0.98,
+            "placeholder": false
+          },
+          "noise_vol_feedback": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Noise Vol Feedback",
+            "description": "FITTED (intraday_fit)",
+            "default": 0.239,
+            "placeholder": false
+          },
+          "intraday_vol_ewma": {
+            "type": "number",
+            "maximum": 0.995,
+            "minimum": 0.5,
+            "title": "Intraday Vol Ewma",
+            "description": "Per-open-tick EWMA weight of recent |r| for the feedback",
+            "default": 0.9,
+            "placeholder": false
+          },
+          "noise_permanence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Noise Permanence",
+            "description": "FITTED (intraday_fit)",
+            "default": 0.047,
+            "placeholder": false
+          },
+          "noise_intraday_profile": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "maxItems": 26,
+            "minItems": 26,
+            "title": "Noise Intraday Profile",
+            "description": "Time-of-day shape of the unmodelled flow (sd multiplier per open tick, 09:30 .. 15:45, RMS 1): measured on AAPL's 15-minute bars (U-shape: busy open, quiet lunch, pick-up at the close).",
+            "default": [
+              1.896,
+              1.62,
+              1.277,
+              1.115,
+              1.144,
+              1.096,
+              1.077,
+              1.01,
+              0.934,
+              0.858,
+              0.915,
+              0.762,
+              0.648,
+              0.791,
+              0.82,
+              0.762,
+              0.724,
+              0.915,
+              0.648,
+              0.715,
+              0.934,
+              0.724,
+              0.619,
+              0.762,
+              1.058,
+              1.058
+            ],
+            "placeholder": false
           },
           "circuit_breaker": {
             "type": "number",
@@ -3112,9 +3284,9 @@
             "maximum": 10000.0,
             "minimum": 0.0,
             "title": "Prop Momentum K",
-            "description": "Prop target = capital * tanh(k * momentum + k2 * imbalance)",
-            "default": 30.0,
-            "placeholder": true
+            "description": "FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)",
+            "default": 4.42,
+            "placeholder": false
           },
           "prop_imbalance_k": {
             "type": "number",

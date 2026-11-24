@@ -132,7 +132,7 @@ def test_schema_covers_every_config_field(client: TestClient) -> None:
                 assert f"{section}.{name}" in FIELD_RANGES, f"{section}.{name} has no range"
     assert by_section["population"]["investor_share"]["placeholder"] is True
     assert by_section["graph"]["twitter_mean_out"]["placeholder"] is False
-    assert by_section["market"]["impact_Y"]["default"] == 0.7
+    assert by_section["market"]["impact_Y"]["default"] == Config().market.impact_Y
     assert body["clock"]["ticks_per_day"] == 96 and "statement" in body["enums"]["kinds"]
 
 
@@ -225,7 +225,7 @@ def test_create_run_inline(client: TestClient, tmp_path: Path) -> None:
     run = r.json()
     assert run["status"] == "queued" and run["name"] == "first"
     assert (run["mode"], run["runs"], run["n_agents"], run["days"], run["seed"]) == ("single", 1, 1000, 5, 3)
-    assert run["spec"]["parameters"]["market"]["impact_Y"] == 0.7
+    assert run["spec"]["parameters"]["market"]["impact_Y"] == Config().market.impact_Y
     spec_file = tmp_path / "data" / "runs" / run["id"] / "spec.json"
     assert json.loads(spec_file.read_text(encoding="utf-8"))["scenario"]["events"][0]["kind"] == "rumour"
 

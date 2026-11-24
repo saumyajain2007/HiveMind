@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import numpy as np
 from scipy.special import ndtr
@@ -206,6 +206,11 @@ class MarketState:
     daily_vol: float = 0.0  # EWMA realised daily volatility (log returns)
     adv_estimate: float = 0.0  # the market maker's ADV; 0 until the first auction
     quote_shift: float = 0.0  # pending re-quote of the market maker on public news (log move)
+    abs_ewma: float = 0.0  # recent |log return| per open tick (volatility feedback)
+    last_impact: float = 0.0  # previous auction's impact (flow anticipation)
+    last_noise: float = 0.0  # the unmodelled-flow part of the last auction's move
+    rho_num: float = 0.0  # EWMA of x_t x_{t-1}
+    rho_den: float = 0.0  # EWMA of x_{t-1}^2
     _day: list[float] = field(default_factory=list, repr=False)
 
     def __post_init__(self) -> None:
@@ -231,8 +236,20 @@ class MarketState:
         return self.iv_annual(tick) / math.sqrt(self.cfg.trading_days_per_year)
 
     def tick_noise_sd(self) -> float:
-        """Std of the unmodelled-flow log return on one open tick."""
-        return self.cfg.noise_frac * self.daily_vol / math.sqrt(OPEN_TICKS_PER_DAY)
+        """Std of the unmodelled-flow log return on one open tick (times the volatility feedback)."""
+        base = self.cfg.noise_frac * self.daily_vol / math.sqrt(OPEN_TICKS_PER_DAY)
+        prof = self.cfg.noise_intraday_profile
+        if prof:
+            slot = (self.tick + 1) % TICKS_PER_DAY - MARKET_OPEN_TICK  # clear() runs before record_tick
+            if 0 <= slot < len(prof):
+                base *= float(prof[slot])
+        k = self.cfg.noise_vol_feedback
+        if k <= 0 or self.abs_ewma <= 0:
+            return base
+        # anchored to implied (not realised) volatility, so the feedback cannot run away
+        normal = self.iv_daily() / math.sqrt(OPEN_TICKS_PER_DAY) * math.sqrt(2 / math.pi)
+        mult = min(4.0, max(0.5, (self.abs_ewma / max(normal, 1e-12)) ** k))
+        return base * mult
 
     # ---------------------------------------------------------- signals
     def momentum(self, lookback: int | np.ndarray) -> float | np.ndarray:
@@ -266,6 +283,9 @@ class MarketState:
         self.tick = tick
         volume = 0.0
         if auction is not None:
+            lam_v = self.cfg.intraday_vol_ewma
+            r_abs = abs(auction.log_return)
+            self.abs_ewma = r_abs if self.abs_ewma <= 0 else lam_v * self.abs_ewma + (1 - lam_v) * r_abs
             self.quote_shift = 0.0  # the re-quote is in the price now
             self.price = auction.price
             self.mm_inventory += auction.mm_delta
@@ -313,7 +333,7 @@ class MarketState:
 
         Does not record the tick; call `record_tick(tick, result)` afterwards.
         """
-        return batch_auction(
+        res = batch_auction(
             buy_q,
             buy_lim,
             sell_q,
@@ -327,3 +347,17 @@ class MarketState:
             rng=rng,
             quote_shift=self.quote_shift,
         )
+        self.last_noise = res.log_return - res.impact_return
+        k = self.cfg.mm_flow_anticipation
+        x, x_prev = res.impact_return, self.last_impact
+        lam = self.cfg.flow_rho_ewma
+        self.rho_num = lam * self.rho_num + (1 - lam) * x * x_prev
+        self.rho_den = lam * self.rho_den + (1 - lam) * x_prev * x_prev
+        self.last_impact = x
+        if k > 0 and self.rho_den > 0:
+            # price in the predictable rest of the flow (fills stay at the clearing price)
+            rho = min(0.9, max(0.0, self.rho_num / self.rho_den))
+            cap = self.cfg.circuit_breaker
+            extra = float(np.clip(k * rho / (1 - rho) * (x - x_prev), -cap, cap))
+            res = replace(res, price=res.price * math.exp(extra), log_return=res.log_return + extra)
+        return res

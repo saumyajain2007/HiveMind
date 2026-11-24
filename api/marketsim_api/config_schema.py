@@ -56,6 +56,13 @@ _CATEGORY_ID = {name: i for i, name in enumerate(engine_config.CATEGORIES)}
 # Allowed ranges (inclusive) for every scalar field, and for the values of dict fields.
 # A test checks that every numeric field in config.py has an entry here.
 FIELD_RANGES: dict[str, tuple[float, float]] = {
+    "market.mm_flow_anticipation": (0.0, 1.5),
+    "market.flow_rho_ewma": (0.5, 0.999),
+    "market.noise_vol_feedback": (0.0, 2.0),
+    "market.noise_permanence": (0.0, 1.0),
+    "market.noise_intraday_profile": (0.0, 5.0),
+    "market.intraday_vol_ewma": (0.5, 0.995),
+    "diffusion.mutate_ref_agents": (100.0, 10_000_000.0),
     # population
     "population.investor_share": (0.0, 1.0),
     "population.media_per_100k": (0.0, 1000.0),
