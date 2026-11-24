@@ -57,9 +57,9 @@ describe("app shell", () => {
   });
 
   it("shows planned pages with their issue number", async () => {
-    renderAt("/network");
-    expect(await screen.findByText(/WebGL graph of a sampled subgraph/)).toBeInTheDocument();
-    expect(screen.getAllByText("#23").length).toBeGreaterThan(0);
+    renderAt("/narratives");
+    expect(await screen.findByText(/lineage/i)).toBeInTheDocument();
+    expect(screen.getAllByText("#24").length).toBeGreaterThan(0);
   });
 
   it("cockpit streams the mock run into the ticker", async () => {
