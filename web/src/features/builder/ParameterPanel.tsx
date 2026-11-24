@@ -22,7 +22,6 @@ const SECTION_TITLES: Record<string, string> = {
   market: "Market",
 };
 
-const ON_BY_DEFAULT = new Set(["twitter", "reddit", "friendship"]);
 
 function fmt(v: number): string {
   if (!Number.isFinite(v)) return String(v);
@@ -189,7 +188,7 @@ function PlatformCards({ value, onChange }: { value: string[]; onChange: (v: str
             <PlatformIcon platform={p} />
             <span className="text-[11px] text-muted-foreground">
               {on ? "On" : "Off"}
-              {ON_BY_DEFAULT.has(p) ? " · v1 default" : ""}
+              
             </span>
           </button>
         );

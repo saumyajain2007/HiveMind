@@ -459,11 +459,14 @@
           "default": [
             "twitter",
             "reddit",
-            "friendship"
+            "friendship",
+            "instagram",
+            "tiktok",
+            "youtube"
           ],
           "min": null,
           "max": null,
-          "description": "Platforms switched on. The v1 default is Twitter, Reddit and Friendship.",
+          "description": "Platforms switched on. All six are on by default; turn some off to compare.",
           "placeholder": false
         },
         {

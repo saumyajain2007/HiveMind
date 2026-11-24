@@ -90,7 +90,7 @@ class PopulationConfig:
 
 @dataclass
 class GraphConfig:
-    platforms: tuple = ("twitter", "reddit", "friendship")      # v1 set; add "instagram", "tiktok", "youtube"
+    platforms: tuple = ("twitter", "reddit", "friendship", "instagram", "tiktok", "youtube")  # every platform in the design notes
     twitter_mean_out: float = 40.0
     twitter_homophily: float = 0.5        # share of follows inside the agent's main-interest cluster
     instagram_mean_out: float = 60.0

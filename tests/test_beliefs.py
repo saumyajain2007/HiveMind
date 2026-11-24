@@ -172,7 +172,7 @@ def test_scripted_run_has_mutations_and_an_invention() -> None:
             slot = items.from_event(ev, t, seeds=seeds)
             b.absorb(np.full(len(seeds), slot), seeds)
         r = d.step(t)
-        ret = -0.06 if t == ev.tick + 96 + 4 else 0.0  # a big unexplained drop on day 2
+        ret = -0.06 if ev.tick + 96 <= t < ev.tick + 96 + 24 else 0.0  # a big unexplained drop on day 2
         assert r.online_mask is not None
         seen = (r.seen_slots, r.seen_agents, r.seen_trust)
         b.step(t, *seen, r.share_slots, r.share_agents, r.online_mask, ret)

@@ -1053,11 +1053,14 @@ export interface components {
     GraphParams: {
       /**
        * Platforms
-       * @description Platforms switched on. The v1 default is Twitter, Reddit and Friendship.
+       * @description Platforms switched on. All six are on by default; turn some off to compare.
        * @default [
        *       "twitter",
        *       "reddit",
-       *       "friendship"
+       *       "friendship",
+       *       "instagram",
+       *       "tiktok",
+       *       "youtube"
        *     ]
        */
       platforms: ("twitter" | "reddit" | "friendship" | "instagram" | "tiktok" | "youtube")[];

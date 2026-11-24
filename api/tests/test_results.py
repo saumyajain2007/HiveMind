@@ -139,13 +139,20 @@ def test_stylized_facts(ctx: dict[str, Any]) -> None:
 def test_graph_and_node_seen(ctx: dict[str, Any]) -> None:
     c = ctx["client"]
     g = c.get(f"{V1}/runs/{ctx['single']}/graph?sample=500").json()
-    assert len(g["nodes"]) == 500 and set(g["layers"]) == {"twitter", "reddit", "friendship"}
+    assert len(g["nodes"]) == 500 and set(g["layers"]) == {
+        "twitter",
+        "reddit",
+        "friendship",
+        "instagram",
+        "tiktok",
+        "youtube",
+    }
     ids = {n["id"] for n in g["nodes"]}
     assert all(a in ids and b in ids for a, b, _ in g["edges"])
     assert {e[2] for e in g["edges"]} <= set(g["layers"]) and "overlap_jaccard" in g["stats"]
     tw = c.get(f"{V1}/runs/{ctx['single']}/graph?layer=twitter&sample=500").json()
     assert {e[2] for e in tw["edges"]} <= {"twitter"}
-    assert c.get(f"{V1}/runs/{ctx['single']}/graph?layer=tiktok").status_code == 400
+    assert c.get(f"{V1}/runs/{ctx['single']}/graph?layer=myspace").status_code == 400
     seen = c.get(f"{V1}/runs/{ctx['single']}/node-seen").json()
     assert seen["columns"] == ["tick", "index", "item"] and seen["rows"]
     # streamed spread agrees with stored awareness: every sampled node marked aware of the rumour

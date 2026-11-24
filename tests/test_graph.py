@@ -42,9 +42,9 @@ def _directed(graph: SocialGraph) -> list[DirectedLayer]:
 # ----------------------------------------------------------------- structure
 
 
-def test_default_platforms_are_the_v1_set(pop: Population) -> None:
+def test_all_six_platforms_are_on_by_default(pop: Population) -> None:
     g = SocialGraph.build(pop, GraphConfig(), np.random.default_rng(0))
-    assert set(g.layers) == {"twitter", "reddit", "friendship"}
+    assert set(g.layers) == set(ALL_PLATFORMS)
 
 
 def test_unknown_platform_rejected(pop: Population) -> None:

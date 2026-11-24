@@ -243,7 +243,10 @@
       "platforms": [
         "twitter",
         "reddit",
-        "friendship"
+        "friendship",
+        "instagram",
+        "tiktok",
+        "youtube"
       ],
       "twitter_mean_out": 40.0,
       "twitter_homophily": 0.5,

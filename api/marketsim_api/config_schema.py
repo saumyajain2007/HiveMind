@@ -163,7 +163,7 @@ DESCRIPTION_OVERRIDES: dict[str, str] = {
     "population.media_credibility_beta": "Beta(a, b) distribution of media outlets' credibility.",
     "population.confidence_sd": "Spread of agents' initial confidence, N(0, sd).",
     "population.media_bias_sd": "Spread of media outlets' editorial bias, N(0, sd) clipped to [-1, 1].",
-    "graph.platforms": "Platforms switched on. The v1 default is Twitter, Reddit and Friendship.",
+    "graph.platforms": "Platforms switched on. All six are on by default; turn some off to compare.",
     "graph.reach": "Exposure per sharer per tick on each platform.",
     "graph.trust": "How much people trust what reaches them on each platform (belief weight).",
     "trading.strategy_prior": "Strategy mix (fundamentalist, chartist, sentiment) per investor category.",
