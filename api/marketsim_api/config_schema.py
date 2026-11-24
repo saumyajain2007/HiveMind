@@ -124,6 +124,7 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "trading.sentiment_scale": (0.0, 1.0),
     "trading.switching": (0.0, 1.0),
     "trading.switching_intensity": (0.0, 10_000.0),
+    "trading.fitness_decay": (0.0, 1.0),
     "trading.risk_aversion": (0.0, 100.0),
     "trading.panic_loss": (0.0, 1.0),
     "trading.panic_rate": (0.0, 1.0),
@@ -142,6 +143,11 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "market.n_prop_firms": (0, 100),
     "market.n_funds": (0, 100),
     "market.firm_capital_share": (0.0, 10.0),
+    "market.prop_momentum_ticks": (1, 960),
+    "market.prop_momentum_k": (0.0, 10_000.0),
+    "market.prop_imbalance_k": (0.0, 100.0),
+    "market.fund_value_k": (0.0, 100.0),
+    "market.fund_lag_ticks": (0, 9600),
 }
 
 # Descriptions for fields whose comment in config.py does not describe them on its own.
@@ -177,6 +183,7 @@ DESCRIPTION_OVERRIDES: dict[str, str] = {
     "market.trading_days_per_year": "Trading days per year, for annualising volatility.",
     "market.n_prop_firms": "Number of prop-trading firms (short-horizon momentum).",
     "market.n_funds": "Number of funds (fundamental value, known with a 1-day lag).",
+    "market.prop_imbalance_k": "Weight of last tick's order imbalance in prop firms' target.",
 }
 
 

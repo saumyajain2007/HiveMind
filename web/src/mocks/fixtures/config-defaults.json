@@ -336,6 +336,7 @@
       "sentiment_scale": 0.05,
       "switching": 0.3,
       "switching_intensity": 200.0,
+      "fitness_decay": 0.97,
       "risk_aversion": 2.0,
       "panic_loss": 0.1,
       "panic_rate": 0.05,
@@ -354,7 +355,12 @@
       "trading_days_per_year": 252,
       "n_prop_firms": 5,
       "n_funds": 3,
-      "firm_capital_share": 0.15
+      "firm_capital_share": 0.15,
+      "prop_momentum_ticks": 4,
+      "prop_momentum_k": 100.0,
+      "prop_imbalance_k": 1.0,
+      "fund_value_k": 5.0,
+      "fund_lag_ticks": 96
     }
   },
   "scenario": {

@@ -756,6 +756,36 @@ export interface components {
        * @default 0.15
        */
       firm_capital_share: number;
+      /**
+       * Prop Momentum Ticks
+       * @description Prop firms' momentum look-back (1 hour)
+       * @default 4
+       */
+      prop_momentum_ticks: number;
+      /**
+       * Prop Momentum K
+       * @description Prop target = capital * tanh(k * momentum + k2 * imbalance)
+       * @default 100
+       */
+      prop_momentum_k: number;
+      /**
+       * Prop Imbalance K
+       * @description Weight of last tick's order imbalance in prop firms' target.
+       * @default 1
+       */
+      prop_imbalance_k: number;
+      /**
+       * Fund Value K
+       * @description Fund target = capital * clip(k * (V - P) / P, -1, 1)
+       * @default 5
+       */
+      fund_value_k: number;
+      /**
+       * Fund Lag Ticks
+       * @description Funds know V_true with a 1-day lag
+       * @default 96
+       */
+      fund_lag_ticks: number;
     };
     /**
      * Parameters
@@ -1410,6 +1440,12 @@ export interface components {
        * @default 200
        */
       switching_intensity: number;
+      /**
+       * Fitness Decay
+       * @description Per-tick EMA decay of each strategy's fitness
+       * @default 0.97
+       */
+      fitness_decay: number;
       /**
        * Risk Aversion
        * @description Risk aversion in position sizing.

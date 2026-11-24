@@ -963,6 +963,16 @@
           "placeholder": false
         },
         {
+          "name": "fitness_decay",
+          "key": "trading.fitness_decay",
+          "kind": "float",
+          "default": 0.97,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Per-tick EMA decay of each strategy's fitness",
+          "placeholder": true
+        },
+        {
           "name": "risk_aversion",
           "key": "trading.risk_aversion",
           "kind": "float",
@@ -1135,6 +1145,56 @@
           "min": 0.0,
           "max": 10.0,
           "description": "Firms' capital vs total investor wealth",
+          "placeholder": false
+        },
+        {
+          "name": "prop_momentum_ticks",
+          "key": "market.prop_momentum_ticks",
+          "kind": "int",
+          "default": 4,
+          "min": 1.0,
+          "max": 960.0,
+          "description": "Prop firms' momentum look-back (1 hour)",
+          "placeholder": true
+        },
+        {
+          "name": "prop_momentum_k",
+          "key": "market.prop_momentum_k",
+          "kind": "float",
+          "default": 100.0,
+          "min": 0.0,
+          "max": 10000.0,
+          "description": "Prop target = capital * tanh(k * momentum + k2 * imbalance)",
+          "placeholder": true
+        },
+        {
+          "name": "prop_imbalance_k",
+          "key": "market.prop_imbalance_k",
+          "kind": "float",
+          "default": 1.0,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Weight of last tick's order imbalance in prop firms' target.",
+          "placeholder": true
+        },
+        {
+          "name": "fund_value_k",
+          "key": "market.fund_value_k",
+          "kind": "float",
+          "default": 5.0,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Fund target = capital * clip(k * (V - P) / P, -1, 1)",
+          "placeholder": true
+        },
+        {
+          "name": "fund_lag_ticks",
+          "key": "market.fund_lag_ticks",
+          "kind": "int",
+          "default": 96,
+          "min": 0.0,
+          "max": 9600.0,
+          "description": "Funds know V_true with a 1-day lag",
           "placeholder": false
         }
       ]

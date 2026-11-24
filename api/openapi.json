@@ -1445,6 +1445,51 @@
             "description": "Firms' capital vs total investor wealth",
             "default": 0.15,
             "placeholder": false
+          },
+          "prop_momentum_ticks": {
+            "type": "integer",
+            "maximum": 960.0,
+            "minimum": 1.0,
+            "title": "Prop Momentum Ticks",
+            "description": "Prop firms' momentum look-back (1 hour)",
+            "default": 4,
+            "placeholder": true
+          },
+          "prop_momentum_k": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Prop Momentum K",
+            "description": "Prop target = capital * tanh(k * momentum + k2 * imbalance)",
+            "default": 100.0,
+            "placeholder": true
+          },
+          "prop_imbalance_k": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Prop Imbalance K",
+            "description": "Weight of last tick's order imbalance in prop firms' target.",
+            "default": 1.0,
+            "placeholder": true
+          },
+          "fund_value_k": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Fund Value K",
+            "description": "Fund target = capital * clip(k * (V - P) / P, -1, 1)",
+            "default": 5.0,
+            "placeholder": true
+          },
+          "fund_lag_ticks": {
+            "type": "integer",
+            "maximum": 9600.0,
+            "minimum": 0.0,
+            "title": "Fund Lag Ticks",
+            "description": "Funds know V_true with a 1-day lag",
+            "default": 96,
+            "placeholder": false
           }
         },
         "additionalProperties": false,
@@ -2536,6 +2581,15 @@
             "description": "How sharply strategy weights favour the best recent performer.",
             "default": 200.0,
             "placeholder": false
+          },
+          "fitness_decay": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Fitness Decay",
+            "description": "Per-tick EMA decay of each strategy's fitness",
+            "default": 0.97,
+            "placeholder": true
           },
           "risk_aversion": {
             "type": "number",

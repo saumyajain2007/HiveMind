@@ -152,6 +152,7 @@ class TradingConfig:
     sentiment_scale: float = 0.05         # full conviction (Confidence = 1) = 5% expected excess return
     switching: float = 0.3                # how far weights move toward recently profitable strategies
     switching_intensity: float = 200.0
+    fitness_decay: float = 0.97           # PLACEHOLDER: per-tick EMA decay of each strategy's fitness
     risk_aversion: float = 2.0
     panic_loss: float = 0.10              # unrealised loss that triggers loss-aversion behaviour
     panic_rate: float = 0.05
@@ -173,6 +174,11 @@ class MarketConfig:
     n_prop_firms: int = 5
     n_funds: int = 3
     firm_capital_share: float = 0.15      # firms' capital vs total investor wealth
+    prop_momentum_ticks: int = 4          # PLACEHOLDER: prop firms' momentum look-back (1 hour)
+    prop_momentum_k: float = 100.0        # PLACEHOLDER: prop target = capital * tanh(k * momentum + k2 * imbalance)
+    prop_imbalance_k: float = 1.0         # PLACEHOLDER
+    fund_value_k: float = 5.0             # PLACEHOLDER: fund target = capital * clip(k * (V - P) / P, -1, 1)
+    fund_lag_ticks: int = 96              # funds know V_true with a 1-day lag
 
 
 @dataclass
