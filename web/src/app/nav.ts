@@ -4,6 +4,7 @@ import {
   FlaskConical,
   GitBranch,
   Landmark,
+  WalletCards,
   Library,
   Network,
   Palette,
@@ -76,6 +77,13 @@ export const NAV: NavItem[] = [
     icon: Landmark,
     description: "Real stock, real filings: trained, then tested out of sample",
     shortcut: "G D",
+  },
+  {
+    path: "/strategy",
+    label: "Strategy",
+    icon: WalletCards,
+    description: "Expected prices, forecast statistics and trading results",
+    shortcut: "G S",
   },
 ];
 

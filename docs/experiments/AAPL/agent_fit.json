@@ -1,0 +1,1293 @@
+{
+ "ticker": "AAPL",
+ "split": "2024-01-01",
+ "windows": [
+  "2016-04-27",
+  "2016-06-28",
+  "2016-08-29",
+  "2016-11-15",
+  "2018-07-05",
+  "2018-07-13",
+  "2019-07-03",
+  "2019-12-09",
+  "2020-01-28",
+  "2020-02-06",
+  "2021-02-18",
+  "2023-01-30"
+ ],
+ "window_days": 63,
+ "real_moments": {
+  "sd": 0.02312187293930444,
+  "kurtosis": 7.875719920611296,
+  "acf1": -0.059351237343864306,
+  "acf_abs": 0.09583701032038365,
+  "earnings_ratio": 2.3047032833549834,
+  "volume_corr": 0.6037231959915411
+ },
+ "scale": {
+  "sd": 0.15,
+  "kurtosis": 2.0,
+  "acf1": 0.05,
+  "acf_abs": 0.05,
+  "earnings_ratio": 0.3,
+  "volume_corr": 0.1
+ },
+ "space": {
+  "trading.sentiment_scale": [
+   0.01,
+   0.15
+  ],
+  "trading.switching": [
+   0.05,
+   0.8
+  ],
+  "trading.risk_aversion": [
+   0.5,
+   6.0
+  ],
+  "market.firm_capital_share": [
+   0.02,
+   0.4
+  ],
+  "market.prop_momentum_k": [
+   5.0,
+   80.0
+  ],
+  "market.fund_value_k": [
+   1.0,
+   15.0
+  ],
+  "diffusion.base_share": [
+   0.05,
+   0.5
+  ],
+  "market.noise_frac": [
+   0.2,
+   1.2
+  ]
+ },
+ "defaults": {
+  "params": {
+   "trading.sentiment_scale": 0.05,
+   "trading.switching": 0.3,
+   "trading.risk_aversion": 2.0,
+   "market.firm_capital_share": 0.15,
+   "market.prop_momentum_k": 30.0,
+   "market.fund_value_k": 5.0,
+   "diffusion.base_share": 0.25,
+   "market.noise_frac": 0.3
+  },
+  "distance": 77.46403586732538,
+  "moments": {
+   "sd": 0.009199450197785832,
+   "kurtosis": 14.50997741738886,
+   "acf1": -0.03710602092777596,
+   "acf_abs": 0.12515156479251732,
+   "earnings_ratio": 8.996269406528826,
+   "volume_corr": 0.35781066471366274
+  }
+ },
+ "best": {
+  "params": {
+   "trading.sentiment_scale": 0.14195154698997708,
+   "trading.switching": 0.5721729254949698,
+   "trading.risk_aversion": 2.1822706497121165,
+   "market.firm_capital_share": 0.03248901888072739,
+   "market.prop_momentum_k": 72.56784934044451,
+   "market.fund_value_k": 14.332475831846612,
+   "diffusion.base_share": 0.42227027093792346,
+   "market.noise_frac": 0.4379546559241238
+  },
+  "candidate": 15,
+  "distance": 23.70727527330286,
+  "moments": {
+   "sd": 0.014257512355368393,
+   "kurtosis": 6.007911179429922,
+   "acf1": -0.0541761813911529,
+   "acf_abs": 0.0895291589977074,
+   "earnings_ratio": 4.999728115895342,
+   "volume_corr": 0.41113684306280107
+  }
+ },
+ "finalists": [
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05880262380368263,
+    "trading.switching": 0.10602263421837312,
+    "trading.risk_aversion": 4.143555154100785,
+    "market.firm_capital_share": 0.07680973932696196,
+    "market.prop_momentum_k": 18.04979783076199,
+    "market.fund_value_k": 5.544715743650557,
+    "diffusion.base_share": 0.311141598127542,
+    "market.noise_frac": 0.5862578218085304
+   },
+   "candidate": 37,
+   "distance": 25.075044367976517,
+   "moments": {
+    "sd": 0.016741139822086356,
+    "kurtosis": 3.363585812016478,
+    "acf1": -0.07662493047995311,
+    "acf_abs": 0.07971426903862178,
+    "earnings_ratio": 3.844212818356951,
+    "volume_corr": 0.26497355041974485
+   }
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05626990586025023,
+    "trading.switching": 0.7749131879353331,
+    "trading.risk_aversion": 5.438737649601126,
+    "market.firm_capital_share": 0.04904485213465424,
+    "market.prop_momentum_k": 48.79612309277654,
+    "market.fund_value_k": 8.733694308293078,
+    "diffusion.base_share": 0.4940811829844118,
+    "market.noise_frac": 0.3338867626128745
+   },
+   "candidate": 44,
+   "distance": 31.3777526991684,
+   "moments": {
+    "sd": 0.01759747627944441,
+    "kurtosis": 10.666857527737534,
+    "acf1": -0.05648709180886496,
+    "acf_abs": 0.09501609139145391,
+    "earnings_ratio": 4.5805929075170555,
+    "volume_corr": 0.39308879136762337
+   }
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.11122750779352339,
+    "trading.switching": 0.7222311927375167,
+    "trading.risk_aversion": 3.7909633835732817,
+    "market.firm_capital_share": 0.09727869714088291,
+    "market.prop_momentum_k": 65.95712186758614,
+    "market.fund_value_k": 1.394025411744429,
+    "diffusion.base_share": 0.46846570670059795,
+    "market.noise_frac": 0.6403643958315413
+   },
+   "candidate": 47,
+   "distance": 35.71455289325482,
+   "moments": {
+    "sd": 0.020424662135049718,
+    "kurtosis": 3.377092666539484,
+    "acf1": -0.0407197765307262,
+    "acf_abs": 0.035145179738223946,
+    "earnings_ratio": 3.1339728916582623,
+    "volume_corr": 0.0927950875602873
+   }
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.14195154698997708,
+    "trading.switching": 0.5721729254949698,
+    "trading.risk_aversion": 2.1822706497121165,
+    "market.firm_capital_share": 0.03248901888072739,
+    "market.prop_momentum_k": 72.56784934044451,
+    "market.fund_value_k": 14.332475831846612,
+    "diffusion.base_share": 0.42227027093792346,
+    "market.noise_frac": 0.4379546559241238
+   },
+   "candidate": 15,
+   "distance": 23.70727527330286,
+   "moments": {
+    "sd": 0.014257512355368393,
+    "kurtosis": 6.007911179429922,
+    "acf1": -0.0541761813911529,
+    "acf_abs": 0.0895291589977074,
+    "earnings_ratio": 4.999728115895342,
+    "volume_corr": 0.41113684306280107
+   }
+  }
+ ],
+ "search": [
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05,
+    "trading.switching": 0.3,
+    "trading.risk_aversion": 2.0,
+    "market.firm_capital_share": 0.15,
+    "market.prop_momentum_k": 30.0,
+    "market.fund_value_k": 5.0,
+    "diffusion.base_share": 0.25,
+    "market.noise_frac": 0.3
+   },
+   "moments": {
+    "sd": 0.009555293784523735,
+    "kurtosis": 15.89720336262869,
+    "acf1": -0.0290850500706079,
+    "acf_abs": 0.10083272005790195,
+    "earnings_ratio": 9.37952126068804,
+    "volume_corr": 0.35546083206209517
+   },
+   "distance": 79.22159670275104,
+   "candidate": 0
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.04269996335752076,
+    "trading.switching": 0.3103135962756044,
+    "trading.risk_aversion": 2.427381085171941,
+    "market.firm_capital_share": 0.33635142407833707,
+    "market.prop_momentum_k": 44.09552481018652,
+    "market.fund_value_k": 1.9301788879769486,
+    "diffusion.base_share": 0.4102156960575886,
+    "market.noise_frac": 0.2739760655539384
+   },
+   "moments": {
+    "sd": 0.008974648151653877,
+    "kurtosis": 21.344964371951036,
+    "acf1": -0.04987530640954254,
+    "acf_abs": 0.0962708493254058,
+    "earnings_ratio": 10.306178920875745,
+    "volume_corr": 0.3313491940564248
+   },
+   "distance": 117.54194289905496,
+   "candidate": 1
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05310375099350508,
+    "trading.switching": 0.7149486619961198,
+    "trading.risk_aversion": 3.194843414904781,
+    "market.firm_capital_share": 0.19606083721297782,
+    "market.prop_momentum_k": 40.390832934356936,
+    "market.fund_value_k": 8.46152372755004,
+    "diffusion.base_share": 0.33074054655241253,
+    "market.noise_frac": 0.9539532223833938
+   },
+   "moments": {
+    "sd": 0.06964950669197259,
+    "kurtosis": 106.69178456195777,
+    "acf1": -0.021846067166481426,
+    "acf_abs": 0.1165461508226101,
+    "earnings_ratio": 2.149377322121839,
+    "volume_corr": 0.11358153391315486
+   },
+   "distance": 2520.0076036231735,
+   "candidate": 2
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.027863893605045896,
+    "trading.switching": 0.7586486594842171,
+    "trading.risk_aversion": 1.2248107355196654,
+    "market.firm_capital_share": 0.1740032293330349,
+    "market.prop_momentum_k": 75.5805147319108,
+    "market.fund_value_k": 9.08115598864532,
+    "diffusion.base_share": 0.20771235143741057,
+    "market.noise_frac": 0.8251310026253704
+   },
+   "moments": {
+    "sd": 0.026696923475294433,
+    "kurtosis": 5.021040006703966,
+    "acf1": -0.04687054496261459,
+    "acf_abs": 0.07853348204998521,
+    "earnings_ratio": 2.7617097584026253,
+    "volume_corr": 0.07805647692050387
+   },
+   "distance": 31.13417146535358,
+   "candidate": 3
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.0709882755271546,
+    "trading.switching": 0.6920401704356056,
+    "trading.risk_aversion": 4.889260477278386,
+    "market.firm_capital_share": 0.039683618859078194,
+    "market.prop_momentum_k": 35.34994024177361,
+    "market.fund_value_k": 11.85447459360005,
+    "diffusion.base_share": 0.3662126972739201,
+    "market.noise_frac": 0.9883154218317518
+   },
+   "moments": {
+    "sd": 0.2379724749280546,
+    "kurtosis": 30.21745649723188,
+    "acf1": -0.004669207348454632,
+    "acf_abs": 0.24272249172046245,
+    "earnings_ratio": 0.7777613325030869,
+    "volume_corr": 0.24807083311281752
+   },
+   "distance": 401.9441921429995,
+   "candidate": 4
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.013580330759099904,
+    "trading.switching": 0.5213245379395126,
+    "trading.risk_aversion": 4.2261372374395405,
+    "market.firm_capital_share": 0.25075969324292,
+    "market.prop_momentum_k": 6.468115723766078,
+    "market.fund_value_k": 3.5816135685423425,
+    "diffusion.base_share": 0.30157646970170365,
+    "market.noise_frac": 0.20857550384064405
+   },
+   "moments": {
+    "sd": 0.00959532872033426,
+    "kurtosis": 12.685405800297309,
+    "acf1": -0.03053283529962954,
+    "acf_abs": 0.15617833986547122,
+    "earnings_ratio": 9.232700260398616,
+    "volume_corr": 0.07187803218436593
+   },
+   "distance": 91.63657799150243,
+   "candidate": 5
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.09687824104005147,
+    "trading.switching": 0.2436209066087171,
+    "trading.risk_aversion": 1.0107962543173588,
+    "market.firm_capital_share": 0.1158404461284538,
+    "market.prop_momentum_k": 76.9334674896073,
+    "market.fund_value_k": 5.862202805075573,
+    "diffusion.base_share": 0.16431174359061262,
+    "market.noise_frac": 0.49075881661384924
+   },
+   "moments": {
+    "sd": 0.010276671916251203,
+    "kurtosis": 11.891598802135064,
+    "acf1": -0.03063253165442034,
+    "acf_abs": 0.08471979030524307,
+    "earnings_ratio": 7.530137302545779,
+    "volume_corr": 0.3705392675205219
+   },
+   "distance": 54.648820772121795,
+   "candidate": 6
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.12539792525897764,
+    "trading.switching": 0.6527573959214327,
+    "trading.risk_aversion": 0.9462449202924799,
+    "market.firm_capital_share": 0.12527215436330735,
+    "market.prop_momentum_k": 73.76684200273442,
+    "market.fund_value_k": 13.897420064133184,
+    "diffusion.base_share": 0.09179202031449316,
+    "market.noise_frac": 0.9948313522140504
+   },
+   "moments": {
+    "sd": 0.08405383812668485,
+    "kurtosis": 172.92675456942686,
+    "acf1": -0.014629784296399497,
+    "acf_abs": 0.12932364383282288,
+    "earnings_ratio": 1.9331352329241183,
+    "volume_corr": 0.04893610892915318
+   },
+   "distance": 6916.869675131304,
+   "candidate": 7
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.101235454808337,
+    "trading.switching": 0.280275881604606,
+    "trading.risk_aversion": 3.866106727308464,
+    "market.firm_capital_share": 0.2997872002094858,
+    "market.prop_momentum_k": 52.2399779583981,
+    "market.fund_value_k": 12.530037609815336,
+    "diffusion.base_share": 0.35933196415535745,
+    "market.noise_frac": 0.24518902540908843
+   },
+   "moments": {
+    "sd": 0.00875145598094996,
+    "kurtosis": 24.37521726995796,
+    "acf1": -0.043612056726409665,
+    "acf_abs": 0.15952648615960505,
+    "earnings_ratio": 11.323360956003823,
+    "volume_corr": 0.38440387945435267
+   },
+   "distance": 144.7001203690054,
+   "candidate": 8
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.12329369068004993,
+    "trading.switching": 0.17148216370076713,
+    "trading.risk_aversion": 1.141782659062899,
+    "market.firm_capital_share": 0.15096500025193577,
+    "market.prop_momentum_k": 38.62502658684645,
+    "market.fund_value_k": 7.446650278799944,
+    "diffusion.base_share": 0.2803338419945724,
+    "market.noise_frac": 1.1164381528073133
+   },
+   "moments": {
+    "sd": 0.045210930176371227,
+    "kurtosis": 27.618792349158344,
+    "acf1": -0.04763012077897961,
+    "acf_abs": 0.10854542631394025,
+    "earnings_ratio": 1.9503708730089446,
+    "volume_corr": 0.009862340150586213
+   },
+   "distance": 153.12794691108817,
+   "candidate": 9
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.10545998335396331,
+    "trading.switching": 0.3854152299986687,
+    "trading.risk_aversion": 4.675738602388609,
+    "market.firm_capital_share": 0.22480244471664446,
+    "market.prop_momentum_k": 30.009799578515214,
+    "market.fund_value_k": 10.099986222488129,
+    "diffusion.base_share": 0.2933514574285599,
+    "market.noise_frac": 1.1927821658685531
+   },
+   "moments": {
+    "sd": 0.11669247951990835,
+    "kurtosis": 187.55795003410506,
+    "acf1": -0.0632120713317264,
+    "acf_abs": 0.1555412924946957,
+    "earnings_ratio": 1.3519388049655532,
+    "volume_corr": 0.06901237731965355
+   },
+   "distance": 8221.072698860093,
+   "candidate": 10
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.08533074709354439,
+    "trading.switching": 0.4177156206081041,
+    "trading.risk_aversion": 3.025555295333069,
+    "market.firm_capital_share": 0.35674512820347426,
+    "market.prop_momentum_k": 34.10908735366212,
+    "market.fund_value_k": 8.025792390195717,
+    "diffusion.base_share": 0.12013101936086441,
+    "market.noise_frac": 0.4071397393820633
+   },
+   "moments": {
+    "sd": 0.010950065269990017,
+    "kurtosis": 11.81965650787725,
+    "acf1": -0.0005800201913438857,
+    "acf_abs": 0.09552092080561277,
+    "earnings_ratio": 7.7988843987218,
+    "volume_corr": 0.17453391912108188
+   },
+   "distance": 65.03132321038073,
+   "candidate": 11
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.03351479597980279,
+    "trading.switching": 0.5038460100575635,
+    "trading.risk_aversion": 5.668063536964973,
+    "market.firm_capital_share": 0.20748301820597895,
+    "market.prop_momentum_k": 79.8326930739101,
+    "market.fund_value_k": 1.6289043882973957,
+    "diffusion.base_share": 0.4797942789442334,
+    "market.noise_frac": 1.1421252228087095
+   },
+   "moments": {
+    "sd": 0.10450653493921996,
+    "kurtosis": 172.4576348796867,
+    "acf1": -0.04381735388988301,
+    "acf_abs": 0.18684837229294438,
+    "earnings_ratio": 1.3682901000637686,
+    "volume_corr": -0.0025766336582850554
+   },
+   "distance": 6916.1245043526005,
+   "candidate": 12
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.1165699195258538,
+    "trading.switching": 0.35880904653397605,
+    "trading.risk_aversion": 3.607233065813406,
+    "market.firm_capital_share": 0.3166957383464591,
+    "market.prop_momentum_k": 65.72908840666136,
+    "market.fund_value_k": 4.895198052471788,
+    "diffusion.base_share": 0.3762257785817523,
+    "market.noise_frac": 0.8136327988367773
+   },
+   "moments": {
+    "sd": 0.021739492894787764,
+    "kurtosis": 2.7241692380968807,
+    "acf1": -0.00657558275085546,
+    "acf_abs": 0.03972841167069665,
+    "earnings_ratio": 3.2546442628274623,
+    "volume_corr": -0.015080120702239795
+   },
+   "distance": 48.792168484442726,
+   "candidate": 13
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.1294178994477641,
+    "trading.switching": 0.2906337800862731,
+    "trading.risk_aversion": 2.6567671516695768,
+    "market.firm_capital_share": 0.21059886840378328,
+    "market.prop_momentum_k": 71.15465174824277,
+    "market.fund_value_k": 12.709151279214524,
+    "diffusion.base_share": 0.43816016721461515,
+    "market.noise_frac": 0.6667773635674401
+   },
+   "moments": {
+    "sd": 0.016549197421328325,
+    "kurtosis": 2.972765138071664,
+    "acf1": 0.00931532318350079,
+    "acf_abs": 0.053108427507396715,
+    "earnings_ratio": 4.454431409837704,
+    "volume_corr": 0.11163147508295458
+   },
+   "distance": 42.63723336499685,
+   "candidate": 14
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.14195154698997708,
+    "trading.switching": 0.5721729254949698,
+    "trading.risk_aversion": 2.1822706497121165,
+    "market.firm_capital_share": 0.03248901888072739,
+    "market.prop_momentum_k": 72.56784934044451,
+    "market.fund_value_k": 14.332475831846612,
+    "diffusion.base_share": 0.42227027093792346,
+    "market.noise_frac": 0.4379546559241238
+   },
+   "moments": {
+    "sd": 0.012731179474261235,
+    "kurtosis": 7.234201024627069,
+    "acf1": -0.07059599275000814,
+    "acf_abs": 0.1317898382714974,
+    "earnings_ratio": 6.121687990110022,
+    "volume_corr": 0.47700896380278696
+   },
+   "distance": 28.705367258930714,
+   "candidate": 15
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.04925664300286857,
+    "trading.switching": 0.4902057717669694,
+    "trading.risk_aversion": 2.5435606746551587,
+    "market.firm_capital_share": 0.2286567967707731,
+    "market.prop_momentum_k": 57.02028030850313,
+    "market.fund_value_k": 2.4375288795705634,
+    "diffusion.base_share": 0.14661346193364724,
+    "market.noise_frac": 0.5374577862365897
+   },
+   "moments": {
+    "sd": 0.013670994614983155,
+    "kurtosis": 4.953522240005887,
+    "acf1": -0.0042527165319951035,
+    "acf_abs": 0.06610395527454122,
+    "earnings_ratio": 5.262365304662399,
+    "volume_corr": 0.16055741918249888
+   },
+   "distance": 43.1898587904367,
+   "candidate": 16
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.08111539628211255,
+    "trading.switching": 0.2299325232348738,
+    "trading.risk_aversion": 3.434955147675416,
+    "market.firm_capital_share": 0.2685708850872137,
+    "market.prop_momentum_k": 15.444062914207375,
+    "market.fund_value_k": 4.215034714935961,
+    "diffusion.base_share": 0.40556163744676554,
+    "market.noise_frac": 0.31377579992003846
+   },
+   "moments": {
+    "sd": 0.01030988200971932,
+    "kurtosis": 15.906329123917143,
+    "acf1": -0.015907353454062398,
+    "acf_abs": 0.1382160675389781,
+    "earnings_ratio": 8.446395004966996,
+    "volume_corr": 0.0789068301063704
+   },
+   "distance": 92.87493568718243,
+   "candidate": 17
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.07547520513786153,
+    "trading.switching": 0.11947986051328412,
+    "trading.risk_aversion": 5.114934092228098,
+    "market.firm_capital_share": 0.026451101619255277,
+    "market.prop_momentum_k": 32.27010341149243,
+    "market.fund_value_k": 14.444550357901177,
+    "diffusion.base_share": 0.31578262344463043,
+    "market.noise_frac": 1.0851045980014364
+   },
+   "moments": {
+    "sd": 0.10106274930972643,
+    "kurtosis": 63.0719375916826,
+    "acf1": -0.13513551857198497,
+    "acf_abs": 0.1206044504206835,
+    "earnings_ratio": 1.1808254490167511,
+    "volume_corr": 0.15718242075113278
+   },
+   "distance": 885.7966948624487,
+   "candidate": 18
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.06354868289451872,
+    "trading.switching": 0.395351786612209,
+    "trading.risk_aversion": 4.039346349860383,
+    "market.firm_capital_share": 0.06077862011376069,
+    "market.prop_momentum_k": 7.701621791441404,
+    "market.fund_value_k": 1.1237763905011637,
+    "diffusion.base_share": 0.12964481732049032,
+    "market.noise_frac": 1.130774126339363
+   },
+   "moments": {
+    "sd": 0.20856795352730673,
+    "kurtosis": 27.29952100042588,
+    "acf1": -0.09204825251350623,
+    "acf_abs": 0.13869417579727397,
+    "earnings_ratio": 1.1433187649721308,
+    "volume_corr": 0.2209811862899783
+   },
+   "distance": 330.603339511381,
+   "candidate": 19
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.036299514932677586,
+    "trading.switching": 0.4326500727275681,
+    "trading.risk_aversion": 1.6984480880797188,
+    "market.firm_capital_share": 0.05506242682023656,
+    "market.prop_momentum_k": 20.626839444904714,
+    "market.fund_value_k": 11.503289268577047,
+    "diffusion.base_share": 0.11084253844098849,
+    "market.noise_frac": 1.0636602436803766
+   },
+   "moments": {
+    "sd": 0.08841700093640222,
+    "kurtosis": 250.80680698035252,
+    "acf1": -0.08349226865752275,
+    "acf_abs": 0.11171223420948863,
+    "earnings_ratio": 1.7692700275452649,
+    "volume_corr": 0.152916603107652
+   },
+   "distance": 14855.269109733095,
+   "candidate": 20
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.016809633068676715,
+    "trading.switching": 0.2549430491981026,
+    "trading.risk_aversion": 1.9166977940612628,
+    "market.firm_capital_share": 0.3103268929347743,
+    "market.prop_momentum_k": 54.71811382802046,
+    "market.fund_value_k": 9.972940290903905,
+    "diffusion.base_share": 0.0500158862814627,
+    "market.noise_frac": 0.9153882308290904
+   },
+   "moments": {
+    "sd": 0.02627998284796264,
+    "kurtosis": 3.020860733478753,
+    "acf1": 0.002128928681331461,
+    "acf_abs": 0.07223747324224047,
+    "earnings_ratio": 2.516579141950925,
+    "volume_corr": 0.011853203535963053
+   },
+   "distance": 43.47256866270345,
+   "candidate": 21
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.0901768315170385,
+    "trading.switching": 0.09397323512108402,
+    "trading.risk_aversion": 2.85636178840623,
+    "market.firm_capital_share": 0.1609316138213927,
+    "market.prop_momentum_k": 70.13939291433775,
+    "market.fund_value_k": 9.187794295634058,
+    "diffusion.base_share": 0.18107240944350284,
+    "market.noise_frac": 0.7116153113630863
+   },
+   "moments": {
+    "sd": 0.017062084504265596,
+    "kurtosis": 2.5475317250382714,
+    "acf1": -0.04627418987138899,
+    "acf_abs": 0.052850657468188726,
+    "earnings_ratio": 3.771530137104132,
+    "volume_corr": 0.07077137902881149
+   },
+   "distance": 43.10930593274414,
+   "candidate": 22
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.10801068693254912,
+    "trading.switching": 0.6009235370038067,
+    "trading.risk_aversion": 2.7805577398669827,
+    "market.firm_capital_share": 0.24957002443196888,
+    "market.prop_momentum_k": 47.723306388495786,
+    "market.fund_value_k": 10.767651300156587,
+    "diffusion.base_share": 0.18184328439102565,
+    "market.noise_frac": 0.8825687509981672
+   },
+   "moments": {
+    "sd": 0.02529581631040811,
+    "kurtosis": 2.8149266021061434,
+    "acf1": -0.025467780370242693,
+    "acf_abs": 0.03463402014298249,
+    "earnings_ratio": 2.6171040493794644,
+    "volume_corr": 0.02398002909985705
+   },
+   "distance": 42.50909958047129,
+   "candidate": 23
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.026459835622693835,
+    "trading.switching": 0.5848991271263089,
+    "trading.risk_aversion": 0.595084259355439,
+    "market.firm_capital_share": 0.08766488282241873,
+    "market.prop_momentum_k": 51.76396315355182,
+    "market.fund_value_k": 9.69756587919611,
+    "diffusion.base_share": 0.3790676756905432,
+    "market.noise_frac": 0.7882775604842776
+   },
+   "moments": {
+    "sd": 0.01780567427331431,
+    "kurtosis": 3.1829816211441546,
+    "acf1": -0.045469404714885774,
+    "acf_abs": 0.05321416278539987,
+    "earnings_ratio": 3.7535778851756225,
+    "volume_corr": 0.16970633381939207
+   },
+   "distance": 30.823370940657032,
+   "candidate": 24
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.09414119559802266,
+    "trading.switching": 0.6129934464048323,
+    "trading.risk_aversion": 5.556609598437392,
+    "market.firm_capital_share": 0.14602904298726122,
+    "market.prop_momentum_k": 9.391608862810303,
+    "market.fund_value_k": 3.1160473612860966,
+    "diffusion.base_share": 0.23129991575034115,
+    "market.noise_frac": 0.8882942490422299
+   },
+   "moments": {
+    "sd": 0.0994961703894955,
+    "kurtosis": 170.7466818275066,
+    "acf1": -0.06793293016355009,
+    "acf_abs": 0.14677571679203114,
+    "earnings_ratio": 1.8121704819674487,
+    "volume_corr": 0.24537738354053293
+   },
+   "distance": 6740.9405240678025,
+   "candidate": 25
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.022036491130978105,
+    "trading.switching": 0.7376751573472552,
+    "trading.risk_aversion": 2.973519833594499,
+    "market.firm_capital_share": 0.27816700459353627,
+    "market.prop_momentum_k": 58.34985746716108,
+    "market.fund_value_k": 11.451399579619778,
+    "diffusion.base_share": 0.195195089229803,
+    "market.noise_frac": 1.170820470919486
+   },
+   "moments": {
+    "sd": 0.1556299868821412,
+    "kurtosis": 76.98549843859057,
+    "acf1": -0.05871816612294831,
+    "acf_abs": 0.22540930910988033,
+    "earnings_ratio": 1.0776148605274123,
+    "volume_corr": 0.0852029086312432
+   },
+   "distance": 1395.642017882224,
+   "candidate": 26
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.134432143717526,
+    "trading.switching": 0.5532074529538908,
+    "trading.risk_aversion": 2.081671955214773,
+    "market.firm_capital_share": 0.3874191757298287,
+    "market.prop_momentum_k": 68.27817949607206,
+    "market.fund_value_k": 5.120120960443931,
+    "diffusion.base_share": 0.22113965826824317,
+    "market.noise_frac": 0.4178196222436031
+   },
+   "moments": {
+    "sd": 0.010926143123622936,
+    "kurtosis": 10.602647835758878,
+    "acf1": -0.0020948802063976354,
+    "acf_abs": 0.08661420959068156,
+    "earnings_ratio": 7.463051369962182,
+    "volume_corr": 0.31676133204578205
+   },
+   "distance": 51.75440583563673,
+   "candidate": 27
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.06752923170111379,
+    "trading.switching": 0.3696495978440637,
+    "trading.risk_aversion": 4.460043095034075,
+    "market.firm_capital_share": 0.3980758635858755,
+    "market.prop_momentum_k": 29.06668399645545,
+    "market.fund_value_k": 7.712958526963498,
+    "diffusion.base_share": 0.10213915177248173,
+    "market.noise_frac": 0.7405015432931283
+   },
+   "moments": {
+    "sd": 0.019648231458325557,
+    "kurtosis": 1.771529382573899,
+    "acf1": -0.0036748321768265008,
+    "acf_abs": 0.023578714293583585,
+    "earnings_ratio": 3.493353297292146,
+    "volume_corr": 0.07863866988968868
+   },
+   "distance": 43.31495351003816,
+   "candidate": 28
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.030527249087029654,
+    "trading.switching": 0.18223122391642843,
+    "trading.risk_aversion": 5.38749092940553,
+    "market.firm_capital_share": 0.10303820767451077,
+    "market.prop_momentum_k": 45.7866967169613,
+    "market.fund_value_k": 2.608189520782833,
+    "diffusion.base_share": 0.4819981012247268,
+    "market.noise_frac": 0.6806308307889805
+   },
+   "moments": {
+    "sd": 0.01935436523595944,
+    "kurtosis": 2.5443500348524326,
+    "acf1": -0.05151810414058564,
+    "acf_abs": 0.046036944668734696,
+    "earnings_ratio": 3.671713837302955,
+    "volume_corr": 0.17420846938549725
+   },
+   "distance": 30.38651545119183,
+   "candidate": 29
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.13056952553504508,
+    "trading.switching": 0.3340208136407526,
+    "trading.risk_aversion": 1.5890413301158972,
+    "market.firm_capital_share": 0.3837277159469733,
+    "market.prop_momentum_k": 63.148496369582276,
+    "market.fund_value_k": 7.121717925799073,
+    "diffusion.base_share": 0.2688999995016029,
+    "market.noise_frac": 0.634075497222027
+   },
+   "moments": {
+    "sd": 0.015298642529038228,
+    "kurtosis": 3.617157911710735,
+    "acf1": 0.017808401013568145,
+    "acf_abs": 0.051285328217112715,
+    "earnings_ratio": 4.676342727323659,
+    "volume_corr": 0.10618646253170923
+   },
+   "distance": 45.60764442365587,
+   "candidate": 30
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.06110799350828617,
+    "trading.switching": 0.20282162683946836,
+    "trading.risk_aversion": 1.8595674790900925,
+    "market.firm_capital_share": 0.34333164961041135,
+    "market.prop_momentum_k": 41.16816655103833,
+    "market.fund_value_k": 6.80160587640469,
+    "diffusion.base_share": 0.23862316698482644,
+    "market.noise_frac": 0.4652997637873024
+   },
+   "moments": {
+    "sd": 0.011264053898523484,
+    "kurtosis": 10.346165992237127,
+    "acf1": -0.0018620910512976267,
+    "acf_abs": 0.08001851803003433,
+    "earnings_ratio": 6.791928722695745,
+    "volume_corr": 0.20294509361193938
+   },
+   "distance": 54.975403457603456,
+   "candidate": 31
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.08596683902118372,
+    "trading.switching": 0.7890657376467195,
+    "trading.risk_aversion": 1.4317800914174823,
+    "market.firm_capital_share": 0.1832545407915671,
+    "market.prop_momentum_k": 16.429533115291484,
+    "market.fund_value_k": 13.706842096404332,
+    "diffusion.base_share": 0.4551730030819454,
+    "market.noise_frac": 1.020816803935548
+   },
+   "moments": {
+    "sd": 0.12166211919569708,
+    "kurtosis": 110.06393378470918,
+    "acf1": -0.029148011442529115,
+    "acf_abs": 0.21557391847917737,
+    "earnings_ratio": 1.471880763466734,
+    "volume_corr": 0.24211142208971678
+   },
+   "distance": 2754.5581437968726,
+   "candidate": 32
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.0738791619368058,
+    "trading.switching": 0.4812097425543332,
+    "trading.risk_aversion": 0.6703536762700398,
+    "market.firm_capital_share": 0.29491308798703375,
+    "market.prop_momentum_k": 37.80078721975132,
+    "market.fund_value_k": 13.055727775535038,
+    "diffusion.base_share": 0.44477839821025533,
+    "market.noise_frac": 0.3508520506343099
+   },
+   "moments": {
+    "sd": 0.009629852133644073,
+    "kurtosis": 14.72386513740054,
+    "acf1": -0.04878911892010857,
+    "acf_abs": 0.10720632017226221,
+    "earnings_ratio": 9.3863773277812,
+    "volume_corr": 0.26868569426323125
+   },
+   "distance": 79.05629229684337,
+   "candidate": 33
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.01920643137121007,
+    "trading.switching": 0.1344578277223163,
+    "trading.risk_aversion": 0.8142054621473085,
+    "market.firm_capital_share": 0.2398165166601403,
+    "market.prop_momentum_k": 42.66865013560413,
+    "market.fund_value_k": 6.005607951733541,
+    "diffusion.base_share": 0.08150137341763711,
+    "market.noise_frac": 0.5092572292277031
+   },
+   "moments": {
+    "sd": 0.01169678020659843,
+    "kurtosis": 8.434433789332468,
+    "acf1": -0.051180849692424,
+    "acf_abs": 0.08053589272980373,
+    "earnings_ratio": 6.481800975775193,
+    "volume_corr": 0.26614959369541485
+   },
+   "distance": 44.11434882437364,
+   "candidate": 34
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.07849452279137042,
+    "trading.switching": 0.05842407293570584,
+    "trading.risk_aversion": 4.772941247130963,
+    "market.firm_capital_share": 0.34893676760187,
+    "market.prop_momentum_k": 55.94560966670221,
+    "market.fund_value_k": 10.431414751313255,
+    "diffusion.base_share": 0.4306391203622808,
+    "market.noise_frac": 0.5282113818222691
+   },
+   "moments": {
+    "sd": 0.01264428147901295,
+    "kurtosis": 6.982389749732224,
+    "acf1": -0.025127331758509733,
+    "acf_abs": 0.04867567339054951,
+    "earnings_ratio": 6.096078493804138,
+    "volume_corr": 0.2619574075141813
+   },
+   "distance": 39.94185323535589,
+   "candidate": 35
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.13936589945917022,
+    "trading.switching": 0.21337466865333515,
+    "trading.risk_aversion": 4.296181078404599,
+    "market.firm_capital_share": 0.1883035947462858,
+    "market.prop_momentum_k": 59.751010965781944,
+    "market.fund_value_k": 3.641427419804748,
+    "diffusion.base_share": 0.24766482753623198,
+    "market.noise_frac": 0.3020327371032275
+   },
+   "moments": {
+    "sd": 0.009629789159307832,
+    "kurtosis": 17.83923284090034,
+    "acf1": -0.00427405199958661,
+    "acf_abs": 0.11221234280218105,
+    "earnings_ratio": 9.731262877131627,
+    "volume_corr": 0.3822578044119694
+   },
+   "distance": 88.19497921708944,
+   "candidate": 36
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05880262380368263,
+    "trading.switching": 0.10602263421837312,
+    "trading.risk_aversion": 4.143555154100785,
+    "market.firm_capital_share": 0.07680973932696196,
+    "market.prop_momentum_k": 18.04979783076199,
+    "market.fund_value_k": 5.544715743650557,
+    "diffusion.base_share": 0.311141598127542,
+    "market.noise_frac": 0.5862578218085304
+   },
+   "moments": {
+    "sd": 0.018080525734447142,
+    "kurtosis": 2.6445904393630153,
+    "acf1": -0.059166013256109505,
+    "acf_abs": 0.0899413424950151,
+    "earnings_ratio": 3.8736121370525685,
+    "volume_corr": 0.3208519758313074
+   },
+   "distance": 20.540692865676565,
+   "candidate": 37
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.13578293182261472,
+    "trading.switching": 0.31631762983273265,
+    "trading.risk_aversion": 1.306100515733291,
+    "market.firm_capital_share": 0.37431959774217016,
+    "market.prop_momentum_k": 14.209944508826217,
+    "market.fund_value_k": 10.959051052445044,
+    "diffusion.base_share": 0.3950932224724668,
+    "market.noise_frac": 0.36753785992932536
+   },
+   "moments": {
+    "sd": 0.009070639322063213,
+    "kurtosis": 24.2624056365611,
+    "acf1": -0.00042797687151744046,
+    "acf_abs": 0.1010333848855982,
+    "earnings_ratio": 10.399799054435817,
+    "volume_corr": 0.20290590235723624
+   },
+   "distance": 148.73989909558026,
+   "candidate": 38
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.04160240301486324,
+    "trading.switching": 0.5453478218830311,
+    "trading.risk_aversion": 2.272990854928734,
+    "market.firm_capital_share": 0.28502789235377735,
+    "market.prop_momentum_k": 11.592941103949578,
+    "market.fund_value_k": 12.354785282336776,
+    "diffusion.base_share": 0.21192633266418626,
+    "market.noise_frac": 0.7680143443993919
+   },
+   "moments": {
+    "sd": 0.01797419526890349,
+    "kurtosis": 2.4531397814729354,
+    "acf1": 0.010648518036681508,
+    "acf_abs": 0.03109410856586049,
+    "earnings_ratio": 3.753359413255898,
+    "volume_corr": 0.07398969944302565
+   },
+   "distance": 44.51114023559575,
+   "candidate": 39
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.14933279833316634,
+    "trading.switching": 0.6683890312775066,
+    "trading.risk_aversion": 5.257121744332964,
+    "market.firm_capital_share": 0.36493645498000377,
+    "market.prop_momentum_k": 61.422645790297,
+    "market.fund_value_k": 4.531814582819291,
+    "diffusion.base_share": 0.34042693768121896,
+    "market.noise_frac": 0.6104748005132556
+   },
+   "moments": {
+    "sd": 0.015459420177839434,
+    "kurtosis": 3.506204393027039,
+    "acf1": -0.001074446258409259,
+    "acf_abs": 0.020634362563605856,
+    "earnings_ratio": 4.600316898509706,
+    "volume_corr": 0.07850694178227707
+   },
+   "distance": 48.489474980290495,
+   "candidate": 40
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.14595937614772092,
+    "trading.switching": 0.15251104841186347,
+    "trading.risk_aversion": 4.9956501007852285,
+    "market.firm_capital_share": 0.16374092264805395,
+    "market.prop_momentum_k": 24.662736502841565,
+    "market.fund_value_k": 6.252951379110003,
+    "diffusion.base_share": 0.134634570713054,
+    "market.noise_frac": 0.22798400347867978
+   },
+   "moments": {
+    "sd": 0.008893082254259608,
+    "kurtosis": 21.26763146914501,
+    "acf1": -0.013146427764301602,
+    "acf_abs": 0.13434364848024238,
+    "earnings_ratio": 10.436020799495804,
+    "volume_corr": 0.32935867338958247
+   },
+   "distance": 119.7327209004578,
+   "candidate": 41
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.011708409822017764,
+    "trading.switching": 0.4551513172489062,
+    "trading.risk_aversion": 3.531023216455828,
+    "market.firm_capital_share": 0.3232537009396995,
+    "market.prop_momentum_k": 26.80416743119362,
+    "market.fund_value_k": 13.336736309954235,
+    "diffusion.base_share": 0.26076126816536993,
+    "market.noise_frac": 0.7516145571107451
+   },
+   "moments": {
+    "sd": 0.019805261452459484,
+    "kurtosis": 1.8555457982537744,
+    "acf1": 0.002156269280502922,
+    "acf_abs": 0.028958938064769412,
+    "earnings_ratio": 3.391915724976254,
+    "volume_corr": 0.046845642156528235
+   },
+   "distance": 46.09899409154752,
+   "candidate": 42
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.04512832169942775,
+    "trading.switching": 0.6297791723903186,
+    "trading.risk_aversion": 5.886357813052844,
+    "market.firm_capital_share": 0.07378615254693374,
+    "market.prop_momentum_k": 10.28076964158109,
+    "market.fund_value_k": 14.906896917655763,
+    "diffusion.base_share": 0.07293315960704058,
+    "market.noise_frac": 0.939488324262602
+   },
+   "moments": {
+    "sd": 0.14975342491096985,
+    "kurtosis": 38.24503380554244,
+    "acf1": -0.004490909199633829,
+    "acf_abs": 0.16704391522782158,
+    "earnings_ratio": 1.0411563765605345,
+    "volume_corr": 0.33800280014174383
+   },
+   "distance": 403.00291622774336,
+   "candidate": 43
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.05626990586025023,
+    "trading.switching": 0.7749131879353331,
+    "trading.risk_aversion": 5.438737649601126,
+    "market.firm_capital_share": 0.04904485213465424,
+    "market.prop_momentum_k": 48.79612309277654,
+    "market.fund_value_k": 8.733694308293078,
+    "diffusion.base_share": 0.4940811829844118,
+    "market.noise_frac": 0.3338867626128745
+   },
+   "moments": {
+    "sd": 0.014899553570885753,
+    "kurtosis": 4.949428973615914,
+    "acf1": -0.06601259686887168,
+    "acf_abs": 0.06628581279199768,
+    "earnings_ratio": 5.04632569037441,
+    "volume_corr": 0.38828588799734526
+   },
+   "distance": 22.55647028332454,
+   "candidate": 44
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.11420655464185965,
+    "trading.switching": 0.6881101507574772,
+    "trading.risk_aversion": 5.881122783417653,
+    "market.firm_capital_share": 0.13700650673815057,
+    "market.prop_momentum_k": 28.15584085564819,
+    "market.fund_value_k": 3.023230623663554,
+    "diffusion.base_share": 0.34423251513406594,
+    "market.noise_frac": 0.561317083847406
+   },
+   "moments": {
+    "sd": 0.01701476675293313,
+    "kurtosis": 3.2695414906419273,
+    "acf1": -0.001235480960839028,
+    "acf_abs": 0.06726076052381459,
+    "earnings_ratio": 4.153359715568312,
+    "volume_corr": 0.1520765666420323
+   },
+   "distance": 35.41512526550597,
+   "candidate": 45
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.09758088701702304,
+    "trading.switching": 0.4633401654571388,
+    "trading.risk_aversion": 3.2564770512723227,
+    "market.firm_capital_share": 0.10877832306281267,
+    "market.prop_momentum_k": 22.832407036355487,
+    "market.fund_value_k": 4.036730400477854,
+    "diffusion.base_share": 0.06654603878396034,
+    "market.noise_frac": 0.8554919626337183
+   },
+   "moments": {
+    "sd": 0.02839312130416382,
+    "kurtosis": 3.1218248065108485,
+    "acf1": -0.0538774708743632,
+    "acf_abs": 0.06277240766849737,
+    "earnings_ratio": 2.4264280444611073,
+    "volume_corr": 0.08997436962975335
+   },
+   "distance": 34.396877531739975,
+   "candidate": 46
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.11122750779352339,
+    "trading.switching": 0.7222311927375167,
+    "trading.risk_aversion": 3.7909633835732817,
+    "market.firm_capital_share": 0.09727869714088291,
+    "market.prop_momentum_k": 65.95712186758614,
+    "market.fund_value_k": 1.394025411744429,
+    "diffusion.base_share": 0.46846570670059795,
+    "market.noise_frac": 0.6403643958315413
+   },
+   "moments": {
+    "sd": 0.020598992043081524,
+    "kurtosis": 4.422419553654209,
+    "acf1": -0.06654211975793475,
+    "acf_abs": 0.042921043676958655,
+    "earnings_ratio": 3.868600061316083,
+    "volume_corr": 0.1470474147756001
+   },
+   "distance": 28.5512959464189,
+   "candidate": 47
+  },
+  {
+   "params": {
+    "trading.sentiment_scale": 0.12026755783856385,
+    "trading.switching": 0.08082198248519064,
+    "trading.risk_aversion": 4.600192715343333,
+    "market.firm_capital_share": 0.2624052846779379,
+    "market.prop_momentum_k": 20.28692986039465,
+    "market.fund_value_k": 7.398709914334317,
+    "diffusion.base_share": 0.16208209795688594,
+    "market.noise_frac": 1.0402628335014168
+   },
+   "moments": {
+    "sd": 0.03971777293261109,
+    "kurtosis": 6.23094743040909,
+    "acf1": -0.025147793946129707,
+    "acf_abs": 0.09629517463595044,
+    "earnings_ratio": 1.9157843957036664,
+    "volume_corr": 0.08678383478939412
+   },
+   "distance": 41.255534168341164,
+   "candidate": 48
+  }
+ ],
+ "identification": {
+  "trading.sentiment_scale": -0.004693877551020408,
+  "trading.switching": 0.09663265306122448,
+  "trading.risk_aversion": 0.01836734693877551,
+  "market.firm_capital_share": 0.014693877551020407,
+  "market.prop_momentum_k": -0.26367346938775504,
+  "market.fund_value_k": 0.17214285714285713,
+  "diffusion.base_share": -0.12357142857142855,
+  "market.noise_frac": 0.3201020408163265
+ },
+ "seconds": 630.4680326999805
+}

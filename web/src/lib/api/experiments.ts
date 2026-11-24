@@ -115,3 +115,109 @@ export interface ExperimentListItem {
   horizons: number[];
   skill: Partial<Record<ModelKey, number>>;
 }
+
+// ----------------------------------------------------------------------------- strategy.json
+
+export interface DistStats {
+  mean: number;
+  sd: number;
+  expected_return: number;
+  p_up: number;
+  log_mu: number;
+  log_sd: number;
+  q05: number;
+  q25: number;
+  q50: number;
+  q75: number;
+  q95: number;
+}
+
+export type ForecastRow = DistStats & {
+  origin: string;
+  target: string;
+  close: number;
+  actual: number;
+  actual_return: number;
+  z: number;
+  rw_sd_log: number;
+  rw_z: number;
+  raw_mean: number;
+  raw_sd: number;
+  raw_min: number;
+  raw_max: number;
+};
+
+export interface ForecastSummary {
+  n: number;
+  mean_actual_return: number;
+  mean_expected_return: number;
+  bias: number;
+  rmse_model: number;
+  rmse_random_walk: number;
+  mae_model: number;
+  mae_random_walk: number;
+  information_coefficient: number;
+  ic_t: number;
+  sign_hit_rate: number;
+  z_mean: number;
+  z_sd: number;
+  rw_z_mean: number;
+  rw_z_sd: number;
+  coverage_50: number;
+  coverage_90: number;
+  rw_coverage_50: number;
+  rw_coverage_90: number;
+  mean_forecast_sd: number;
+  mean_rw_sd: number;
+  realised_rms: number;
+  vol_skill_model: number;
+  vol_skill_random_walk: number;
+}
+
+export interface StrategyResult {
+  label: string;
+  description: string;
+  total_return: number;
+  cagr: number;
+  ann_vol: number;
+  sharpe: number;
+  sharpe_ci95: [number, number];
+  p_sharpe_not_above_buy_hold: number;
+  sortino: number;
+  max_drawdown: number;
+  calmar: number;
+  hit_rate: number;
+  exposure: number;
+  turnover_per_year: number;
+  costs: number;
+  alpha_ann: number;
+  alpha_t: number;
+  beta: number;
+  mean_daily: number;
+  t_mean: number;
+  equity: number[];
+}
+
+export type LatestHorizon = DistStats & {
+  target: string;
+  runs: number[];
+  random_walk_sd: number;
+  scheduled_earnings: number;
+};
+
+export interface StrategyDoc {
+  ticker: string;
+  name: string;
+  period: { train: [string, string]; test: [string, string] };
+  agent_params: Record<string, number>;
+  latest: { date: string; close: number; horizons: Record<string, LatestHorizon> };
+  forecasts: Record<string, { summary: ForecastSummary; rows: ForecastRow[] }>;
+  strategy: {
+    cost_bps: number;
+    max_leverage: number;
+    vol_target_daily: number;
+    dates: string[];
+    start: string;
+    results: Record<string, StrategyResult>;
+  };
+}

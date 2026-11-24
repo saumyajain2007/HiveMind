@@ -298,6 +298,12 @@ export function resultHandlers(ctx: Ctx) {
         },
       ]);
     }),
+    http.get("*/api/v1/experiments/:ticker/strategy", async ({ params }) => {
+      const s = (await import("./fixtures/results/strategy.json")).default;
+      return String(params.ticker).toUpperCase() === s.ticker
+        ? HttpResponse.json(s)
+        : notFound("strategy");
+    }),
     http.get("*/api/v1/experiments/:ticker", async ({ params }) => {
       const e = (await import("./fixtures/results/experiment.json")).default;
       return String(params.ticker).toUpperCase() === e.ticker

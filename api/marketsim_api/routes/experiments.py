@@ -65,3 +65,13 @@ def get_experiment(ticker: str) -> dict[str, Any]:
     """Full results: impact-model metrics, simulation training log, and every out-of-sample
     forecast (date, actual close, each model's median / 90% interval / P(up) / CRPS)."""
     return _results(ticker)
+
+
+@router.get("/{ticker}/strategy")
+def get_strategy(ticker: str) -> dict[str, Any]:
+    """Forecast statistics (mean, sd, quantiles, P(up) per day, with bias / RMSE / information
+    coefficient / coverage), the latest forecast, and trading strategies built on the model."""
+    p = experiments_dir() / ticker.upper() / "strategy.json"
+    if not ticker.isalnum() or not p.exists():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"no strategy results for {ticker}")
+    return _load(str(p), p.stat().st_mtime)

@@ -11,6 +11,7 @@ const PAGES = [
   "/narratives",
   "/analysis",
   "/real-data",
+  "/strategy",
   "/design",
 ];
 

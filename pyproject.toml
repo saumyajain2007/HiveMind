@@ -69,6 +69,7 @@ ignore = [
 "marketsim/config.py" = ["E501"]   # hand-written source of truth; long dict literals kept as-is
 "marketsim/experiment_report.py" = ["E501"]   # Markdown table rows
 "scripts/*.py" = ["E501"]
+"marketsim/strategy.py" = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["marketsim", "marketsim_api"]

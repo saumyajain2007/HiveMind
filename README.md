@@ -176,6 +176,7 @@ Train on a real company's history and its own SEC filings, then forecast its lat
 
 ```bash
 uv run python scripts/fetch_market_data.py AAPL --start 2015-01-01   # one-off download -> data/AAPL/
+uv run python -m marketsim.agent_fit AAPL                            # fit agent behaviour, ~10 min
 uv run python -m marketsim.experiment AAPL                           # offline, ~1 h on 10 workers
 ```
 
@@ -192,7 +193,9 @@ The fetch step saves adjusted closes for the stock and SPY, every 8-K / 10-Q / 1
    - an "oracle" agent model that is handed the true reactions (a leaky upper bound).
 5. writes `docs/experiments/AAPL/report.md` (tables and plots, including the forecasts where the models differ most and every earnings release), `results.json`, and `data/AAPL/events.json` (the events in the Analysis page's upload format).
 
-The **Real data** page in the web app shows the same results (`GET /api/v1/experiments/{ticker}`).
+`marketsim.agent_fit` first fits the agents' behaviour (how strongly sentiment drives orders, strategy switching, risk aversion, the firms' capital and aggressiveness, sharing, unmodelled flow) to AAPL's statistical fingerprint in 2016–2023, using the method of simulated moments (see DECISIONS.md). The experiment then uses the fitted agents and finishes by writing `strategy.json`: the forecast distribution for every test day, forecast statistics, the latest forecast from the last close, and trading strategies built on the model (`python -m marketsim.strategy AAPL` reruns just that step).
+
+The **Real data** page shows the experiment (`GET /api/v1/experiments/{ticker}`). The **Strategy** page shows expected prices, forecast statistics and the trading results (`GET /api/v1/experiments/{ticker}/strategy`).
 
 **Results for AAPL** (726 one-day and 361 five-day forecasts, January 2024 to November 2026). Skill is 1 − CRPS / random-walk CRPS: above zero beats a random walk.
 
@@ -222,7 +225,7 @@ FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives un
 | `POST /data/upload`, `GET/DELETE /data/{id}` | Datasets: a `date,close` CSV plus dated events, validated on upload |
 | `POST /calibrations`, `GET /calibrations/{id}` | Random-search calibration on a dataset, as a job (stream sends one `trial` per trial) |
 | `POST /backtests`, `GET /backtests/{id}` | CRPS backtest vs a random walk on a dataset, as a job (one `origin` per origin) |
-| `GET /experiments`, `GET /experiments/{ticker}` | Real-data experiments (`python -m marketsim.experiment`), read from `docs/experiments/` |
+| `GET /experiments`, `GET /experiments/{ticker}`, `GET /experiments/{ticker}/strategy` | Real-data experiments (`python -m marketsim.experiment`) and their forecasts / strategies, read from `docs/experiments/` |
 | `POST /events/parse` | Headlines → events. No provider by default: it returns prompts to paste into any LLM, then validates the replies you post back |
 | `WS /runs/{id}/stream` | Live frames: `hello`, then `tick` / `event` / `narrative` (or Monte Carlo `progress`), then `done` or `error`; `?after=<tick>` resumes |
 
@@ -255,6 +258,7 @@ React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Q
 | **Network** | A sampled subgraph (Sigma.js + ForceAtlas2 in a Web Worker), per-platform layers, a chosen story lighting up node by node, agent hover cards, layer statistics |
 | **Narratives** | Story strip, lineage tree (born × sentiment, shape = origin), family awareness curves, who-heard-it heat map, item cards with credibility decay |
 | **Real data** | The real-stock experiment: each model's skill against the random walk (all days, earnings days, other days), forecast bands against the real moves, rolling skill, the biggest differences between models, every earnings forecast, and the event classifier's calls |
+| **Strategy** | The latest forecast (expected price, sd, quantiles, P(up)), expected vs real closes with 50% / 90% ranges, forecast statistics against the random walk, recent forecasts, and trading strategies on the model (returns, Sharpe with CI, drawdown, alpha, equity curves) |
 | **Analysis** | Upload a `date,close` CSV and events, calibrate (live trial log, best fit, recovery-test report) and backtest (CRPS per origin, skill vs the random walk) |
 
 **Mock data is real engine output.** The fixtures in `web/src/mocks/fixtures/results/` come from `make fixtures` (`python -m marketsim_api.export_fixtures`), which runs a demo, a Monte Carlo run, a calibration and a backtest through the API and saves each endpoint's response.

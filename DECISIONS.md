@@ -261,3 +261,33 @@ Only earnings count as scheduled (their dates are public weeks ahead); every oth
 **Not fitted to data, still PLACEHOLDER:** the population (wealth, archetype mix, confidence) and the social graph (degrees, platform mix, trust). The experiment fits only the market-level noise and news pass-through. An agent-level fit needs survey and platform data (see DATA_SOURCES.md), not a price series.
 
 **All six platforms on by default.** The design notes list Twitter, Reddit, friendship, Instagram, TikTok and YouTube, and all are now built by default (`graph.platforms`); turn some off to compare. Platform `attention_boost` (friendship 1.2, TikTok 1.1, others 1.0) and `diffusion.outrage_weight` (0.3) are PLACEHOLDER.
+
+### Fitting the agents to AAPL (`marketsim.agent_fit`)
+
+Method of simulated moments on the training years only. Twelve quarter-long windows (63 trading days) are drawn at random from 2016–2023. Each window is replayed in the simulation with its real filings and their true reactions (training data, so this is allowed), and six moments of the simulated daily returns and volumes are compared with the real ones: return sd, excess kurtosis, lag-1 autocorrelation, mean |r| autocorrelation at lags 1–5, the earnings-day / other-day ratio of mean |r|, and the volume–|r| correlation. The distance is a sum of squared moment gaps, each scaled by roughly its sampling error. The search is a 48-point Latin hypercube plus the defaults; the 4 best are re-run with 2 fresh seeds and the lowest mean distance wins.
+
+Fitted: `trading.sentiment_scale`, `trading.switching`, `trading.risk_aversion`, `market.firm_capital_share`, `market.prop_momentum_k`, `market.fund_value_k`, `diffusion.base_share`, `market.noise_frac`. These are read at run time. The population (wealth, archetype mix, demographics) and the social graph are **not** fitted: a price series cannot identify them.
+
+| moment | real | defaults | fitted |
+|---|---|---|---|
+| daily sd | 2.31% | 0.92% | 1.43% |
+| excess kurtosis | 7.9 | 14.5 | 6.0 |
+| lag-1 autocorrelation | −0.059 | −0.037 | −0.054 |
+| \|r\| autocorrelation, lags 1–5 | 0.096 | 0.125 | 0.090 |
+| earnings-day / other-day \|r\| | 2.3 | 9.0 | 5.0 |
+| volume–\|r\| correlation | 0.60 | 0.36 | 0.41 |
+
+Distance 77.5 → 23.7. Over the search, only `market.noise_frac` (rank correlation with the distance +0.32) and `market.prop_momentum_k` (−0.26) are clearly identified; the other six change the distance little. Three fitted values sit near the edge of their box (`sentiment_scale` 0.14 of 0.15, `fund_value_k` 14.3 of 15, `prop_momentum_k` 72.6 of 80), so the box should be widened next time. The fitted agents still under-shoot daily volatility (the forecast grid then re-tunes `noise_frac` around the fitted value) and over-state earnings moves. `marketsim.experiment` applies `docs/experiments/<T>/agent_fit.json` to every simulation when it exists.
+
+### Strategies on the forecasts (`marketsim.strategy`)
+
+Daily, AAPL only. Positions are set at each close from that close's forecast and held to the next close, with 5 bp of cost per unit of position change. Rules are fixed in advance or set from the training years, never tuned on the test period (tuning on the period you report is how backtests lie):
+
+- buy and hold;
+- direction long/short (sign of the forecast centre);
+- direction long/flat;
+- volatility targeting to AAPL's 2016–2023 daily sd, with the model's forecast sd (capped at 1.5×);
+- the same volatility targeting with trailing 20-day volatility (to see whether the model adds anything over a naive risk forecast);
+- the earnings classifier (long or short on earnings reaction days only, by the sign of the expected reaction).
+
+Each is reported with Sharpe, a stationary-bootstrap 95% CI and P(Sharpe ≤ buy and hold), drawdown, and alpha and beta against buy and hold. The page and `strategy.json` also carry the per-day forecast distribution (mean, sd, quantiles, P(up)) and the forecast statistics: bias, RMSE, information coefficient, z-scores, coverage, and volatility skill.

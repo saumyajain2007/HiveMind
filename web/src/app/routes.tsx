@@ -30,6 +30,9 @@ const AnalysisPage = lazy(() =>
 const RealDataPage = lazy(() =>
   import("@/pages/RealDataPage").then((m) => ({ default: m.RealDataPage })),
 );
+const StrategyPage = lazy(() =>
+  import("@/pages/StrategyPage").then((m) => ({ default: m.StrategyPage })),
+);
 const DesignPage = lazy(() =>
   import("@/pages/DesignPage").then((m) => ({ default: m.DesignPage })),
 );
@@ -76,6 +79,7 @@ export const routes: RouteObject[] = [
       { path: "narratives", element: page(NarrativesPage, {}) },
       { path: "analysis", element: page(AnalysisPage, {}) },
       { path: "real-data", element: page(RealDataPage, {}) },
+      { path: "strategy", element: page(StrategyPage, {}) },
       { path: "design", element: page(DesignPage, {}) },
       { path: "*", element: page(NotFoundPage, {}) },
     ],

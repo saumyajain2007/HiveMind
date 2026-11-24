@@ -68,6 +68,12 @@ def write_experiment_fixture(ticker: str = "AAPL", keep: int = 200) -> bool:
         b["origins"] = b["origins"][-keep:]
     res["simulation"].pop("grid_detail", None)
     _write("experiment", res)
+    strat = src.parent / "strategy.json"
+    if strat.exists():
+        doc = json.loads(strat.read_text(encoding="utf-8"))
+        for f in doc["forecasts"].values():
+            f["rows"] = f["rows"][-keep:]
+        _write("strategy", doc)
     return True
 
 

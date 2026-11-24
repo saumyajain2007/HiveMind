@@ -277,3 +277,17 @@ export function useExperiment(ticker: string | null | undefined) {
     staleTime: Infinity,
   });
 }
+
+export function useStrategy(ticker: string | null | undefined) {
+  return useQuery({
+    queryKey: ["strategy", ticker ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/experiments/{ticker}/strategy", {
+          params: { path: { ticker: ticker ?? "" } },
+        }),
+      ) as unknown as E.StrategyDoc,
+    enabled: Boolean(ticker),
+    staleTime: Infinity,
+  });
+}

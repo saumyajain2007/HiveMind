@@ -102,6 +102,17 @@ class ExperimentConfig:
     seed: int = 0
     data_root: str | None = None
     out_dir: str | None = None
+    # fitted agent behaviour (`marketsim.agent_fit`); None = read docs/experiments/<T>/agent_fit.json
+    # if it exists, {} = the config defaults
+    agent_params: dict[str, float] | None = None
+
+
+def load_agent_params(ticker: str) -> dict[str, float]:
+    p = ROOT / "docs" / "experiments" / ticker.upper() / "agent_fit.json"
+    if not p.exists():
+        return {}
+    best = json.loads(p.read_text(encoding="utf-8"))["best"]["params"]
+    return {k: float(v) for k, v in best.items()}
 
 
 # --------------------------------------------------------------------------- events -> simulation
@@ -268,6 +279,9 @@ class Experiment:
         self.model = self._fit_impact_model()
         self.jump_scale = 1.0
         self.jump_scale, self.jump_fit = self._fit_jump_scale()
+        if cfg.agent_params is None:
+            cfg.agent_params = {} if cfg.data_root else load_agent_params(cfg.ticker)
+        self.agent_params: dict[str, float] = dict(cfg.agent_params)
         self.recal: dict[int, Recalibration] = {}
         self.ensembles: dict[str, np.ndarray] = {}  # raw simulation runs, saved for re-scoring
 
@@ -377,6 +391,7 @@ class Experiment:
         return np.array([[f[k] for k in FEATURES]])
 
     def task(self, o: int, h: int, params: dict[str, float], oracle: bool) -> OriginTask:
+        params = {**self.agent_params, **params}
         start = max(0, o - self.cfg.lookback_days)
         runs = self.cfg.runs
         rows: list[list[tuple[int, str, float, float, float, float]]] = [[] for _ in range(runs)]
@@ -680,6 +695,10 @@ def main(argv: list[str] | None = None) -> dict[str, Any]:
         data_root=args.data_root,
         out_dir=args.out,
     )
+    agents = load_agent_params(cfg.ticker) if not cfg.data_root else {}
+    if "market.noise_frac" in agents:  # re-tune the unmodelled flow around the fitted value
+        n = agents["market.noise_frac"]
+        cfg.grid = {"market.noise_frac": [round(n * f, 3) for f in (0.6, 1.0, 1.5)]}
     if args.quick:
         cfg.grid = {"market.noise_frac": [0.6, 1.5]}
         cfg.runs = min(cfg.runs, 4)
@@ -695,6 +714,9 @@ def main(argv: list[str] | None = None) -> dict[str, Any]:
     from .experiment_report import write_report
 
     write_report(res, out)
+    from .strategy import write_strategy
+
+    write_strategy(cfg.ticker, out)
     print(f"wrote {out} in {res['seconds']:.0f}s")
     return res
 

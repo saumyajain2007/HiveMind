@@ -16,6 +16,7 @@ const SCREENS = [
   ["narratives", "/narratives"],
   ["analysis", "/analysis"],
   ["real-data", "/real-data"],
+  ["strategy", "/strategy"],
 ] as const;
 
 for (const [name, path] of SCREENS) {

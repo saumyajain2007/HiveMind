@@ -46,6 +46,19 @@ test("real data: horizons, bands and the biggest differences", async ({ page }) 
   await axe(page);
 });
 
+test("strategy: latest forecast, statistics and strategies", async ({ page }) => {
+  await page.goto("/strategy");
+  await expect(page.getByText(/Forecast from the last close/)).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: /expected price with 50% and 90% ranges/ }),
+  ).toBeVisible();
+  await expect(page.getByText("Buy and hold").first()).toBeVisible();
+  await page.getByRole("tab", { name: "5 days ahead" }).click();
+  await page.getByRole("combobox", { name: "Window" }).selectOption("all");
+  await expect(page.getByRole("img", { name: /Equity of every strategy/ })).toBeVisible();
+  await axe(page);
+});
+
 test("run library: compare two runs, duplicate one into the Builder", async ({ page }) => {
   await page.goto("/");
   const boxes = page.getByRole("checkbox", { name: /^Compare / });

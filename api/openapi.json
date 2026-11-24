@@ -1433,6 +1433,51 @@
           }
         }
       }
+    },
+    "/api/v1/experiments/{ticker}/strategy": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get Strategy",
+        "description": "Forecast statistics (mean, sd, quantiles, P(up) per day, with bias / RMSE / information\ncoefficient / coverage), the latest forecast, and trading strategies built on the model.",
+        "operationId": "get_strategy_api_v1_experiments__ticker__strategy_get",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Strategy Api V1 Experiments  Ticker  Strategy Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

@@ -31,6 +31,7 @@ def _fake_results() -> dict:
 def client(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> TestClient:
     (tmp_path / "FAKE").mkdir()
     (tmp_path / "FAKE" / "results.json").write_text(json.dumps(_fake_results()), "utf-8")
+    (tmp_path / "FAKE" / "strategy.json").write_text(json.dumps({"ticker": "FAKE", "strategy": {}}), "utf-8")
     monkeypatch.setenv("MARKETSIM_EXPERIMENTS_DIR", str(tmp_path))
     settings = Settings(data_dir=tmp_path / "data", log_json=False, run_jobs=False)
     return TestClient(create_app(settings))
@@ -48,3 +49,8 @@ def test_list_and_get(client: TestClient) -> None:
 def test_unknown_or_bad_ticker_is_404(client: TestClient) -> None:
     assert client.get(f"{V1}/experiments/NOPE").status_code == 404
     assert client.get(f"{V1}/experiments/..%2Fsecret").status_code == 404
+
+
+def test_strategy(client: TestClient) -> None:
+    assert client.get(f"{V1}/experiments/FAKE/strategy").json()["ticker"] == "FAKE"
+    assert client.get(f"{V1}/experiments/NOPE/strategy").status_code == 404
