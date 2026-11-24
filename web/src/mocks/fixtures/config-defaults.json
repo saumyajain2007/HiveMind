@@ -347,7 +347,9 @@
       "implied_vol": 0.3,
       "impact_Y": 0.7,
       "adv_turnover": 0.01,
+      "adv_ewma": 0.97,
       "noise_frac": 0.3,
+      "mm_news_pass_through": 1.0,
       "circuit_breaker": 0.15,
       "option_maturity_days": 30.0,
       "risk_free_rate": 0.0,
@@ -357,8 +359,8 @@
       "n_funds": 3,
       "firm_capital_share": 0.15,
       "prop_momentum_ticks": 4,
-      "prop_momentum_k": 100.0,
-      "prop_imbalance_k": 1.0,
+      "prop_momentum_k": 30.0,
+      "prop_imbalance_k": 0.2,
       "fund_value_k": 5.0,
       "fund_lag_ticks": 96
     }

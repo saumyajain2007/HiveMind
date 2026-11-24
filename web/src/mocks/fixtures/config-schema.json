@@ -1058,6 +1058,16 @@
           "placeholder": false
         },
         {
+          "name": "adv_ewma",
+          "key": "market.adv_ewma",
+          "kind": "float",
+          "default": 0.97,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Per-open-tick EWMA weight of the market maker's ADV (tracks traded volume)",
+          "placeholder": true
+        },
+        {
           "name": "noise_frac",
           "key": "market.noise_frac",
           "kind": "float",
@@ -1066,6 +1076,16 @@
           "max": 5.0,
           "description": "Unmodelled order flow, as a share of per-tick vol",
           "placeholder": false
+        },
+        {
+          "name": "mm_news_pass_through",
+          "key": "market.mm_news_pass_through",
+          "kind": "float",
+          "default": 1.0,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "Share of a public real event's true_impact the market maker re-quotes at once",
+          "placeholder": true
         },
         {
           "name": "circuit_breaker",
@@ -1161,7 +1181,7 @@
           "name": "prop_momentum_k",
           "key": "market.prop_momentum_k",
           "kind": "float",
-          "default": 100.0,
+          "default": 30.0,
           "min": 0.0,
           "max": 10000.0,
           "description": "Prop target = capital * tanh(k * momentum + k2 * imbalance)",
@@ -1171,7 +1191,7 @@
           "name": "prop_imbalance_k",
           "key": "market.prop_imbalance_k",
           "kind": "float",
-          "default": 1.0,
+          "default": 0.2,
           "min": 0.0,
           "max": 100.0,
           "description": "Weight of last tick's order imbalance in prop firms' target.",

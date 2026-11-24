@@ -363,7 +363,17 @@ def broadcast_hits(
     return np.flatnonzero(rng.random(len(p)) < p).astype(np.int64)
 
 
+PUBLIC_SEEDINGS = ("official", "outlet")
+
+
 def apply_to_market(event: Event, market: MarketState) -> None:
-    """A real event moves the hidden fundamental value at injection: V_true *= exp(true_impact)."""
+    """A real event moves the hidden fundamental value at injection: V_true *= exp(true_impact).
+
+    Public real news (official releases and outlet reports) also makes the market maker re-quote
+    at the next auction (`MarketState.apply_public_news`). Leaks, insider tips and rumours do
+    not: they reach the price only through agents' orders.
+    """
     if event.true_impact != 0.0:
         market.apply_fundamental_shock(event.true_impact)
+        if event.seeding in PUBLIC_SEEDINGS:
+            market.apply_public_news(event.true_impact)

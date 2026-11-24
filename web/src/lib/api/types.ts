@@ -703,11 +703,23 @@ export interface components {
        */
       adv_turnover: number;
       /**
+       * Adv Ewma
+       * @description Per-open-tick EWMA weight of the market maker's ADV (tracks traded volume)
+       * @default 0.97
+       */
+      adv_ewma: number;
+      /**
        * Noise Frac
        * @description Unmodelled order flow, as a share of per-tick vol
        * @default 0.3
        */
       noise_frac: number;
+      /**
+       * Mm News Pass Through
+       * @description Share of a public real event's true_impact the market maker re-quotes at once
+       * @default 1
+       */
+      mm_news_pass_through: number;
       /**
        * Circuit Breaker
        * @description Max |log move| per tick
@@ -765,13 +777,13 @@ export interface components {
       /**
        * Prop Momentum K
        * @description Prop target = capital * tanh(k * momentum + k2 * imbalance)
-       * @default 100
+       * @default 30
        */
       prop_momentum_k: number;
       /**
        * Prop Imbalance K
        * @description Weight of last tick's order imbalance in prop firms' target.
-       * @default 1
+       * @default 0.2
        */
       prop_imbalance_k: number;
       /**

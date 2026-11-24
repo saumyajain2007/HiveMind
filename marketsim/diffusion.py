@@ -22,7 +22,8 @@ randomness." One `step(tick)`:
    p = base_share · salience · (0.3 + impulsiveness)
        · (0.6 + 0.8·max(agreement, 0) + 0.4·|sentiment|·impulsiveness + 0.5·talking_your_book)
    where agreement = sentiment × confidence and talking_your_book = 1 when a holder of the stock
-   meets a bullish item (v1 has no short positions).
+   who is in profit (entry price <= `price`, once the simulation sets it) meets a bullish item
+   (v1 has no short positions).
 7. Salience decays; faded items with nobody about to share them retire.
 
 YouTube is the exception to "next step": a creator who decides to cover an item publishes
@@ -79,6 +80,7 @@ class Diffusion:
         self.pop, self.graph, self.items, self.cfg, self.rng = pop, graph, items, cfg, rng
         self._yt_queue: list[tuple[int, int, int, np.ndarray]] = []  # (due tick, seq, item id, creators)
         self._yt_seq = 0
+        self.price: float | None = None  # current share price, set by the simulation each tick
 
     # ---------------------------------------------------------------- 1. who is online
     def online_mask(self, tick: int) -> np.ndarray:
@@ -252,7 +254,10 @@ class Diffusion:
         sent = items.sentiment[slots]
         imp = pop.impulsiveness[agents]
         agreement = np.maximum(sent * pop.confidence[agents], 0.0)
-        book = ((pop.shares[agents] > 0) & (sent > 0)).astype(np.float64)
+        holder = pop.shares[agents] > 0
+        if self.price is not None:  # "profitable holders talk up their book" (HANDOFF §4 M4)
+            holder &= pop.entry_price[agents] <= self.price
+        book = (holder & (sent > 0)).astype(np.float64)
         p_share = (
             dc.base_share
             * items.salience[slots]

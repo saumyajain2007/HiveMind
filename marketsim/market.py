@@ -110,6 +110,7 @@ def batch_auction(
     noise_sd: float = 0.0,
     rng: np.random.Generator | None = None,
     iters: int = 60,
+    quote_shift: float = 0.0,
 ) -> AuctionResult:
     """Clear one tick. Quantities are positive share counts; limits are prices.
 
@@ -118,6 +119,9 @@ def batch_auction(
     cap. Noise (`noise_sd`, a log-return standard deviation) is then added and the result is
     clipped to ±cap again. Orders are filled against the final price, so no order is ever
     filled outside its limit.
+
+    `quote_shift` (a log move) re-centres the market maker's quotes, e.g. on public news: it
+    supplies mm_supply(r − quote_shift), so with no orders the price moves by the shift.
     """
     buy_q, buy_lim = np.asarray(buy_q, np.float64), np.asarray(buy_lim, np.float64)
     sell_q, sell_lim = np.asarray(sell_q, np.float64), np.asarray(sell_lim, np.float64)
@@ -130,7 +134,7 @@ def batch_auction(
     adv = max(adv, 1e-9)  # keeps mm_supply strictly increasing, so the crossing is unique
 
     def f(r: float) -> float:
-        return float(D(P * math.exp(r)) - mm_supply(r, adv, Y, sigma_daily))
+        return float(D(P * math.exp(r)) - mm_supply(r - quote_shift, adv, Y, sigma_daily))
 
     lo, hi = -cap, cap
     if f(hi) > 0:
@@ -200,6 +204,8 @@ class MarketState:
     atm_call: list[float] = field(default_factory=list)
     ohlc: list[tuple[float, float, float, float]] = field(default_factory=list)  # one row per day
     daily_vol: float = 0.0  # EWMA realised daily volatility (log returns)
+    adv_estimate: float = 0.0  # the market maker's ADV; 0 until the first auction
+    quote_shift: float = 0.0  # pending re-quote of the market maker on public news (log move)
     _day: list[float] = field(default_factory=list, repr=False)
 
     def __post_init__(self) -> None:
@@ -250,14 +256,23 @@ class MarketState:
         """A real event moves the hidden value: V_true *= exp(true_impact)."""
         self.v_true *= math.exp(true_impact)
 
+    def apply_public_news(self, true_impact: float) -> None:
+        """The market maker reads public news and re-quotes at the next auction by
+        `mm_news_pass_through` × true_impact."""
+        self.quote_shift += self.cfg.mm_news_pass_through * true_impact
+
     def record_tick(self, tick: int, auction: AuctionResult | None = None) -> None:
         """Log one tick. Pass the auction result on open ticks; closed ticks keep the price."""
         self.tick = tick
         volume = 0.0
         if auction is not None:
+            self.quote_shift = 0.0  # the re-quote is in the price now
             self.price = auction.price
             self.mm_inventory += auction.mm_delta
             volume = auction.volume
+            if self.adv_estimate > 0.0:
+                lam = self.cfg.adv_ewma
+                self.adv_estimate = lam * self.adv_estimate + (1 - lam) * volume * OPEN_TICKS_PER_DAY
         self.prices.append(self.price)
         self.volumes.append(volume)
         self.v_true_hist.append(self.v_true)
@@ -278,7 +293,12 @@ class MarketState:
         self._day = []
 
     def adv(self, total_shares_held: float) -> float:
-        return average_daily_volume(total_shares_held, self.cfg.adv_turnover)
+        """The market maker's ADV. It starts at `adv_turnover` × shares held and then tracks the
+        volume actually traded (EWMA over open ticks, weight `adv_ewma`), so depth scales with
+        how much the simulated market really trades."""
+        if self.adv_estimate <= 0.0:
+            self.adv_estimate = average_daily_volume(total_shares_held, self.cfg.adv_turnover)
+        return self.adv_estimate
 
     def clear(
         self,
@@ -305,4 +325,5 @@ class MarketState:
             cap=self.cfg.circuit_breaker,
             noise_sd=self.tick_noise_sd(),
             rng=rng,
+            quote_shift=self.quote_shift,
         )

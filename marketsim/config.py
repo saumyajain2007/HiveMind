@@ -165,7 +165,9 @@ class MarketConfig:
     implied_vol: float = 0.30             # annualised; options used as a signal only in v1
     impact_Y: float = 0.7                 # square-root law prefactor
     adv_turnover: float = 0.01            # average daily volume as a share of shares held
+    adv_ewma: float = 0.97                # PLACEHOLDER: per-open-tick EWMA weight of the market maker's ADV (tracks traded volume)
     noise_frac: float = 0.3               # unmodelled order flow, as a share of per-tick vol
+    mm_news_pass_through: float = 1.0     # PLACEHOLDER: share of a public real event's true_impact the market maker re-quotes at once
     circuit_breaker: float = 0.15         # max |log move| per tick
     option_maturity_days: float = 30.0    # PLACEHOLDER: maturity of the logged ATM call (calendar days)
     risk_free_rate: float = 0.0           # PLACEHOLDER: annualised, continuously compounded
@@ -175,8 +177,8 @@ class MarketConfig:
     n_funds: int = 3
     firm_capital_share: float = 0.15      # firms' capital vs total investor wealth
     prop_momentum_ticks: int = 4          # PLACEHOLDER: prop firms' momentum look-back (1 hour)
-    prop_momentum_k: float = 100.0        # PLACEHOLDER: prop target = capital * tanh(k * momentum + k2 * imbalance)
-    prop_imbalance_k: float = 1.0         # PLACEHOLDER
+    prop_momentum_k: float = 30.0         # PLACEHOLDER: prop target = capital * tanh(k * momentum + k2 * imbalance)
+    prop_imbalance_k: float = 0.2         # PLACEHOLDER
     fund_value_k: float = 5.0             # PLACEHOLDER: fund target = capital * clip(k * (V - P) / P, -1, 1)
     fund_lag_ticks: int = 96              # funds know V_true with a 1-day lag
 

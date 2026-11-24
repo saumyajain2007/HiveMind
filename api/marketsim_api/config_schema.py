@@ -134,6 +134,8 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "market.implied_vol": (0.01, 5.0),
     "market.impact_Y": (0.01, 10.0),
     "market.adv_turnover": (0.0, 1.0),
+    "market.adv_ewma": (0.0, 1.0),
+    "market.mm_news_pass_through": (0.0, 2.0),
     "market.noise_frac": (0.0, 5.0),
     "market.circuit_breaker": (0.001, 1.0),
     "market.option_maturity_days": (1.0, 3650.0),
