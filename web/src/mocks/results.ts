@@ -298,6 +298,18 @@ export function resultHandlers(ctx: Ctx) {
         },
       ]);
     }),
+    http.get("*/api/v1/event-library", async () =>
+      HttpResponse.json((await import("./fixtures/results/library.json")).default),
+    ),
+    http.get("*/api/v1/experiments/:ticker/isolation", async () =>
+      HttpResponse.json((await import("./fixtures/results/real-isolation.json")).default),
+    ),
+    http.get("*/api/v1/runs/:id/isolation", async ({ params }) => {
+      const r = run(params.id);
+      if (r?.mode !== "isolation") return notFound("isolation");
+      const result = (await import("./fixtures/results/isolation.json")).default;
+      return HttpResponse.json({ run: { ...r, status: "done" }, result, progress: [] });
+    }),
     http.get("*/api/v1/experiments/:ticker/strategy", async ({ params }) => {
       const s = (await import("./fixtures/results/strategy.json")).default;
       return String(params.ticker).toUpperCase() === s.ticker

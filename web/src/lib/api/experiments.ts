@@ -221,3 +221,128 @@ export interface StrategyDoc {
     results: Record<string, StrategyResult>;
   };
 }
+
+// ----------------------------------------------------------------------------- isolation
+
+export interface EffectStats {
+  path: { mean: number[]; lo: number[]; hi: number[]; se: number[] };
+  final: { mean: number; se: number; ci95: [number, number]; t: number; p_positive: number };
+  one_day: { mean: number; se: number };
+  peak: { value: number; tick: number };
+  ticks_to_half_peak: number | null;
+  window_effect?: number;
+}
+
+export type EventEffect = EffectStats & {
+  id: number;
+  label: string;
+  kind: string;
+  tick: number;
+  day: number;
+  true_impact: number;
+  sentiment: number;
+  credibility: number;
+  salience: number;
+  seeding: string;
+  pass_through: number | null;
+  extra_volume: number;
+  share_of_total: number | null;
+};
+
+export interface IsolationResult {
+  seeds: number;
+  cancelled: boolean;
+  n_ticks: number;
+  every: number;
+  tick: number[];
+  baseline: { mean: number[]; with_events: number[] };
+  total: EffectStats;
+  events: EventEffect[];
+  isolated_sum: number;
+  interaction: number;
+}
+
+export type RealWindow = IsolationResult & {
+  origin: string;
+  target: string;
+  start: string;
+  origin_tick: number;
+  real_move: number;
+  real_abnormal_move: number;
+  market_move: number;
+  measured_reactions: {
+    date: string;
+    form: string;
+    items: string[];
+    group: string;
+    label: number | null;
+  }[];
+};
+
+export interface RealIsolation {
+  ticker: string;
+  name: string;
+  horizon: number;
+  runs: number;
+  windows: RealWindow[];
+}
+
+// ----------------------------------------------------------------------------- event library
+
+export interface CatalogRow {
+  group: string;
+  n: number;
+  tickers: number;
+  mean_ar: number;
+  median_ar: number;
+  t_direction: number;
+  share_up: number;
+  mean_abs_ar: number;
+  normal_abs_ar: number;
+  excess_abs_ar: number;
+  abs_sar: number;
+  share_big: number;
+  car_mean: number[];
+  car_abs_mean: number[];
+  day0_share_of_5d: number;
+  volume_ratio_median: number;
+}
+
+export interface EventLibrary {
+  tickers: string[];
+  n_events: number;
+  split: string;
+  catalog: CatalogRow[];
+  earnings_by_ticker: {
+    ticker: string;
+    name: string;
+    n: number;
+    mean_abs_ar: number;
+    abs_sar: number;
+    share_up: number;
+    largest: number;
+  }[];
+  model: {
+    n_train: number;
+    n_test: number;
+    pooled: ImpactMetrics;
+    own_vs_pooled?: {
+      n: number;
+      size_mae_own: number;
+      size_mae_pooled: number;
+      size_corr_own: number;
+      size_corr_pooled: number;
+    };
+  };
+  biggest: {
+    ticker: string;
+    name: string;
+    date: string;
+    form: string;
+    items: string[];
+    group: string;
+    ar: number;
+    sar: number;
+    volume_ratio: number;
+  }[];
+}

@@ -85,6 +85,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(analysis.router)
     v1.include_router(parse.router)
     v1.include_router(experiments.router)
+    v1.include_router(experiments.library_router)
     app.include_router(v1)
     return app
 

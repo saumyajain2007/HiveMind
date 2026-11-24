@@ -65,9 +65,14 @@ def write_prices(path: Path, rows: list[tuple[str, float, float]]) -> None:
     )
 
 
+_TICKERS: dict | None = None
+
+
 def cik_of(ticker: str) -> str:
-    table = get_json("https://www.sec.gov/files/company_tickers.json")
-    for row in table.values():
+    global _TICKERS
+    if _TICKERS is None:
+        _TICKERS = get_json("https://www.sec.gov/files/company_tickers.json")
+    for row in _TICKERS.values():
         if row["ticker"].upper() == ticker.upper():
             return f"{int(row['cik_str']):010d}"
     raise SystemExit(f"{ticker} not found in SEC's ticker list")
@@ -124,34 +129,106 @@ def fundamentals(cik: str) -> dict[str, list[dict]]:
     return out
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("ticker")
-    ap.add_argument("--start", default="2015-01-01")
-    ap.add_argument("--market", default="SPY")
-    args = ap.parse_args()
-    out = ROOT / args.ticker.upper()
+# a broad, liquid cross-section: every sector, mega to large caps
+UNIVERSE = [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "NVDA",
+    "TSLA",
+    "JPM",
+    "BAC",
+    "WFC",
+    "GS",
+    "MS",
+    "JNJ",
+    "PFE",
+    "MRK",
+    "ABBV",
+    "UNH",
+    "LLY",
+    "XOM",
+    "CVX",
+    "KO",
+    "PEP",
+    "PG",
+    "WMT",
+    "COST",
+    "HD",
+    "MCD",
+    "NKE",
+    "DIS",
+    "NFLX",
+    "INTC",
+    "AMD",
+    "CSCO",
+    "ORCL",
+    "CRM",
+    "ADBE",
+    "IBM",
+    "QCOM",
+    "BA",
+    "CAT",
+    "GE",
+    "MMM",
+    "HON",
+    "UPS",
+    "T",
+    "VZ",
+    "CMCSA",
+    "SBUX",
+    "TGT",
+    "LOW",
+]
+
+
+def fetch_one(ticker: str, start: str, market_rows: list[tuple[str, float, float]], market: str) -> int:
+    out = ROOT / ticker.upper()
     out.mkdir(parents=True, exist_ok=True)
-    print(f"prices {args.ticker} / {args.market} …")
-    write_prices(out / "prices.csv", prices(args.ticker, args.start))
-    write_prices(out / "market.csv", prices(args.market, args.start))
-    print("SEC filings …")
-    cik = cik_of(args.ticker)
-    name, rows = filings(cik, args.start)
+    write_prices(out / "prices.csv", prices(ticker, start))
+    write_prices(out / "market.csv", market_rows)
+    cik = cik_of(ticker)
+    name, rows = filings(cik, start)
     (out / "filings.json").write_text(
         json.dumps({"cik": cik, "name": name, "filings": rows}, indent=1), "utf-8"
     )
-    print("SEC fundamentals …")
     (out / "fundamentals.json").write_text(json.dumps(fundamentals(cik), indent=1), "utf-8")
     today = datetime.now(UTC).date().isoformat()
     (out / "SOURCES.md").write_text(
-        f"# {args.ticker.upper()} ({name})\n\nDownloaded {today} by `scripts/fetch_market_data.py`.\n\n"
-        f"- `prices.csv`, `market.csv` ({args.market}): Yahoo Finance daily adjusted closes from {args.start}.\n"
+        f"# {ticker.upper()} ({name})\n\nDownloaded {today} by `scripts/fetch_market_data.py`.\n\n"
+        f"- `prices.csv`, `market.csv` ({market}): Yahoo Finance daily adjusted closes from {start}.\n"
         f"- `filings.json`: SEC EDGAR submissions for CIK {cik} (8-K with item codes, 10-Q, 10-K).\n"
         "- `fundamentals.json`: SEC XBRL company facts (diluted EPS, revenue) as first reported.\n",
         encoding="utf-8",
     )
-    print(f"wrote {out} ({len(rows)} filings)")
+    return len(rows)
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("tickers", nargs="*", help="tickers to fetch (default: the built-in universe)")
+    ap.add_argument("--start", default="2015-01-01")
+    ap.add_argument("--market", default="SPY")
+    ap.add_argument("--force", action="store_true", help="re-download tickers already in data/")
+    args = ap.parse_args()
+    tickers = [t.upper() for t in (args.tickers or UNIVERSE)]
+    print(f"prices {args.market} …")
+    market_rows = prices(args.market, args.start)
+    failed = []
+    for t in tickers:
+        if (ROOT / t / "filings.json").exists() and not args.force:
+            print(f"{t}: already there (use --force to refresh)")
+            continue
+        try:
+            n = fetch_one(t, args.start, market_rows, args.market)
+            print(f"{t}: {n} filings")
+        except (Exception, SystemExit) as e:  # keep going: one bad ticker should not stop the batch
+            failed.append(t)
+            print(f"{t}: FAILED ({e})")
+    if failed:
+        print("failed:", " ".join(failed))
 
 
 if __name__ == "__main__":

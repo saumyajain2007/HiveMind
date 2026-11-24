@@ -1,0 +1,86 @@
+{
+ "cik": "0002115436",
+ "name": "ExxonMobil Holdings Corp",
+ "filings": [
+  {
+   "form": "8-K",
+   "filing_date": "2026-07-07",
+   "accepted": "2026-07-07T20:19:57",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0002115436-26-000003",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-07-31",
+   "accepted": "2026-07-31T10:31:39",
+   "items": [
+    "2.02",
+    "7.01"
+   ],
+   "accession": "0002115436-26-000006",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-08-03",
+   "accepted": "2026-08-03T18:55:38",
+   "items": [],
+   "accession": "0000034088-26-000093",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-08-28",
+   "accepted": "2026-08-28T15:26:26",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-373026",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-09-25",
+   "accepted": "2026-09-25T21:20:49",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-402986",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-10-16",
+   "accepted": "2026-10-16T12:02:58",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0002115436-26-000013",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-10-30",
+   "accepted": "2026-10-30T10:32:50",
+   "items": [
+    "2.02",
+    "7.01"
+   ],
+   "accession": "0002115436-26-000018",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-11-02",
+   "accepted": "2026-11-02T17:41:17",
+   "items": [],
+   "accession": "0002115436-26-000020",
+   "description": "FORM 10-Q"
+  }
+ ]
+}

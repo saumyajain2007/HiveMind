@@ -4,6 +4,7 @@ import {
   FlaskConical,
   GitBranch,
   Landmark,
+  Split,
   WalletCards,
   Library,
   Network,
@@ -70,6 +71,13 @@ export const NAV: NavItem[] = [
     icon: FlaskConical,
     description: "Calibration and backtests",
     shortcut: "G A",
+  },
+  {
+    path: "/event-lab",
+    label: "Event lab",
+    icon: Split,
+    description: "Isolate what each event did to the price",
+    shortcut: "G E",
   },
   {
     path: "/real-data",

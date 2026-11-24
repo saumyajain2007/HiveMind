@@ -406,6 +406,28 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/runs/{run_id}/isolation": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Isolation
+     * @description Isolated effect of every event (start one with `POST /runs`, `mode: "isolation"`): per
+     *     event the paired with/without price-effect path, final effect with a 95% CI, peak, timing,
+     *     pass-through and extra volume, plus the total move and the interaction between events.
+     */
+    get: operations["get_isolation_api_v1_runs__run_id__isolation_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/calibrations": {
     parameters: {
       query?: never;
@@ -559,6 +581,49 @@ export interface paths {
      *     coefficient / coverage), the latest forecast, and trading strategies built on the model.
      */
     get: operations["get_strategy_api_v1_experiments__ticker__strategy_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/experiments/{ticker}/isolation": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Real Isolation
+     * @description Real earnings windows split into each filing's isolated contribution
+     *     (`python -m marketsim.isolation <TICKER>`).
+     */
+    get: operations["get_real_isolation_api_v1_experiments__ticker__isolation_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/event-library": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Event Library
+     * @description Every filing of every downloaded stock (`python -m marketsim.event_library`): the isolated
+     *     real effect of each event type, earnings reactions by stock, and the pooled impact model.
+     *     `events=true` adds the per-event rows (large).
+     */
+    get: operations["get_event_library_api_v1_event_library_get"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1860,7 +1925,7 @@ export interface components {
       mode: components["schemas"]["RunMode"];
       /**
        * Runs
-       * @description Monte Carlo repetitions (1 for a single run)
+       * @description Monte Carlo repetitions (1 for a single run); isolation: the number of paired seeds
        * @default 1
        */
       runs: number;
@@ -1938,7 +2003,7 @@ export interface components {
      * RunMode
      * @enum {string}
      */
-    RunMode: "single" | "montecarlo" | "calibration" | "backtest";
+    RunMode: "single" | "montecarlo" | "calibration" | "backtest" | "isolation";
     /** RunRecord */
     RunRecord: {
       /** Id */
@@ -2966,6 +3031,39 @@ export interface operations {
       };
     };
   };
+  get_isolation_api_v1_runs__run_id__isolation_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   create_calibration_api_v1_calibrations_post: {
     parameters: {
       query?: never;
@@ -3193,6 +3291,72 @@ export interface operations {
       path: {
         ticker: string;
       };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_real_isolation_api_v1_experiments__ticker__isolation_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        ticker: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_event_library_api_v1_event_library_get: {
+    parameters: {
+      query?: {
+        events?: boolean;
+      };
+      header?: never;
+      path?: never;
       cookie?: never;
     };
     requestBody?: never;

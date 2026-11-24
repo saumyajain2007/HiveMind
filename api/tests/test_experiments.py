@@ -31,6 +31,9 @@ def _fake_results() -> dict:
 def client(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> TestClient:
     (tmp_path / "FAKE").mkdir()
     (tmp_path / "FAKE" / "results.json").write_text(json.dumps(_fake_results()), "utf-8")
+    (tmp_path / "events").mkdir()
+    (tmp_path / "events" / "library.json").write_text(json.dumps({"n_events": 2, "events": [1, 2]}), "utf-8")
+    (tmp_path / "FAKE" / "isolation.json").write_text(json.dumps({"ticker": "FAKE", "windows": []}), "utf-8")
     (tmp_path / "FAKE" / "strategy.json").write_text(json.dumps({"ticker": "FAKE", "strategy": {}}), "utf-8")
     monkeypatch.setenv("MARKETSIM_EXPERIMENTS_DIR", str(tmp_path))
     settings = Settings(data_dir=tmp_path / "data", log_json=False, run_jobs=False)
@@ -54,3 +57,11 @@ def test_unknown_or_bad_ticker_is_404(client: TestClient) -> None:
 def test_strategy(client: TestClient) -> None:
     assert client.get(f"{V1}/experiments/FAKE/strategy").json()["ticker"] == "FAKE"
     assert client.get(f"{V1}/experiments/NOPE/strategy").status_code == 404
+
+
+def test_library_and_isolation(client: TestClient) -> None:
+    lib = client.get(f"{V1}/event-library").json()
+    assert lib["n_events"] == 2 and "events" not in lib
+    assert client.get(f"{V1}/event-library?events=true").json()["events"] == [1, 2]
+    assert client.get(f"{V1}/experiments/FAKE/isolation").json()["windows"] == []
+    assert client.get(f"{V1}/experiments/NOPE/isolation").status_code == 404

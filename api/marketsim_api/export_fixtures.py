@@ -74,7 +74,29 @@ def write_experiment_fixture(ticker: str = "AAPL", keep: int = 200) -> bool:
         for f in doc["forecasts"].values():
             f["rows"] = f["rows"][-keep:]
         _write("strategy", doc)
+    iso = src.parent / "isolation.json"
+    if iso.exists():
+        _write("real-isolation", json.loads(iso.read_text(encoding="utf-8")))
+    lib = src.parents[1] / "events" / "library.json"
+    if lib.exists():
+        _write(
+            "library", {k: v for k, v in json.loads(lib.read_text(encoding="utf-8")).items() if k != "events"}
+        )
+    _write_isolation()
     return True
+
+
+def _write_isolation() -> None:
+    """The demo scenario's events isolated (12 paired seeds), for the Event lab mock."""
+    from dataclasses import replace
+
+    from marketsim.config import Config
+    from marketsim.isolation import isolate
+    from marketsim.sim import Scenario
+
+    cfg = replace(Config(), n_agents=2000, seed=0)
+    sc = Scenario.from_dicts(DEMO_EVENTS)
+    _write("isolation", isolate(cfg, sc, range(12), 5 * 96))
 
 
 def main() -> None:

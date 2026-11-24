@@ -291,3 +291,35 @@ Daily, AAPL only. Positions are set at each close from that close's forecast and
 - the earnings classifier (long or short on earnings reaction days only, by the sign of the expected reaction).
 
 Each is reported with Sharpe, a stationary-bootstrap 95% CI and P(Sharpe ≤ buy and hold), drawdown, and alpha and beta against buy and hold. The page and `strategy.json` also carry the per-day forecast distribution (mean, sd, quantiles, P(up)) and the forecast statistics: bias, RMSE, information coefficient, z-scores, coverage, and volatility skill.
+
+### Isolating the effect of individual events (the selling point)
+
+**In the simulator (`marketsim.isolation`, run mode `isolation`, Event lab → Simulator).** For each seed the scenario runs once with every event, once with none, and once per event with only that event removed. Every subsystem draws from its own random stream (`SeedSequence([seed, 7]).spawn(5)`), so a run without an event is bit-identical to the full run until the moment the event would have fired; the API test checks that the effect path is exactly 0 before the event. Any later difference is the event's effect: directly through the market maker's re-quote, and through the agents who heard of it, shared it, changed beliefs and traded. Reported per event:
+
+- the mean paired effect path with a 5–95% band and standard errors;
+- the final effect with a 95% CI and P(effect > 0);
+- the effect after one day, the peak, and the time to half of the peak;
+- pass-through: effect / true impact;
+- the extra volume the event caused;
+- its share of the total move.
+
+Reported for the whole scenario: **interaction**, the move with all events minus the sum of the isolated effects. It is not zero: in the demo, the denial partly cancels the rumour.
+
+**Removing vs neutralising.** Removing an event means its children (mutations, inventions) also never happen, which is what "without this event" means. The alternative, keeping it with zero impact, would still spread a story and is a different counterfactual.
+
+**On real moves (`python -m marketsim.isolation AAPL`, Event lab → Real earnings moves).** Each test-period earnings window, from the close before the release to two closes later, is replayed from five days earlier with its real filings at their measured reactions (fitted agents). Each filing's isolated contribution is set next to the real market-adjusted move. This is a model-based decomposition: it shows how the simulated market splits a move between filings, not a measurement of the split.
+
+**Bug found by isolation: earnings and the 10-Q double-counted.** Apple files its 10-Q the morning after the earnings release, so both react on the same day, and both carried the same measured reaction as their label. The oracle replay injected the earnings move twice. That made the oracle look bad on earnings days (−22% skill), and the first decomposition showed the 10-Q "causing" as much as the earnings. Fix: an earnings release owns its reaction day in the replay too (`Experiment.task`, as it already did for training labels). The AAPL experiment was re-run with the fix.
+
+### The event library (`marketsim.event_library`, Event lab → Event library)
+
+`scripts/fetch_market_data.py` with no arguments now fetches a 50-stock universe across sectors; already-downloaded tickers are skipped. XOM returned only 8 filings from EDGAR's submissions API and is effectively missing; to look into.
+
+9,881 filings (2015–2026) get the real-data isolation of an event type's effect. The abnormal return vs a market model on SPY (120-day estimation window) is compared with a *normal* day's abnormal move for the same stock: the residual sd × sqrt(2/π), the mean of a half-normal. |SAR| = mean |AR / residual sd| / sqrt(2/π), so 1 means "as big as an ordinary day". Results:
+
+- **Earnings:** |SAR| 3.9, an excess |AR| of +3.0 points, and 41% of releases move the stock more than 3 sd. 80% of the 5-day move happens on day 0.
+- **Reg FD disclosures (7.01):** |SAR| 1.3.
+- **Every other type** (votes, executive changes, governance, agreements, 10-Q / 10-K, other 8.01 events): about 1, the size of an ordinary day.
+- **Direction:** no event type has a reliable average direction (all |t| < 2).
+
+The impact model trained on all stocks predicts the size of a reaction out of sample with correlation 0.53. Direction is 53% on 1,217 moves beyond ±1%. On the same test events, the pooled model's size correlation is 0.53, against 0.50 for a model trained only on each stock's own events.

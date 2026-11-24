@@ -70,6 +70,8 @@ ignore = [
 "marketsim/experiment_report.py" = ["E501"]   # Markdown table rows
 "scripts/*.py" = ["E501"]
 "marketsim/strategy.py" = ["E501"]
+"marketsim/isolation.py" = ["E501"]
+"marketsim/event_library.py" = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["marketsim", "marketsim_api"]

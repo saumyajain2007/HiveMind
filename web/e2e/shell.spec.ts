@@ -10,6 +10,7 @@ const PAGES = [
   "/network",
   "/narratives",
   "/analysis",
+  "/event-lab",
   "/real-data",
   "/strategy",
   "/design",

@@ -264,7 +264,7 @@ class Experiment:
         h = self.ds.history
         self.split_idx = h.index_on_or_after(cfg.split)
         self.from_idx = max(h.index_on_or_after(cfg.train_from), 130)
-        earn_days = {e.reaction_idx for e in self.ds.events if e.group == "earnings"}
+        self.earn_days = earn_days = {e.reaction_idx for e in self.ds.events if e.group == "earnings"}
         # an earnings release owns its reaction day: other filings on that day (e.g. the 10-Q
         # filed the next morning) are kept as events but not used as training labels
         self.labelled = [
@@ -409,7 +409,10 @@ class Experiment:
                 continue
             cx = 0.4 if e.group in ("earnings", "periodic_report") else 0.2
             if oracle:
-                lab = e.label if e.label is not None else 0.0
+                # an earnings release owns its reaction day: a 10-Q reacting the same day carries
+                # the earnings move as its label, and must not be injected a second time
+                shared = e.group != "earnings" and e.reaction_idx in self.earn_days
+                lab = 0.0 if shared or e.label is None else e.label
                 sal = float(np.clip(0.3 + 8.0 * abs(lab), 0.2, 1.0))
                 for r in rows:
                     r.append((tk, KIND[e.group], lab, float(np.clip(20 * lab, -1, 1)), sal, cx))

@@ -151,6 +151,7 @@ class RunMode(StrEnum):
     montecarlo = "montecarlo"
     calibration = "calibration"
     backtest = "backtest"
+    isolation = "isolation"
 
 
 class RunCreate(_Strict):
@@ -158,7 +159,12 @@ class RunCreate(_Strict):
 
     name: str | None = Field(None, max_length=120)
     mode: RunMode = RunMode.single
-    runs: int = Field(1, ge=1, le=MAX_RUNS, description="Monte Carlo repetitions (1 for a single run)")
+    runs: int = Field(
+        1,
+        ge=1,
+        le=MAX_RUNS,
+        description="Monte Carlo repetitions (1 for a single run); isolation: the number of paired seeds",
+    )
     workers: int = Field(1, ge=1, le=64)
     scenario_id: str | None = None
     scenario: ScenarioSpec | None = None
@@ -178,8 +184,10 @@ class RunCreate(_Strict):
             raise ValueError("give exactly one of scenario_id or scenario")
         if self.mode == RunMode.single and self.runs != 1:
             raise ValueError("a single run has runs = 1; use mode 'montecarlo' for more")
-        if self.mode not in (RunMode.single, RunMode.montecarlo):
+        if self.mode not in (RunMode.single, RunMode.montecarlo, RunMode.isolation):
             raise ValueError("use POST /calibrations or POST /backtests for those modes")
+        if self.mode == RunMode.isolation and self.runs < 2:
+            raise ValueError("an isolation needs runs >= 2 (paired seeds) for a confidence interval")
         return self
 
 

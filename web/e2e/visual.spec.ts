@@ -15,6 +15,7 @@ const SCREENS = [
   ["monte-carlo", "/monte-carlo"],
   ["narratives", "/narratives"],
   ["analysis", "/analysis"],
+  ["event-lab", "/event-lab"],
   ["real-data", "/real-data"],
   ["strategy", "/strategy"],
 ] as const;

@@ -1,0 +1,3841 @@
+{
+ "cik": "0000732717",
+ "name": "AT&T INC.",
+ "filings": [
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-16",
+   "accepted": "2015-01-16T22:14:34",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000003",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-22",
+   "accepted": "2015-01-22T11:08:00",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-15-016771",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-27",
+   "accepted": "2015-01-27T21:42:13",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000005",
+   "description": "AT&T INC. 4TH QTR 2014 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-28",
+   "accepted": "2015-01-28T14:43:17",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000007",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-30",
+   "accepted": "2015-01-30T21:05:39",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000009",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-02-12",
+   "accepted": "2015-02-12T20:47:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-046628",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2015-02-20",
+   "accepted": "2015-02-20T21:23:15",
+   "items": [],
+   "accession": "0000732717-15-000016",
+   "description": "AT&T INC. 2014 FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-03-04",
+   "accepted": "2015-03-04T15:02:42",
+   "items": [
+    "2.03"
+   ],
+   "accession": "0000732717-15-000019",
+   "description": "CREDIT FACILITY DRAW"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-03-09",
+   "accepted": "2015-03-09T14:47:36",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-082423",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-03-10",
+   "accepted": "2015-03-10T20:11:52",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000023",
+   "description": "MARCH 10, 2015 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-04-22",
+   "accepted": "2015-04-22T20:14:10",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000028",
+   "description": "AT&T INC. 1ST QTR 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-04-23",
+   "accepted": "2015-04-22T21:41:50",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000031",
+   "description": "AT&T INC. 1ST QTR 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-04-28",
+   "accepted": "2015-04-28T20:58:29",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-15-000033",
+   "description": "2015 VOTING RESULTS 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-04",
+   "accepted": "2015-05-04T20:13:53",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-169018",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-05-05",
+   "accepted": "2015-05-05T20:49:15",
+   "items": [],
+   "accession": "0000732717-15-000040",
+   "description": "AT&T 2015 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-15",
+   "accepted": "2015-05-15T20:05:29",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000045",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-06-26",
+   "accepted": "2015-06-26T13:43:23",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-15-000056",
+   "description": "FISHER"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-06-29",
+   "accepted": "2015-06-29T21:20:09",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000058",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-23",
+   "accepted": "2015-07-23T20:01:26",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000061",
+   "description": "AT&T INC. 2ND QTR 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-23",
+   "accepted": "2015-07-23T20:04:10",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000063",
+   "description": "AT&T INC. 2ND QTR 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-24",
+   "accepted": "2015-07-24T21:03:55",
+   "items": [
+    "2.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000069",
+   "description": "DIRECTV MERGER CLOSING 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-30",
+   "accepted": "2015-07-30T15:11:32",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-15-000073",
+   "description": "NEW DIRECTOR DI PIAZZA"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-08-07",
+   "accepted": "2015-08-07T21:11:15",
+   "items": [],
+   "accession": "0000732717-15-000079",
+   "description": "AT&T 2015 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-08-11",
+   "accepted": "2015-08-11T21:05:26",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000083",
+   "description": "AT&T INC. 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-08-14",
+   "accepted": "2015-08-14T20:05:25",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000086",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-08-20",
+   "accepted": "2015-08-20T21:03:46",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000089",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-09-01",
+   "accepted": "2015-09-01T20:33:48",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000094",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2015-09-25",
+   "accepted": "2015-09-25T20:16:31",
+   "items": [
+    "2.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000101",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-09-25",
+   "accepted": "2015-09-25T21:18:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000102",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-09-29",
+   "accepted": "2015-09-29T20:39:23",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000104",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-10-15",
+   "accepted": "2015-10-14T22:25:48",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000107",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-10-20",
+   "accepted": "2015-10-20T15:09:02",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-15-000111",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-10-22",
+   "accepted": "2015-10-22T20:03:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000113",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-10-22",
+   "accepted": "2015-10-22T21:22:58",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000116",
+   "description": "AT&T INC. 3RD QUARTER 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-11-06",
+   "accepted": "2015-11-05T23:43:54",
+   "items": [],
+   "accession": "0000732717-15-000121",
+   "description": "AT&T 2015 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-11-12",
+   "accepted": "2015-11-12T12:59:11",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000732717-15-000124",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-11-18",
+   "accepted": "2015-11-17T22:59:37",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000126",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-12-15",
+   "accepted": "2015-12-15T19:40:29",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000129",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-12-18",
+   "accepted": "2015-12-18T18:43:29",
+   "items": [
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0000732717-15-000132",
+   "description": "BYLAW AMENDMENTS 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-01-22",
+   "accepted": "2016-01-22T22:04:56",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-16-000135",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-01-26",
+   "accepted": "2016-01-26T21:01:25",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000137",
+   "description": "AT&T INC. 4TH QUARTER 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-01-26",
+   "accepted": "2016-01-26T21:06:17",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000138",
+   "description": "AT&T INC. 4TH QUARTER 2015 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-02-09",
+   "accepted": "2016-02-09T17:17:01",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-454958",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2016-02-18",
+   "accepted": "2016-02-18T21:33:12",
+   "items": [],
+   "accession": "0000732717-16-000147",
+   "description": "AT&T INC. 2015 FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-02-19",
+   "accepted": "2016-02-19T11:08:36",
+   "items": [
+    "9.01"
+   ],
+   "accession": "0001193125-16-469003",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-03-22",
+   "accepted": "2016-03-22T20:40:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-513518",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-04-26",
+   "accepted": "2016-04-26T20:02:39",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000151",
+   "description": "AT&T INC. 1ST QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-04-26",
+   "accepted": "2016-04-26T20:08:24",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000153",
+   "description": "AT&T INC. 1ST QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-02",
+   "accepted": "2016-05-02T20:25:52",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-16-000156",
+   "description": "VOTING RESULTS 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-05-05",
+   "accepted": "2016-05-05T20:12:13",
+   "items": [],
+   "accession": "0000732717-16-000160",
+   "description": "AT&T 2016 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-12",
+   "accepted": "2016-05-12T14:22:52",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-16-000165",
+   "description": "DESCRIPTION OF COMMON STOCK"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-12",
+   "accepted": "2016-05-12T20:21:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-588917",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-06-02",
+   "accepted": "2016-06-02T20:32:14",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-16-000171",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-06-24",
+   "accepted": "2016-06-24T20:54:33",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-16-000186",
+   "description": "NEW DIRECTOR 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-21",
+   "accepted": "2016-07-21T20:01:49",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000189",
+   "description": "AT&T INC. 2ND QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-21",
+   "accepted": "2016-07-21T20:03:57",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000190",
+   "description": "AT&T INC. 2ND QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-08-04",
+   "accepted": "2016-08-04T21:00:57",
+   "items": [],
+   "accession": "0000732717-16-000195",
+   "description": "AT&T 2016 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-08-05",
+   "accepted": "2016-08-05T20:22:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-673510",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-08-19",
+   "accepted": "2016-08-19T21:06:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-686561",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-09-02",
+   "accepted": "2016-09-02T20:32:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-700904",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-09-08",
+   "accepted": "2016-09-08T20:30:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-705218",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-10-24",
+   "accepted": "2016-10-24T10:09:57",
+   "items": [
+    "1.01",
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-744400",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-10-24",
+   "accepted": "2016-10-24T12:12:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000197",
+   "description": "AT&T INC. 3RD QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-10-24",
+   "accepted": "2016-10-24T12:18:25",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000199",
+   "description": "AT&T INC. 3RD QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-11-03",
+   "accepted": "2016-11-03T20:46:39",
+   "items": [],
+   "accession": "0000732717-16-000233",
+   "description": "AT&T 2016 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-11-15",
+   "accepted": "2016-11-15T22:23:55",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-16-769052",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-12-02",
+   "accepted": "2016-12-02T21:34:46",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-16-000238",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-12-08",
+   "accepted": "2016-12-08T22:15:05",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-16-000251",
+   "description": "DE LA VEGA RETIREMENT 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-12-16",
+   "accepted": "2016-12-16T22:08:17",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-16-000257",
+   "description": "DE LA VEGA AGREEMENT"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-20",
+   "accepted": "2017-01-20T12:31:01",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000006",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-25",
+   "accepted": "2017-01-25T21:01:42",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000010",
+   "description": "AT&T INC. 4TH QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-25",
+   "accepted": "2017-01-25T21:18:46",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000011",
+   "description": "AT&T INC. 4TH QUARTER 2016 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-02-09",
+   "accepted": "2017-02-09T22:16:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-036307",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2017-02-17",
+   "accepted": "2017-02-17T22:30:12",
+   "items": [],
+   "accession": "0000732717-17-000021",
+   "description": "AT&T INC. 2016 FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-03-21",
+   "accepted": "2017-03-21T21:12:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-090886",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-03-28",
+   "accepted": "2017-03-28T21:01:04",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-099941",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-03-30",
+   "accepted": "2017-03-30T13:59:14",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000027",
+   "description": "FIRST RESPONDER NETWORK AUTHORITY 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-04-13",
+   "accepted": "2017-04-13T19:31:22",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000039",
+   "description": "AUCTION 1000"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-04-25",
+   "accepted": "2017-04-25T20:01:59",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000045",
+   "description": "AT&T INC. 1ST QTR EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-04-25",
+   "accepted": "2017-04-25T20:04:39",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000047",
+   "description": "AT&T INC. 1ST QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-05-04",
+   "accepted": "2017-05-04T20:09:02",
+   "items": [],
+   "accession": "0000732717-17-000055",
+   "description": "AT&T 2017 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-04",
+   "accepted": "2017-05-04T20:14:09",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-17-000056",
+   "description": "VOTING RESULTS 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-11",
+   "accepted": "2017-05-11T21:31:36",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000061",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-19",
+   "accepted": "2017-05-19T20:37:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-176717",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-30",
+   "accepted": "2017-05-30T20:46:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-187506",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-06-21",
+   "accepted": "2017-06-21T21:14:30",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-209481",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-06-21",
+   "accepted": "2017-06-21T21:14:47",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-209463",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-07-25",
+   "accepted": "2017-07-25T20:01:18",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000076",
+   "description": "AT&T INC. 2ND QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-07-25",
+   "accepted": "2017-07-25T20:03:14",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000077",
+   "description": "AT&T INC. 2ND QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-08-03",
+   "accepted": "2017-08-03T21:02:42",
+   "items": [],
+   "accession": "0000732717-17-000080",
+   "description": "AT&T 2017 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-08-07",
+   "accepted": "2017-08-07T13:50:34",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-249426",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-08-07",
+   "accepted": "2017-08-07T21:29:03",
+   "items": [
+    "1.02"
+   ],
+   "accession": "0001193125-17-250042",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-09-01",
+   "accepted": "2017-09-01T20:22:06",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-17-275650",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-04",
+   "accepted": "2017-10-04T21:17:47",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000084",
+   "description": "SERP AMENDMENT 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-11",
+   "accepted": "2017-10-11T21:19:28",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000086",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-23",
+   "accepted": "2017-10-23T11:40:43",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000090",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-24",
+   "accepted": "2017-10-24T20:03:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000093",
+   "description": "AT&T INC. 3RD QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-24",
+   "accepted": "2017-10-24T20:05:49",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-17-000094",
+   "description": "AT&T INC. 3RD QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-27",
+   "accepted": "2017-10-27T14:07:55",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-322266",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-30",
+   "accepted": "2017-10-30T19:53:01",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000096",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-30",
+   "accepted": "2017-10-30T21:21:34",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-325158",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-11-02",
+   "accepted": "2017-11-02T14:39:49",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-330433",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-11-03",
+   "accepted": "2017-11-03T20:59:55",
+   "items": [],
+   "accession": "0000732717-17-000101",
+   "description": "AT&T 2017 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-11-13",
+   "accepted": "2017-11-13T22:06:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-341083",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-11-16",
+   "accepted": "2017-11-16T22:16:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-345669",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-11-28",
+   "accepted": "2017-11-28T12:00:55",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000105",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-11-29",
+   "accepted": "2017-11-29T21:10:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-355670",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-12-04",
+   "accepted": "2017-12-04T11:20:33",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-359447",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-12-04",
+   "accepted": "2017-12-04T11:41:59",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-359462",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-12-22",
+   "accepted": "2017-12-22T12:02:57",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-17-000111",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-01-31",
+   "accepted": "2018-01-31T21:01:25",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000002",
+   "description": "AT&T INC. 4TH QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-01-31",
+   "accepted": "2018-01-31T21:20:52",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000003",
+   "description": "AT&T INC. 4TH QUARTER 2017 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-02",
+   "accepted": "2018-02-02T21:34:47",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000005",
+   "description": "STIP 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-05",
+   "accepted": "2018-02-03T00:07:02",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-18-031061",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-15",
+   "accepted": "2018-02-15T11:08:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-046388",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2018-02-20",
+   "accepted": "2018-02-20T21:15:55",
+   "items": [],
+   "accession": "0000732717-18-000009",
+   "description": "AT&T INC. 2017 FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-23",
+   "accepted": "2018-02-23T13:53:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-055006",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-27",
+   "accepted": "2018-02-27T19:06:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-060468",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-03-12",
+   "accepted": "2018-03-12T11:01:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-078218",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-03-22",
+   "accepted": "2018-03-22T21:05:45",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-18-000011",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-03-29",
+   "accepted": "2018-03-29T13:20:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-100757",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-06",
+   "accepted": "2018-04-06T12:47:32",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-109323",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-10",
+   "accepted": "2018-04-10T20:51:04",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-113051",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-23",
+   "accepted": "2018-04-23T14:56:02",
+   "items": [
+    "2.04"
+   ],
+   "accession": "0001193125-18-126146",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-25",
+   "accepted": "2018-04-25T20:03:53",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000017",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-25",
+   "accepted": "2018-04-25T20:07:39",
+   "items": [
+    "2.02",
+    "8.01"
+   ],
+   "accession": "0000732717-18-000018",
+   "description": "AT&T INC. 1ST QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-05-01",
+   "accepted": "2018-05-01T14:30:46",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-18-000021",
+   "description": "2018 ANNUAL MEETING OF STOCKHOLDERS VOTING RESULTS 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-05-03",
+   "accepted": "2018-05-03T21:28:29",
+   "items": [],
+   "accession": "0000732717-18-000024",
+   "description": "AT&T 2018 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-05-22",
+   "accepted": "2018-05-22T20:16:59",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-18-000033",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-06-15",
+   "accepted": "2018-06-15T20:14:06",
+   "items": [
+    "2.01",
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-194502",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-06-25",
+   "accepted": "2018-06-25T17:03:59",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-202180",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-03",
+   "accepted": "2018-07-03T20:30:55",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000050",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-24",
+   "accepted": "2018-07-24T20:10:09",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000053",
+   "description": "AT&T INC. 2ND QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-24",
+   "accepted": "2018-07-24T20:13:40",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000055",
+   "description": "AT&T INC. 2ND QUARTER EARNINGS"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-24",
+   "accepted": "2018-07-24T20:16:13",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000732717-18-000057",
+   "description": "TIME WARNING INC. 2ND QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-01",
+   "accepted": "2018-08-01T16:05:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-234388",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-08-02",
+   "accepted": "2018-08-02T21:15:30",
+   "items": [],
+   "accession": "0001193125-18-236782",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-03",
+   "accepted": "2018-08-03T15:37:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-237506",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-17",
+   "accepted": "2018-08-17T16:35:58",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-251401",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-22",
+   "accepted": "2018-08-22T15:20:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-254720",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2018-08-27",
+   "accepted": "2018-08-27T21:16:17",
+   "items": [
+    "2.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000059",
+   "description": "AT&T INC. PRO FORMA FINANCIAL STATEMENTS"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-27",
+   "accepted": "2018-08-27T21:31:06",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-18-259141",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-09-11",
+   "accepted": "2018-09-11T19:27:08",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-270844",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-09-18",
+   "accepted": "2018-09-18T13:15:09",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-18-275906",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-09-20",
+   "accepted": "2018-09-20T20:01:47",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-18-000066",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-09-21",
+   "accepted": "2018-09-21T10:57:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000068",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-10",
+   "accepted": "2018-10-10T16:52:36",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-18-000072",
+   "description": "AT&T INC. FORM 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-12",
+   "accepted": "2018-10-12T20:31:30",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000076",
+   "description": "AT&T INC. FORM 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-24",
+   "accepted": "2018-10-24T10:46:37",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000081",
+   "description": "AT&T INC. 3RD QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-24",
+   "accepted": "2018-10-24T10:50:02",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000082",
+   "description": "AT&T INC. 3RD QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-24",
+   "accepted": "2018-10-24T10:53:07",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-18-000083",
+   "description": "AT&T INC. FORM 8K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-11-02",
+   "accepted": "2018-11-02T20:03:05",
+   "items": [],
+   "accession": "0000732717-18-000090",
+   "description": "AT&T INC. FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-11-16",
+   "accepted": "2018-11-16T21:59:58",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-18-329065",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-11-21",
+   "accepted": "2018-11-21T11:19:35",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-18-331810",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-12-06",
+   "accepted": "2018-12-06T21:07:09",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-343687",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-12-13",
+   "accepted": "2018-12-13T21:08:35",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-18-348840",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-01-30",
+   "accepted": "2019-01-30T11:46:17",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000005",
+   "description": "AT&T 4TH QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-01-30",
+   "accepted": "2019-01-30T11:49:19",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000006",
+   "description": "AT&T 4TH QUARTER 2018 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-02-15",
+   "accepted": "2019-02-15T22:11:32",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-19-042562",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-02-19",
+   "accepted": "2019-02-19T21:32:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-044297",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-02-20",
+   "accepted": "2019-02-20T21:27:02",
+   "items": [
+    "1.02"
+   ],
+   "accession": "0001193125-19-045414",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2019-02-20",
+   "accepted": "2019-02-20T22:21:51",
+   "items": [],
+   "accession": "0001193125-19-045608",
+   "description": "FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-04-24",
+   "accepted": "2019-04-24T10:46:16",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000010",
+   "description": "AT&T INC. 1ST QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-04-24",
+   "accepted": "2019-04-24T10:48:45",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000011",
+   "description": "AT&T INC. 1ST QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-05-01",
+   "accepted": "2019-05-01T21:04:02",
+   "items": [
+    "9.01"
+   ],
+   "accession": "0001193125-19-133251",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-05-02",
+   "accepted": "2019-05-02T20:07:08",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-19-000014",
+   "description": "2019 ANNUAL MEETING OF STOCKHOLDERS VOTING RESULTS 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-05-06",
+   "accepted": "2019-05-06T20:31:44",
+   "items": [],
+   "accession": "0000732717-19-000018",
+   "description": "AT&T INC. FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-06-05",
+   "accepted": "2019-06-05T20:52:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-166211",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-02",
+   "accepted": "2019-07-02T20:15:54",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-19-000025",
+   "description": "AT&T INC. FORM 8K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-03",
+   "accepted": "2019-07-02T22:13:56",
+   "items": [
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0001193125-19-188389",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-24",
+   "accepted": "2019-07-24T10:16:40",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000030",
+   "description": "AT&T INC. 2ND QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-24",
+   "accepted": "2019-07-24T10:19:22",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000031",
+   "description": "AT&T INC. 2ND QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-29",
+   "accepted": "2019-07-29T18:45:12",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-19-000034",
+   "description": "NEW DIRECTOR 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-08-05",
+   "accepted": "2019-08-05T21:25:31",
+   "items": [],
+   "accession": "0001562762-19-000164",
+   "description": "AT&T INC. FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-08-29",
+   "accepted": "2019-08-29T18:17:14",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001193125-19-233801",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-09-03",
+   "accepted": "2019-09-03T21:16:15",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001193125-19-236682",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-09-06",
+   "accepted": "2019-09-06T20:07:21",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-19-239966",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-09-11",
+   "accepted": "2019-09-11T16:06:14",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-242738",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-09-24",
+   "accepted": "2019-09-24T20:33:51",
+   "items": [
+    "1.02",
+    "8.01"
+   ],
+   "accession": "0001193125-19-253615",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-10-09",
+   "accepted": "2019-10-09T20:34:18",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-19-265176",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-10-28",
+   "accepted": "2019-10-28T10:46:43",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000048",
+   "description": "AT&T INC. 3RD QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-10-28",
+   "accepted": "2019-10-28T10:51:59",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-19-000049",
+   "description": "AT&T INC. 3RD QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-11-01",
+   "accepted": "2019-11-01T19:32:09",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-19-000054",
+   "description": ""
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-11-05",
+   "accepted": "2019-11-04T22:58:10",
+   "items": [],
+   "accession": "0000732717-19-000056",
+   "description": "AT&T INC. FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-11-18",
+   "accepted": "2019-11-18T22:20:21",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-294836",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-05",
+   "accepted": "2019-12-05T17:02:25",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-307019",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-12",
+   "accepted": "2019-12-12T19:06:23",
+   "items": [
+    "3.03",
+    "5.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-312505",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-12",
+   "accepted": "2019-12-12T22:16:16",
+   "items": [
+    "1.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-312856",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-16",
+   "accepted": "2019-12-16T22:28:15",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-315331",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-17",
+   "accepted": "2019-12-17T21:36:22",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-19-316283",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-17",
+   "accepted": "2019-12-17T22:22:22",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-316343",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-23",
+   "accepted": "2019-12-23T11:13:51",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-19-321511",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-01-10",
+   "accepted": "2020-01-10T21:11:52",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-20-005410",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-01-29",
+   "accepted": "2020-01-29T11:45:13",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000005",
+   "description": "AT&T INC. 4TH QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-01-29",
+   "accepted": "2020-01-29T11:48:34",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000006",
+   "description": "AT&T INC. 4TH QUARTER 2019 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-02-18",
+   "accepted": "2020-02-18T21:12:26",
+   "items": [
+    "3.03",
+    "5.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-040320",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2020-02-20",
+   "accepted": "2020-02-20T02:42:50",
+   "items": [],
+   "accession": "0001562762-20-000064",
+   "description": "FORM 10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-02-27",
+   "accepted": "2020-02-27T16:22:52",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-051700",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-03-20",
+   "accepted": "2020-03-19T23:16:23",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-20-000010",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-04-07",
+   "accepted": "2020-04-07T10:06:53",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-20-099854",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-04-22",
+   "accepted": "2020-04-22T10:48:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000016",
+   "description": "AT&T INC. 1ST QUARTER 2020 EARNING RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-04-22",
+   "accepted": "2020-04-22T10:58:00",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000017",
+   "description": "AT&T INC. 1ST QUARTER 2020 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-04-28",
+   "accepted": "2020-04-28T20:40:52",
+   "items": [
+    "5.02",
+    "5.07"
+   ],
+   "accession": "0001193125-20-123202",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-05-06",
+   "accepted": "2020-05-06T20:08:09",
+   "items": [],
+   "accession": "0001562762-20-000171",
+   "description": "AT&T INC. FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-05-27",
+   "accepted": "2020-05-27T20:23:26",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-153101",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-05-28",
+   "accepted": "2020-05-28T20:18:56",
+   "items": [
+    "1.02",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-154286",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-16",
+   "accepted": "2020-06-16T20:44:01",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-20-170447",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-24",
+   "accepted": "2020-06-24T20:56:25",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-177735",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-26",
+   "accepted": "2020-06-26T21:05:03",
+   "items": [
+    "5.02",
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000020",
+   "description": ""
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-07-23",
+   "accepted": "2020-07-23T11:00:00",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000038",
+   "description": ""
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2020-07-23",
+   "accepted": "2020-07-23T12:00:29",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000040",
+   "description": "AT&T INC. 2ND QUARTER 2020 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-07-23",
+   "accepted": "2020-07-23T12:21:12",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000042",
+   "description": "AT&T INC. 2ND QUARTER 2020 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-07-27",
+   "accepted": "2020-07-27T12:45:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-199178",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-03",
+   "accepted": "2020-08-03T13:00:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-207575",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-04",
+   "accepted": "2020-08-04T15:13:28",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-208967",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-08-05",
+   "accepted": "2020-08-05T20:36:43",
+   "items": [],
+   "accession": "0001562762-20-000279",
+   "description": "AT&T INC. FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-10",
+   "accepted": "2020-08-10T20:22:57",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-214947",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-19",
+   "accepted": "2020-08-19T13:31:35",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-20-224301",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-31",
+   "accepted": "2020-08-31T21:05:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-236347",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-09-16",
+   "accepted": "2020-09-16T00:38:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-246459",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-09-18",
+   "accepted": "2020-09-18T21:24:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-249240",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-10-22",
+   "accepted": "2020-10-22T10:16:54",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000050",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-10-22",
+   "accepted": "2020-10-22T10:28:28",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-20-000051",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-11-05",
+   "accepted": "2020-11-05T21:29:49",
+   "items": [],
+   "accession": "0000732717-20-000056",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-11-17",
+   "accepted": "2020-11-17T22:14:04",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001193125-20-296128",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-11-18",
+   "accepted": "2020-11-18T00:39:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-296239",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-11-18",
+   "accepted": "2020-11-18T12:01:05",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-20-296513",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-12-02",
+   "accepted": "2020-12-02T22:28:57",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-308533",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-12-07",
+   "accepted": "2020-12-07T21:22:34",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-311774",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-01-25",
+   "accepted": "2021-01-25T16:43:04",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-21-015737",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-01-27",
+   "accepted": "2021-01-27T11:30:41",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000007",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-01-27",
+   "accepted": "2021-01-27T11:40:13",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000009",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-02-01",
+   "accepted": "2021-02-01T21:58:02",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-21-024687",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-02-25",
+   "accepted": "2021-02-25T21:02:05",
+   "items": [
+    "1.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-056922",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2021-02-25",
+   "accepted": "2021-02-25T21:19:43",
+   "items": [],
+   "accession": "0000732717-21-000012",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-03-23",
+   "accepted": "2021-03-23T20:37:07",
+   "items": [
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-091252",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-03-30",
+   "accepted": "2021-03-30T20:47:08",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-21-100281",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-04-09",
+   "accepted": "2021-04-09T10:45:47",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000015",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-04-22",
+   "accepted": "2021-04-22T10:29:45",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000022",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-04-22",
+   "accepted": "2021-04-22T10:37:34",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000024",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-05-05",
+   "accepted": "2021-05-05T20:06:01",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-21-000026",
+   "description": ""
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-05-06",
+   "accepted": "2021-05-06T20:28:02",
+   "items": [],
+   "accession": "0000732717-21-000030",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-05-17",
+   "accepted": "2021-05-17T11:04:08",
+   "items": [
+    "1.01",
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-162721",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-05-20",
+   "accepted": "2021-05-20T20:18:38",
+   "items": [
+    "1.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-167802",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-06-10",
+   "accepted": "2021-06-09T22:41:38",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-21-186966",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-06-21",
+   "accepted": "2021-06-21T20:27:43",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001628280-21-012583",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-06-25",
+   "accepted": "2021-06-25T14:04:05",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001193125-21-199754",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-16",
+   "accepted": "2021-07-16T10:02:00",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-21-216751",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-19",
+   "accepted": "2021-07-19T20:05:47",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-218591",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-21",
+   "accepted": "2021-07-21T21:01:04",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000054",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-22",
+   "accepted": "2021-07-22T10:26:00",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000059",
+   "description": "8-K AT&T 2ND QUARTER 2021 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-22",
+   "accepted": "2021-07-22T10:34:02",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000060",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-08-02",
+   "accepted": "2021-08-02T20:08:16",
+   "items": [
+    "1.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-21-233230",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-08-05",
+   "accepted": "2021-08-05T20:09:44",
+   "items": [],
+   "accession": "0000732717-21-000067",
+   "description": "10-Q AT&T INC. FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-09-09",
+   "accepted": "2021-09-09T20:31:20",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000071",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-10-21",
+   "accepted": "2021-10-21T10:27:57",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000076",
+   "description": "8-K AT&T 3RD QUARTER 2021 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-10-21",
+   "accepted": "2021-10-21T10:33:04",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-21-000077",
+   "description": "8-K AT&T 3RD QUARTER 2021 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-11-04",
+   "accepted": "2021-11-04T20:07:09",
+   "items": [],
+   "accession": "0000732717-21-000080",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2021-12-06",
+   "accepted": "2021-12-06T22:27:10",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-21-000088",
+   "description": "8-K/A"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-12-29",
+   "accepted": "2021-12-29T12:27:20",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000732717-21-000094",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-01-05",
+   "accepted": "2022-01-05T11:46:04",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000004",
+   "description": "8-K 2.02 AT&T INC. JANUARY 2022"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-01-26",
+   "accepted": "2022-01-26T11:22:36",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000009",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2021 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-01-26",
+   "accepted": "2022-01-26T11:34:42",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000010",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2021 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-02-01",
+   "accepted": "2022-02-01T11:40:07",
+   "items": [
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-023926",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2022-02-16",
+   "accepted": "2022-02-16T11:29:38",
+   "items": [],
+   "accession": "0000732717-22-000015",
+   "description": "10-K AT&T INC. 2021"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-03-02",
+   "accepted": "2022-03-02T21:06:07",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-22-062961",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-03-11",
+   "accepted": "2022-03-11T13:55:09",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000019",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-03-15",
+   "accepted": "2022-03-15T20:32:18",
+   "items": [
+    "5.02",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-076137",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-03-25",
+   "accepted": "2022-03-25T20:38:07",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-085220",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-03-30",
+   "accepted": "2022-03-30T20:16:13",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-22-089816",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-11",
+   "accepted": "2022-04-11T20:46:15",
+   "items": [
+    "2.01",
+    "3.02",
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-101751",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-14",
+   "accepted": "2022-04-14T20:30:26",
+   "items": [
+    "1.02",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000030",
+   "description": "8-K 9.01 APR 2022 WARNERMEDIA CLOSE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-18",
+   "accepted": "2022-04-15T23:18:19",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000032",
+   "description": "8-K 7.01 REGULATION FD DISCLOSURE APR 2022"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-21",
+   "accepted": "2022-04-21T10:26:43",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000037",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-21",
+   "accepted": "2022-04-21T10:33:43",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000038",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-05-03",
+   "accepted": "2022-05-03T20:05:18",
+   "items": [],
+   "accession": "0000732717-22-000042",
+   "description": "10-Q AT&T INC. 1ST QUARTER 2022 FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-05-16",
+   "accepted": "2022-05-16T12:03:08",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-150928",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-05-23",
+   "accepted": "2022-05-23T11:46:07",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-156825",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-05-24",
+   "accepted": "2022-05-24T20:26:55",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000732717-22-000049",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-07-01",
+   "accepted": "2022-07-01T21:13:05",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-22-000073",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-07-21",
+   "accepted": "2022-07-21T10:28:46",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000079",
+   "description": "8-K 8.01 AT&T 2ND QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-07-21",
+   "accepted": "2022-07-21T10:37:25",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000080",
+   "description": "8-K 2.02 AT&T 2ND QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2022-08-04",
+   "accepted": "2022-08-04T21:08:44",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000732717-22-000091",
+   "description": "8-K/A DIAL"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-08-04",
+   "accepted": "2022-08-04T21:13:40",
+   "items": [],
+   "accession": "0000732717-22-000093",
+   "description": "10-Q AT&T INC. 2ND QUARTER 2022 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-10-20",
+   "accepted": "2022-10-20T10:24:37",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000098",
+   "description": "8-K 8.01 AT&T 3RD QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-10-20",
+   "accepted": "2022-10-20T10:30:00",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-22-000099",
+   "description": "8-K 2.02 AT&T 3RD QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-11-03",
+   "accepted": "2022-11-03T20:04:50",
+   "items": [],
+   "accession": "0000732717-22-000102",
+   "description": "10-Q AT&T INC. 3RD QUARTER 2022 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-11-18",
+   "accepted": "2022-11-18T21:06:04",
+   "items": [
+    "1.01",
+    "1.02",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-22-288947",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-01-25",
+   "accepted": "2023-01-25T11:26:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000006",
+   "description": "8-K 8.01 AT&T 4TH QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-01-25",
+   "accepted": "2023-01-25T11:34:06",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000007",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2022 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-02-02",
+   "accepted": "2023-02-02T22:10:58",
+   "items": [
+    "5.02",
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0001193125-23-022845",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2023-02-13",
+   "accepted": "2023-02-13T21:11:56",
+   "items": [],
+   "accession": "0000732717-23-000011",
+   "description": "10-K AT&T INC. 2022"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-02-22",
+   "accepted": "2023-02-22T22:17:10",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-044963",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-03-03",
+   "accepted": "2023-03-03T21:01:50",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000013",
+   "description": "8-K 7.01 REGULATION FD DISCLOSURE MAR 2023"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-03-06",
+   "accepted": "2023-03-06T21:06:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-061366",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-07",
+   "accepted": "2023-04-07T17:21:06",
+   "items": [
+    "1.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-094975",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-20",
+   "accepted": "2023-04-20T10:29:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000018",
+   "description": "8-K 8.01 AT&T 1ST QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-20",
+   "accepted": "2023-04-20T10:33:59",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000019",
+   "description": "8-K 2.01 AT&T 1ST QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-05-01",
+   "accepted": "2023-05-01T20:16:41",
+   "items": [],
+   "accession": "0000732717-23-000022",
+   "description": "10-Q AT&T INC. 1ST QUARTER 2023 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-01",
+   "accepted": "2023-05-01T20:19:40",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000024",
+   "description": "8-K 7.01 REGULATION FD DISCLOSURE MAY 2023"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-03",
+   "accepted": "2023-05-03T20:15:58",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000026",
+   "description": "8-K 8.01"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-18",
+   "accepted": "2023-05-18T21:16:08",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-148320",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-23",
+   "accepted": "2023-05-23T20:08:36",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001193125-23-151799",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-06-02",
+   "accepted": "2023-06-02T20:13:40",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-159839",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-07-26",
+   "accepted": "2023-07-26T10:25:44",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000042",
+   "description": "8-K 8.01 AT&T 2ND QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-07-26",
+   "accepted": "2023-07-26T10:35:49",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000043",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-07-27",
+   "accepted": "2023-07-27T20:31:38",
+   "items": [],
+   "accession": "0000732717-23-000047",
+   "description": "10-Q AT&T INC. 2ND QUARTER 2023 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-10-19",
+   "accepted": "2023-10-19T10:25:59",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000053",
+   "description": "8-K 8.01 AT&T 3RD QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-10-19",
+   "accepted": "2023-10-19T10:34:14",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-23-000054",
+   "description": "8-K 2.02 AT&T 3RD QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-10-31",
+   "accepted": "2023-10-31T18:00:14",
+   "items": [],
+   "accession": "0000732717-23-000057",
+   "description": "10-Q AT&T INC. 3RD QUARTER 2023 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-01-24",
+   "accepted": "2024-01-24T11:27:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000004",
+   "description": "8-K 8.01 AT&T 4TH QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-01-24",
+   "accepted": "2024-01-24T11:37:11",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000006",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2023 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2024-02-23",
+   "accepted": "2024-02-23T21:45:20",
+   "items": [],
+   "accession": "0000732717-24-000009",
+   "description": "10-K AT&T INC. 2023"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-03-01",
+   "accepted": "2024-03-01T21:45:27",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000012",
+   "description": "8-K 5.02 DEPARTURE OF DIRECTORS OR CERTAIN OFFICERS MARCH-2024"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-04-24",
+   "accepted": "2024-04-24T10:25:51",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000016",
+   "description": "8-K 8.01 AT&T 1ST QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-04-24",
+   "accepted": "2024-04-24T10:35:58",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000018",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-05-02",
+   "accepted": "2024-05-01T23:20:53",
+   "items": [],
+   "accession": "0000732717-24-000022",
+   "description": "10-Q AT&T INC. 1ST QUARTER 2024 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-05-21",
+   "accepted": "2024-05-21T20:07:06",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001193125-24-143912",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-07-12",
+   "accepted": "2024-07-12T10:25:23",
+   "items": [
+    "1.05",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000046",
+   "description": "8-K 1.05 MATERIAL CYBERSECURITY INCIDENT"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-07-24",
+   "accepted": "2024-07-24T10:37:31",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000050",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-07-25",
+   "accepted": "2024-07-25T20:07:10",
+   "items": [],
+   "accession": "0000732717-24-000053",
+   "description": "10-Q AT&T INC. 2ND QUARTER 2024 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-09-30",
+   "accepted": "2024-09-30T10:06:33",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-24-228321",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-10-23",
+   "accepted": "2024-10-23T10:35:48",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000056",
+   "description": "8-K 2.02 AT&T 3RD QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-10-29",
+   "accepted": "2024-10-29T20:16:05",
+   "items": [],
+   "accession": "0000732717-24-000059",
+   "description": "10-Q AT&T INC. 3RD QUARTER 2024 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-12-03",
+   "accepted": "2024-12-03T11:47:32",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000732717-24-000062",
+   "description": "8-K 7.01 REGULATION FD DISCLOSURE DEC 2024"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-01-27",
+   "accepted": "2025-01-27T11:26:51",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000005",
+   "description": "8-K 8.01 AT&T 4TH QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-01-27",
+   "accepted": "2025-01-27T11:39:47",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000007",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2024 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-02-05",
+   "accepted": "2025-02-05T22:01:35",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000010",
+   "description": "8-K 5.02 DEPARTURE OF DIRECTORS OR CERTAIN OFFICERS"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2025-02-12",
+   "accepted": "2025-02-12T22:23:52",
+   "items": [],
+   "accession": "0000732717-25-000013",
+   "description": "10-K AT&T INC. 2024"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-03-31",
+   "accepted": "2025-03-31T20:05:17",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-068736",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-04-23",
+   "accepted": "2025-04-23T10:34:04",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000020",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2025 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-04-29",
+   "accepted": "2025-04-29T21:04:50",
+   "items": [],
+   "accession": "0000732717-25-000023",
+   "description": "10-Q AT&T INC. 1ST QUARTER 2025 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-05-19",
+   "accepted": "2025-05-19T20:05:37",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001193125-25-122439",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-05-21",
+   "accepted": "2025-05-21T20:05:20",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-123971",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-06-03",
+   "accepted": "2025-06-03T20:03:40",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-134108",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-07-23",
+   "accepted": "2025-07-23T10:36:30",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000076",
+   "description": "8-K 2.02 AT&T 2ND QUARTER 2025 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-07-24",
+   "accepted": "2025-07-24T20:41:26",
+   "items": [],
+   "accession": "0000732717-25-000080",
+   "description": "10-Q AT&T INC. 2ND QUARTER 2025 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-08-19",
+   "accepted": "2025-08-19T10:46:07",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-25-183029",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-08-26",
+   "accepted": "2025-08-26T10:30:25",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-188074",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-16",
+   "accepted": "2025-09-16T20:47:23",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-205072",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-24",
+   "accepted": "2025-09-24T20:41:08",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-215530",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-22",
+   "accepted": "2025-10-22T10:35:30",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-25-000163",
+   "description": "8-K 2.02 AT&T 3RD QUARTER 2025 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-10-31",
+   "accepted": "2025-10-31T20:12:29",
+   "items": [],
+   "accession": "0000732717-25-000171",
+   "description": "10-Q AT&T INC. 3RD QUARTER 2025 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-11-03",
+   "accepted": "2025-11-03T21:03:25",
+   "items": [
+    "1.01",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0001193125-25-262515",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-01-28",
+   "accepted": "2026-01-28T11:26:44",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000046",
+   "description": "8-K 8.01 AT&T 4TH QUARTER 2025 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-01-28",
+   "accepted": "2026-01-28T11:35:27",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000047",
+   "description": "8-K 2.02 AT&T 4TH QUARTER 2025 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-02-05",
+   "accepted": "2026-02-05T21:15:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-039407",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2026-02-09",
+   "accepted": "2026-02-09T22:22:16",
+   "items": [],
+   "accession": "0000732717-26-000120",
+   "description": "10-K AT&T INC. 2025"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-03-12",
+   "accepted": "2026-03-12T20:05:23",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-104098",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-04-22",
+   "accepted": "2026-04-22T10:27:07",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000201",
+   "description": "8-K 8.01 AT&T 1ST QUARTER 2026 EARNINGS RELEASE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-04-22",
+   "accepted": "2026-04-22T10:43:29",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000203",
+   "description": "8-K 2.02 AT&T 1ST QUARTER 2026 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-04-27",
+   "accepted": "2026-04-27T20:17:53",
+   "items": [],
+   "accession": "0000732717-26-000206",
+   "description": "10-Q AT&T INC. 1ST QUARTER 2026 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-04-30",
+   "accepted": "2026-04-30T21:04:57",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-197776",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-05-20",
+   "accepted": "2026-05-20T21:05:35",
+   "items": [
+    "5.02",
+    "5.03",
+    "5.07",
+    "9.01"
+   ],
+   "accession": "0001193125-26-232817",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-06-16",
+   "accepted": "2026-06-16T20:05:51",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-26-272580",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-07-22",
+   "accepted": "2026-07-22T10:33:17",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000294",
+   "description": "8-K 2.01 AT&T 2ND QUARTER 2026 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-07-22",
+   "accepted": "2026-07-22T20:07:05",
+   "items": [],
+   "accession": "0000732717-26-000297",
+   "description": "10-Q AT&T INC. 2ND QUARTER 2026 FORM 10-Q INLINE"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-07-28",
+   "accepted": "2026-07-28T20:23:38",
+   "items": [
+    "2.03",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-321053",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-08-04",
+   "accepted": "2026-08-04T16:07:06",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-332110",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-08-17",
+   "accepted": "2026-08-17T20:16:36",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-26-354091",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-09-09",
+   "accepted": "2026-09-09T20:39:37",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-26-386534",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-10-16",
+   "accepted": "2026-10-16T20:04:19",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-26-424057",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-10-21",
+   "accepted": "2026-10-21T10:32:08",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0000732717-26-000370",
+   "description": "8-K 2.02 AT&T 3RD QUARTER 2026 EARNINGS RELEASE"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-10-21",
+   "accepted": "2026-10-21T20:24:22",
+   "items": [],
+   "accession": "0000732717-26-000372",
+   "description": "10-Q AT&T INC. 3RD QUARTER 2026 FORM 10-Q INLINE"
+  }
+ ]
+}

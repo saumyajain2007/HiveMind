@@ -15,6 +15,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, status
 
 router = APIRouter(prefix="/experiments", tags=["experiments"])
+library_router = APIRouter(prefix="/event-library", tags=["experiments"])
 
 
 def experiments_dir() -> Path:
@@ -75,3 +76,25 @@ def get_strategy(ticker: str) -> dict[str, Any]:
     if not ticker.isalnum() or not p.exists():
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"no strategy results for {ticker}")
     return _load(str(p), p.stat().st_mtime)
+
+
+@router.get("/{ticker}/isolation")
+def get_real_isolation(ticker: str) -> dict[str, Any]:
+    """Real earnings windows split into each filing's isolated contribution
+    (`python -m marketsim.isolation <TICKER>`)."""
+    p = experiments_dir() / ticker.upper() / "isolation.json"
+    if not ticker.isalnum() or not p.exists():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"no isolation results for {ticker}")
+    return _load(str(p), p.stat().st_mtime)
+
+
+@library_router.get("")
+def get_event_library(events: bool = False) -> dict[str, Any]:
+    """Every filing of every downloaded stock (`python -m marketsim.event_library`): the isolated
+    real effect of each event type, earnings reactions by stock, and the pooled impact model.
+    `events=true` adds the per-event rows (large)."""
+    p = experiments_dir() / "events" / "library.json"
+    if not p.exists():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "no event library yet")
+    lib = _load(str(p), p.stat().st_mtime)
+    return lib if events else {k: v for k, v in lib.items() if k != "events"}

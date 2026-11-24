@@ -291,3 +291,52 @@ export function useStrategy(ticker: string | null | undefined) {
     staleTime: Infinity,
   });
 }
+
+// ----------------------------------------------------------------------------- isolation
+
+export function useEventLibrary() {
+  return useQuery({
+    queryKey: ["event-library"],
+    queryFn: async () =>
+      unwrap(await api.GET("/api/v1/event-library")) as unknown as E.EventLibrary,
+    staleTime: Infinity,
+    retry: false,
+  });
+}
+
+export function useRealIsolation(ticker: string | null | undefined) {
+  return useQuery({
+    queryKey: ["real-isolation", ticker ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/experiments/{ticker}/isolation", {
+          params: { path: { ticker: ticker ?? "" } },
+        }),
+      ) as unknown as E.RealIsolation,
+    enabled: Boolean(ticker),
+    staleTime: Infinity,
+    retry: false,
+  });
+}
+
+/** An isolation job: polls until it is finished. */
+export function useIsolation(id: string | null | undefined) {
+  return useQuery({
+    queryKey: ["isolation", id ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/runs/{run_id}/isolation", {
+          params: { path: { run_id: id ?? "" } },
+        }),
+      ) as unknown as {
+        run: Schemas["RunDetail"];
+        result: E.IsolationResult | null;
+        progress: { done: number; total: number }[];
+      },
+    enabled: Boolean(id),
+    refetchInterval: (q) => {
+      const s = q.state.data?.run.status;
+      return s === "done" || s === "failed" || s === "cancelled" ? false : 700;
+    },
+  });
+}

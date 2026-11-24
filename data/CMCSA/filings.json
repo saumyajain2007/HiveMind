@@ -1,0 +1,2421 @@
+{
+ "cik": "0001166691",
+ "name": "COMCAST CORP",
+ "filings": [
+  {
+   "form": "8-K",
+   "filing_date": "2015-01-29",
+   "accepted": "2015-01-29T12:43:08",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-15-000646",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-02-24",
+   "accepted": "2015-02-24T12:05:30",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-15-013199",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2015-02-27",
+   "accepted": "2015-02-27T18:16:44",
+   "items": [],
+   "accession": "0001193125-15-068526",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-03-31",
+   "accepted": "2015-03-31T11:50:02",
+   "items": [
+    "1.01",
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-15-002507",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-04-06",
+   "accepted": "2015-04-06T18:34:59",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-119838",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-04-24",
+   "accepted": "2015-04-24T12:53:07",
+   "items": [
+    "1.01",
+    "1.02",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-15-003196",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-04",
+   "accepted": "2015-05-04T10:05:13",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-15-033352",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-05-04",
+   "accepted": "2015-05-04T20:13:35",
+   "items": [],
+   "accession": "0001193125-15-169012",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-11",
+   "accepted": "2015-05-11T13:15:45",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-15-003787",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-22",
+   "accepted": "2015-05-22T18:14:37",
+   "items": [
+    "5.02",
+    "5.07",
+    "9.01"
+   ],
+   "accession": "0000950103-15-004105",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-05-27",
+   "accepted": "2015-05-27T14:43:36",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-201315",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-06-18",
+   "accepted": "2015-06-18T20:44:58",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-227389",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2015-07-01",
+   "accepted": "2015-07-01T20:19:30",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-15-005252",
+   "description": "FORM 8-K/A"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-07",
+   "accepted": "2015-07-07T20:02:05",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0001193125-15-246755",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-07-23",
+   "accepted": "2015-07-23T11:06:19",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-15-052716",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-07-23",
+   "accepted": "2015-07-23T17:10:08",
+   "items": [],
+   "accession": "0001193125-15-260886",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-10-27",
+   "accepted": "2015-10-27T11:05:58",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-15-072898",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2015-10-27",
+   "accepted": "2015-10-27T19:42:38",
+   "items": [],
+   "accession": "0001193125-15-354626",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-11-25",
+   "accepted": "2015-11-25T21:30:13",
+   "items": [
+    "1.01",
+    "1.02",
+    "5.02"
+   ],
+   "accession": "0000950103-15-009067",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-12-09",
+   "accepted": "2015-12-09T17:52:10",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-15-398563",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2015-12-15",
+   "accepted": "2015-12-14T22:42:38",
+   "items": [
+    "3.01",
+    "3.02",
+    "3.03",
+    "5.03",
+    "5.07",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-15-009516",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-02-03",
+   "accepted": "2016-02-03T12:05:34",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-16-093384",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2016-02-05",
+   "accepted": "2016-02-05T22:00:05",
+   "items": [],
+   "accession": "0001193125-16-452423",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-02-17",
+   "accepted": "2016-02-17T18:37:57",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-16-011173",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-02-23",
+   "accepted": "2016-02-23T18:36:34",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-473134",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-03-22",
+   "accepted": "2016-03-22T12:50:37",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-16-512745",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-03-30",
+   "accepted": "2016-03-30T18:53:06",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-523511",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-04-27",
+   "accepted": "2016-04-27T11:06:30",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-16-114400",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-04-27",
+   "accepted": "2016-04-27T18:41:26",
+   "items": [],
+   "accession": "0001193125-16-558907",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-04-28",
+   "accepted": "2016-04-28T13:15:24",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-16-012873",
+   "description": "FORM 8-K'"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-24",
+   "accepted": "2016-05-24T21:04:40",
+   "items": [
+    "5.02",
+    "5.07",
+    "9.01"
+   ],
+   "accession": "0000950103-16-013550",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-26",
+   "accepted": "2016-05-26T14:30:22",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-16-013594",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-05-31",
+   "accepted": "2016-05-31T21:01:36",
+   "items": [
+    "1.01",
+    "1.02",
+    "2.03",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-608609",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-01",
+   "accepted": "2016-07-01T15:45:02",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-16-014533",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-19",
+   "accepted": "2016-07-19T18:10:04",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-16-651038",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-27",
+   "accepted": "2016-07-27T11:05:27",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-16-134470",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-07-27",
+   "accepted": "2016-07-27T19:31:48",
+   "items": [],
+   "accession": "0001193125-16-659869",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-07-28",
+   "accepted": "2016-07-28T16:18:54",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-16-015080",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-10-26",
+   "accepted": "2016-10-26T11:05:47",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-16-152070",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2016-10-26",
+   "accepted": "2016-10-26T20:23:25",
+   "items": [],
+   "accession": "0001193125-16-747958",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2016-12-07",
+   "accepted": "2016-12-07T21:26:24",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-16-018565",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-10",
+   "accepted": "2017-01-10T18:51:32",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-006664",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-26",
+   "accepted": "2017-01-26T12:05:52",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-17-004122",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-01-27",
+   "accepted": "2017-01-27T19:47:48",
+   "items": [
+    "5.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-17-000690",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2017-02-03",
+   "accepted": "2017-02-03T19:34:03",
+   "items": [],
+   "accession": "0001193125-17-030512",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-02-15",
+   "accepted": "2017-02-15T16:22:01",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-17-001464",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-02-23",
+   "accepted": "2017-02-23T21:46:22",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-17-001650",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-03-14",
+   "accepted": "2017-03-14T19:58:02",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-081999",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-03-20",
+   "accepted": "2017-03-20T16:19:47",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-17-002588",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-04-27",
+   "accepted": "2017-04-27T11:06:15",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-17-026588",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-04-27",
+   "accepted": "2017-04-27T20:38:20",
+   "items": [],
+   "accession": "0001166691-17-000009",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-08",
+   "accepted": "2017-05-08T11:45:55",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-17-004369",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-05-12",
+   "accepted": "2017-05-11T21:41:02",
+   "items": [
+    "5.02",
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0001166691-17-000013",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-06-13",
+   "accepted": "2017-06-13T16:36:29",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000950103-17-005703",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-07-27",
+   "accepted": "2017-07-27T10:05:29",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-17-047184",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-07-27",
+   "accepted": "2017-07-27T19:56:05",
+   "items": [],
+   "accession": "0001166691-17-000022",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-08-07",
+   "accepted": "2017-08-07T15:50:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-17-249587",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-03",
+   "accepted": "2017-10-03T20:53:12",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-17-009645",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-19",
+   "accepted": "2017-10-19T11:50:56",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-17-010083",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-20",
+   "accepted": "2017-10-20T20:32:53",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-17-010131",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2017-10-26",
+   "accepted": "2017-10-26T11:05:24",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-17-063863",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2017-10-26",
+   "accepted": "2017-10-26T19:54:55",
+   "items": [],
+   "accession": "0001166691-17-000031",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-01-24",
+   "accepted": "2018-01-24T12:05:31",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-18-003683",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2018-01-31",
+   "accepted": "2018-01-31T21:35:39",
+   "items": [],
+   "accession": "0001166691-18-000004",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-08",
+   "accepted": "2018-02-08T21:28:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-036282",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-12",
+   "accepted": "2018-02-12T21:19:03",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-18-040149",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-02-27",
+   "accepted": "2018-02-27T16:57:12",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-002465",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-25",
+   "accepted": "2018-04-25T11:06:17",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-18-026361",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-25",
+   "accepted": "2018-04-25T14:13:38",
+   "items": [
+    "1.01",
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-005136",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-04-25",
+   "accepted": "2018-04-25T19:53:55",
+   "items": [],
+   "accession": "0001166691-18-000010",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-04-30",
+   "accepted": "2018-04-30T20:05:37",
+   "items": [
+    "1.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-005454",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-05-23",
+   "accepted": "2018-05-23T13:10:28",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-006444",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-06-13",
+   "accepted": "2018-06-13T21:17:48",
+   "items": [
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-007374",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-06-14",
+   "accepted": "2018-06-14T20:46:41",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001166691-18-000015",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-12",
+   "accepted": "2018-07-11T23:05:25",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-008459",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-07-26",
+   "accepted": "2018-07-26T11:05:31",
+   "items": [
+    "9.01"
+   ],
+   "accession": "0001104659-18-047181",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-07-26",
+   "accepted": "2018-07-26T19:29:21",
+   "items": [],
+   "accession": "0001166691-18-000019",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-08-22",
+   "accepted": "2018-08-22T20:38:58",
+   "items": [
+    "1.01",
+    "2.03",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-009879",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-09-24",
+   "accepted": "2018-09-24T12:29:30",
+   "items": [
+    "1.01",
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-010970",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-01",
+   "accepted": "2018-10-01T10:00:51",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000950103-18-011342",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-04",
+   "accepted": "2018-10-04T21:03:21",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-011645",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-05",
+   "accepted": "2018-10-05T21:05:57",
+   "items": [
+    "1.01",
+    "1.02",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0000950103-18-011754",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-09",
+   "accepted": "2018-10-09T20:54:46",
+   "items": [
+    "2.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-18-011830",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-10-25",
+   "accepted": "2018-10-25T10:35:34",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-18-063795",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2018-10-25",
+   "accepted": "2018-10-25T19:29:12",
+   "items": [],
+   "accession": "0001166691-18-000024",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2018-12-18",
+   "accepted": "2018-12-18T21:01:37",
+   "items": [
+    "9.01"
+   ],
+   "accession": "0001193125-18-352064",
+   "description": "FORM 8-K AMENDMENT NO. 1"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2018-12-21",
+   "accepted": "2018-12-21T21:14:51",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-18-014887",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-01-23",
+   "accepted": "2019-01-23T12:05:47",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-19-002843",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2019-01-31",
+   "accepted": "2019-01-31T22:00:03",
+   "items": [],
+   "accession": "0001166691-19-000005",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-02-04",
+   "accepted": "2019-02-04T12:01:29",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-19-005315",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-03-21",
+   "accepted": "2019-03-21T10:02:07",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-19-003575",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-04-12",
+   "accepted": "2019-04-12T13:12:24",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-19-004753",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-04-25",
+   "accepted": "2019-04-25T11:05:42",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-19-023559",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-04-25",
+   "accepted": "2019-04-25T19:33:21",
+   "items": [],
+   "accession": "0001166691-19-000010",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-04-26",
+   "accepted": "2019-04-26T12:18:08",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-19-005150",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-05-14",
+   "accepted": "2019-05-14T14:16:53",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-19-006331",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-05-29",
+   "accepted": "2019-05-29T12:38:49",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-19-006870",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-06-07",
+   "accepted": "2019-06-07T19:34:41",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000950103-19-007912",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-06-20",
+   "accepted": "2019-06-19T21:37:30",
+   "items": [
+    "1.01",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-19-008213",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-07-25",
+   "accepted": "2019-07-25T11:05:35",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001410578-19-000556",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-07-25",
+   "accepted": "2019-07-25T19:37:50",
+   "items": [],
+   "accession": "0001166691-19-000015",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2019-08-01",
+   "accepted": "2019-08-01T16:39:15",
+   "items": [
+    "9.01"
+   ],
+   "accession": "0001193125-19-210443",
+   "description": "8-K/A"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-10-24",
+   "accepted": "2019-10-24T11:05:47",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001104659-19-055976",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2019-10-24",
+   "accepted": "2019-10-24T19:28:40",
+   "items": [],
+   "accession": "0001166691-19-000020",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-11-05",
+   "accepted": "2019-11-05T21:11:21",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-19-284710",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-05",
+   "accepted": "2019-12-05T13:34:48",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-19-016875",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2019-12-16",
+   "accepted": "2019-12-16T14:17:09",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-19-017222",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-01-23",
+   "accepted": "2020-01-23T12:05:21",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-20-000003",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2020-01-30",
+   "accepted": "2020-01-30T21:41:57",
+   "items": [],
+   "accession": "0001166691-20-000008",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-02-05",
+   "accepted": "2020-02-05T22:24:51",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-20-025499",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-02-20",
+   "accepted": "2020-02-20T21:16:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-043519",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-03-24",
+   "accepted": "2020-03-24T12:30:20",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0001193125-20-083230",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-03-27",
+   "accepted": "2020-03-27T20:19:21",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-088734",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-04-30",
+   "accepted": "2020-04-30T11:08:02",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-20-000015",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-04-30",
+   "accepted": "2020-04-30T19:24:15",
+   "items": [],
+   "accession": "0001166691-20-000017",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-05-20",
+   "accepted": "2020-05-20T21:22:20",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-20-147494",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-05-28",
+   "accepted": "2020-05-28T20:51:22",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-20-154347",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-05",
+   "accepted": "2020-06-05T12:46:21",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000950103-20-011162",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-11",
+   "accepted": "2020-06-11T12:14:41",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-20-011430",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-06-18",
+   "accepted": "2020-06-18T14:22:11",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-20-011933",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-07-30",
+   "accepted": "2020-07-30T11:13:48",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-20-000022",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-07-30",
+   "accepted": "2020-07-30T22:31:48",
+   "items": [],
+   "accession": "0001166691-20-000024",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-11",
+   "accepted": "2020-08-11T21:30:15",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-20-015669",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-08-25",
+   "accepted": "2020-08-25T15:32:15",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-20-016315",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2020-10-29",
+   "accepted": "2020-10-29T11:05:23",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-20-000030",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2020-10-29",
+   "accepted": "2020-10-29T19:03:25",
+   "items": [],
+   "accession": "0001166691-20-000032",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-01-28",
+   "accepted": "2021-01-28T12:05:48",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-21-000004",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2021-02-04",
+   "accepted": "2021-02-03T23:08:14",
+   "items": [],
+   "accession": "0001166691-21-000008",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-03-08",
+   "accepted": "2021-03-08T21:10:05",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001166691-21-000012",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-03-31",
+   "accepted": "2021-03-31T21:02:19",
+   "items": [
+    "1.01",
+    "1.02",
+    "2.03",
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0000950103-21-005001",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-04-29",
+   "accepted": "2021-04-29T11:05:58",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-21-000018",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-04-29",
+   "accepted": "2021-04-29T19:22:23",
+   "items": [],
+   "accession": "0001166691-21-000020",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-05-25",
+   "accepted": "2021-05-25T11:01:36",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-21-007771",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-06-04",
+   "accepted": "2021-06-04T19:41:42",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001166691-21-000022",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-07-29",
+   "accepted": "2021-07-29T11:07:20",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-21-000027",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-07-29",
+   "accepted": "2021-07-29T19:45:07",
+   "items": [],
+   "accession": "0001166691-21-000029",
+   "description": "FORM 10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-08-02",
+   "accepted": "2021-08-02T20:20:36",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-21-011713",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-08-17",
+   "accepted": "2021-08-16T23:47:44",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-21-012399",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-08-19",
+   "accepted": "2021-08-19T21:04:19",
+   "items": [
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-21-012610",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-09-14",
+   "accepted": "2021-09-14T20:27:05",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-21-013948",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-10-28",
+   "accepted": "2021-10-28T11:07:04",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-21-000034",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2021-10-28",
+   "accepted": "2021-10-28T18:16:59",
+   "items": [],
+   "accession": "0001166691-21-000036",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2021-11-03",
+   "accepted": "2021-11-03T21:09:48",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0000950103-21-017330",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-01-27",
+   "accepted": "2022-01-27T12:09:24",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-22-000004",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2022-02-02",
+   "accepted": "2022-02-02T20:15:17",
+   "items": [],
+   "accession": "0001166691-22-000009",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-04-28",
+   "accepted": "2022-04-28T11:06:51",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-22-000016",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-04-28",
+   "accepted": "2022-04-28T20:04:27",
+   "items": [],
+   "accession": "0001166691-22-000018",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-06-03",
+   "accepted": "2022-06-03T20:05:39",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0000950103-22-010112",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-07-28",
+   "accepted": "2022-07-28T11:05:32",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-22-000027",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-07-28",
+   "accepted": "2022-07-28T18:53:41",
+   "items": [],
+   "accession": "0001166691-22-000030",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-10-12",
+   "accepted": "2022-10-12T21:10:37",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-22-017696",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-10-27",
+   "accepted": "2022-10-27T11:04:51",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-22-000037",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2022-10-27",
+   "accepted": "2022-10-27T19:05:20",
+   "items": [],
+   "accession": "0001166691-22-000039",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-11-07",
+   "accepted": "2022-11-07T21:32:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-22-279138",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-12-27",
+   "accepted": "2022-12-23T23:56:26",
+   "items": [
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0000950103-22-021407",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2022-12-30",
+   "accepted": "2022-12-30T22:20:30",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-22-021872",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-01-06",
+   "accepted": "2023-01-06T21:31:42",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-23-000208",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-01-26",
+   "accepted": "2023-01-26T12:05:09",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-23-000005",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2023-02-03",
+   "accepted": "2023-02-03T17:15:04",
+   "items": [],
+   "accession": "0001166691-23-000010",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-02-09",
+   "accepted": "2023-02-09T21:35:12",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-23-030148",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-03-13",
+   "accepted": "2023-03-13T13:00:40",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001166691-23-000014",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-03-15",
+   "accepted": "2023-03-15T13:09:07",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-23-004120",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-21",
+   "accepted": "2023-04-21T20:05:33",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000950103-23-006033",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-24",
+   "accepted": "2023-04-24T18:36:26",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-23-006065",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-04-27",
+   "accepted": "2023-04-27T11:03:54",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-23-000020",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-04-27",
+   "accepted": "2023-04-27T19:17:11",
+   "items": [],
+   "accession": "0001166691-23-000024",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-01",
+   "accepted": "2023-05-01T12:21:29",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-23-006594",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-08",
+   "accepted": "2023-05-08T12:07:59",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-23-006958",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-05-09",
+   "accepted": "2023-05-09T20:39:40",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-23-007049",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-06-09",
+   "accepted": "2023-06-09T19:28:10",
+   "items": [
+    "5.02",
+    "5.07",
+    "9.01"
+   ],
+   "accession": "0000950103-23-008707",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-07-27",
+   "accepted": "2023-07-27T11:05:11",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-23-000029",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-07-27",
+   "accepted": "2023-07-27T19:10:06",
+   "items": [],
+   "accession": "0001166691-23-000032",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-09-11",
+   "accepted": "2023-09-11T10:07:18",
+   "items": [
+    "8.01"
+   ],
+   "accession": "0000950103-23-013446",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-10-03",
+   "accepted": "2023-10-03T20:23:20",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-23-014572",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2023-10-26",
+   "accepted": "2023-10-26T11:05:27",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-23-000037",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2023-10-26",
+   "accepted": "2023-10-26T18:52:11",
+   "items": [],
+   "accession": "0001166691-23-000040",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K/A",
+   "filing_date": "2023-12-06",
+   "accepted": "2023-12-06T21:17:13",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0000950103-23-017250",
+   "description": "FORM 8-K/A"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-01-25",
+   "accepted": "2024-01-25T12:09:02",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-24-000005",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2024-01-31",
+   "accepted": "2024-01-31T20:42:48",
+   "items": [],
+   "accession": "0001166691-24-000011",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-04-15",
+   "accepted": "2024-04-15T20:06:11",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001166691-24-000019",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-04-25",
+   "accepted": "2024-04-25T11:05:35",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-24-000028",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-04-25",
+   "accepted": "2024-04-25T19:09:56",
+   "items": [],
+   "accession": "0001166691-24-000031",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-05-17",
+   "accepted": "2024-05-17T20:48:53",
+   "items": [
+    "1.01",
+    "1.02",
+    "2.03",
+    "9.01"
+   ],
+   "accession": "0000950103-24-006839",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-05-22",
+   "accepted": "2024-05-22T20:13:58",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-24-144958",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-06-12",
+   "accepted": "2024-06-12T20:09:36",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001166691-24-000039",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-07-23",
+   "accepted": "2024-07-23T11:11:46",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-24-000046",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-07-23",
+   "accepted": "2024-07-23T17:28:43",
+   "items": [],
+   "accession": "0001166691-24-000048",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-09-23",
+   "accepted": "2024-09-23T10:40:00",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-24-223243",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-09-26",
+   "accepted": "2024-09-26T20:15:34",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-24-226937",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2024-10-31",
+   "accepted": "2024-10-31T11:06:05",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-24-000054",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2024-10-31",
+   "accepted": "2024-10-31T19:09:51",
+   "items": [],
+   "accession": "0001166691-24-000056",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-01-30",
+   "accepted": "2025-01-30T12:05:27",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-25-000006",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2025-01-31",
+   "accepted": "2025-01-31T21:10:33",
+   "items": [],
+   "accession": "0001166691-25-000011",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-03-19",
+   "accepted": "2025-03-19T20:25:41",
+   "items": [
+    "5.02",
+    "9.01"
+   ],
+   "accession": "0000950103-25-003639",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-04-24",
+   "accepted": "2025-04-24T11:07:02",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-25-000018",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-04-24",
+   "accepted": "2025-04-24T19:14:01",
+   "items": [],
+   "accession": "0001166691-25-000021",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-05-05",
+   "accepted": "2025-05-05T20:18:59",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001193125-25-112799",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-05-08",
+   "accepted": "2025-05-08T20:24:35",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0001193125-25-115996",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-06-20",
+   "accepted": "2025-06-20T19:40:25",
+   "items": [
+    "5.02",
+    "5.07"
+   ],
+   "accession": "0001166691-25-000027",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-07-31",
+   "accepted": "2025-07-31T11:07:31",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-25-000034",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-07-31",
+   "accepted": "2025-07-31T19:18:28",
+   "items": [],
+   "accession": "0001166691-25-000036",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-08-22",
+   "accepted": "2025-08-22T21:05:47",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001166691-25-000041",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-22",
+   "accepted": "2025-09-22T12:12:48",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-011924",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-26",
+   "accepted": "2025-09-26T20:17:28",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012296",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-29",
+   "accepted": "2025-09-29T12:10:57",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012356",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-09-29",
+   "accepted": "2025-09-29T14:01:39",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001628280-25-043014",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-01",
+   "accepted": "2025-10-01T12:15:41",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012613",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-02",
+   "accepted": "2025-10-02T20:42:39",
+   "items": [
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012777",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-06",
+   "accepted": "2025-10-06T12:12:45",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012851",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-08",
+   "accepted": "2025-10-08T12:14:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-012953",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-09",
+   "accepted": "2025-10-09T20:54:55",
+   "items": [
+    "2.03",
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-013042",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-10-30",
+   "accepted": "2025-10-30T11:16:20",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001166691-25-000052",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2025-10-30",
+   "accepted": "2025-10-30T19:11:37",
+   "items": [],
+   "accession": "0001166691-25-000054",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-12-03",
+   "accepted": "2025-12-03T21:22:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-25-015694",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-12-15",
+   "accepted": "2025-12-15T21:35:16",
+   "items": [
+    "3.02",
+    "5.03",
+    "9.01"
+   ],
+   "accession": "0000950103-25-016136",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-12-16",
+   "accepted": "2025-12-16T21:26:14",
+   "items": [
+    "7.01"
+   ],
+   "accession": "0001628280-25-057396",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2025-12-23",
+   "accepted": "2025-12-23T22:19:32",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001628280-25-058790",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-01-05",
+   "accepted": "2026-01-05T13:00:44",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-26-000079",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-01-29",
+   "accepted": "2026-01-29T12:08:26",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001628280-26-003964",
+   "description": "8-K"
+  },
+  {
+   "form": "10-K",
+   "filing_date": "2026-02-03",
+   "accepted": "2026-02-03T21:09:01",
+   "items": [],
+   "accession": "0001628280-26-004994",
+   "description": "10-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-02-27",
+   "accepted": "2026-02-27T21:08:42",
+   "items": [
+    "5.02"
+   ],
+   "accession": "0001628280-26-012809",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-03-16",
+   "accepted": "2026-03-16T13:36:48",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "accession": "0001628280-26-017950",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-04-23",
+   "accepted": "2026-04-23T11:08:22",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001628280-26-026685",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-04-23",
+   "accepted": "2026-04-23T19:10:03",
+   "items": [],
+   "accession": "0001628280-26-026805",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-05-27",
+   "accepted": "2026-05-27T12:55:27",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-26-007759",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-06-02",
+   "accepted": "2026-06-02T20:23:51",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-26-008329",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-06-03",
+   "accepted": "2026-06-03T12:40:40",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-26-008429",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-06-12",
+   "accepted": "2026-06-12T20:11:34",
+   "items": [
+    "5.07"
+   ],
+   "accession": "0001628280-26-042848",
+   "description": "8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-06-29",
+   "accepted": "2026-06-29T13:03:51",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "accession": "0000950103-26-009591",
+   "description": "FORM 8-K"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-07-23",
+   "accepted": "2026-07-23T10:06:37",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001628280-26-049274",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-07-23",
+   "accepted": "2026-07-23T19:11:20",
+   "items": [],
+   "accession": "0001628280-26-049360",
+   "description": "10-Q"
+  },
+  {
+   "form": "8-K",
+   "filing_date": "2026-10-22",
+   "accepted": "2026-10-22T11:05:59",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "accession": "0001628280-26-066783",
+   "description": "8-K"
+  },
+  {
+   "form": "10-Q",
+   "filing_date": "2026-10-22",
+   "accepted": "2026-10-22T18:57:29",
+   "items": [],
+   "accession": "0001628280-26-066863",
+   "description": "10-Q"
+  }
+ ]
+}

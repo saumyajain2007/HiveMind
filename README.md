@@ -170,6 +170,25 @@ print(res.skill)  # 1 − mean CRPS(model) / mean CRPS(random walk); > 0 beats t
 
 For historical events, `true_impact` should come from `event_parser.abnormal_return_impact` (an event study) for *calibration only*; using it as a forecast input is lookahead leakage.
 
+## Isolating the effect of individual events
+
+The simulator's main claim: **what did this one event do to the price?** Three views (the **Event lab** page):
+
+- **Simulator.** Pick a scenario and run an isolation (`POST /api/v1/runs` with `"mode": "isolation"`, `runs` = paired seeds). Each event's isolated effect comes from paired counterfactual runs (with vs without that event, identical random streams until it fires): the effect path with a band, the final effect with a 95% CI, peak, speed of price discovery, pass-through of the true impact, extra volume, share of the move, and the interaction between events.
+- **Real earnings moves.** `uv run python -m marketsim.isolation AAPL` replays every test-period earnings window with its real filings and splits the real move into each filing's contribution.
+- **Event library.** `uv run python scripts/fetch_market_data.py` fetches 50 stocks, then `uv run python -m marketsim.event_library` measures the isolated real effect of each event type across all of them (abnormal return vs a normal day, how fast it is priced in, volume) and trains the impact model on every event.
+
+```python
+from marketsim.isolation import isolate
+
+res = isolate(cfg, scenario, seeds=range(20), n_ticks=5 * 96)
+for e in res["events"]:
+    print(e["label"], e["final"]["mean"], e["final"]["ci95"], e["pass_through"])
+print("interaction", res["interaction"])
+```
+
+Across 9,881 filings from 50 stocks, earnings days move a stock 3.9× as much as an ordinary day (beyond the market). Reg FD disclosures move it 1.3×. Every other filing type moves it about 1×, the same as an ordinary day. No type has a reliable average direction. Details are in DECISIONS.md and `docs/experiments/events/report.md`.
+
 ## Real stock, real events
 
 Train on a real company's history and its own SEC filings, then forecast its later closes out of sample:
@@ -244,6 +263,8 @@ FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives un
 | `POST /data/upload`, `GET/DELETE /data/{id}` | Datasets: a `date,close` CSV plus dated events, validated on upload |
 | `POST /calibrations`, `GET /calibrations/{id}` | Random-search calibration on a dataset, as a job (stream sends one `trial` per trial) |
 | `POST /backtests`, `GET /backtests/{id}` | CRPS backtest vs a random walk on a dataset, as a job (one `origin` per origin) |
+| `GET /runs/{id}/isolation` | An isolation run (`POST /runs` with `mode: "isolation"`): every event's isolated effect, the total and the interaction |
+| `GET /event-library`, `GET /experiments/{ticker}/isolation` | The 50-stock event library; real earnings windows split by filing |
 | `GET /experiments`, `GET /experiments/{ticker}`, `GET /experiments/{ticker}/strategy` | Real-data experiments (`python -m marketsim.experiment`) and their forecasts / strategies, read from `docs/experiments/` |
 | `POST /events/parse` | Headlines → events. No provider by default: it returns prompts to paste into any LLM, then validates the replies you post back |
 | `WS /runs/{id}/stream` | Live frames: `hello`, then `tick` / `event` / `narrative` (or Monte Carlo `progress`), then `done` or `error`; `?after=<tick>` resumes |
@@ -277,6 +298,7 @@ React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Q
 | **Network** | A sampled subgraph (Sigma.js + ForceAtlas2 in a Web Worker), per-platform layers, a chosen story lighting up node by node, agent hover cards, layer statistics |
 | **Narratives** | Story strip, lineage tree (born × sentiment, shape = origin), family awareness curves, who-heard-it heat map, item cards with credibility decay |
 | **Real data** | The real-stock experiment: each model's skill against the random walk (all days, earnings days, other days), forecast bands against the real moves, rolling skill, the biggest differences between models, every earnings forecast, and the event classifier's calls |
+| **Event lab** | Isolate each event's effect: paired counterfactual runs on any scenario, real earnings moves split by filing, and the isolated effect of every event type across 50 stocks |
 | **Strategy** | The latest forecast (expected price, sd, quantiles, P(up)), expected vs real closes with 50% / 90% ranges, forecast statistics against the random walk, recent forecasts, and trading strategies on the model (returns, Sharpe with CI, drawdown, alpha, equity curves) |
 | **Analysis** | Upload a `date,close` CSV and events, calibrate (live trial log, best fit, recovery-test report) and backtest (CRPS per origin, skill vs the random walk) |
 

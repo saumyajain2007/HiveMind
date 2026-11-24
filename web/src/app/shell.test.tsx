@@ -31,6 +31,7 @@ describe("app shell", () => {
       "Network",
       "Narratives",
       "Analysis",
+      "Event lab",
       "Real data",
       "Strategy",
     ]) {

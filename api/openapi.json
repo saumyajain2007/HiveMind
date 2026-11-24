@@ -1147,6 +1147,51 @@
         }
       }
     },
+    "/api/v1/runs/{run_id}/isolation": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Isolation",
+        "description": "Isolated effect of every event (start one with `POST /runs`, `mode: \"isolation\"`): per\nevent the paired with/without price-effect path, final effect with a 95% CI, peak, timing,\npass-through and extra volume, plus the total move and the interaction between events.",
+        "operationId": "get_isolation_api_v1_runs__run_id__isolation_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Isolation Api V1 Runs  Run Id  Isolation Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/calibrations": {
       "post": {
         "tags": [
@@ -1462,6 +1507,97 @@
                   "type": "object",
                   "additionalProperties": true,
                   "title": "Response Get Strategy Api V1 Experiments  Ticker  Strategy Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/experiments/{ticker}/isolation": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get Real Isolation",
+        "description": "Real earnings windows split into each filing's isolated contribution\n(`python -m marketsim.isolation <TICKER>`).",
+        "operationId": "get_real_isolation_api_v1_experiments__ticker__isolation_get",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Real Isolation Api V1 Experiments  Ticker  Isolation Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/event-library": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get Event Library",
+        "description": "Every filing of every downloaded stock (`python -m marketsim.event_library`): the isolated\nreal effect of each event type, earnings reactions by stock, and the pooled impact model.\n`events=true` adds the per-event rows (large).",
+        "operationId": "get_event_library_api_v1_event_library_get",
+        "parameters": [
+          {
+            "name": "events",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Events"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Event Library Api V1 Event Library Get"
                 }
               }
             }
@@ -3629,7 +3765,7 @@
             "maximum": 1000.0,
             "minimum": 1.0,
             "title": "Runs",
-            "description": "Monte Carlo repetitions (1 for a single run)",
+            "description": "Monte Carlo repetitions (1 for a single run); isolation: the number of paired seeds",
             "default": 1
           },
           "workers": {
@@ -3831,7 +3967,8 @@
           "single",
           "montecarlo",
           "calibration",
-          "backtest"
+          "backtest",
+          "isolation"
         ],
         "title": "RunMode"
       },

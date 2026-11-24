@@ -27,6 +27,7 @@ from marketsim import montecarlo
 from marketsim.backtest import CLOSE_TICK, DatedEvent, backtest, load_dated_events, load_price_csv
 from marketsim.calibration import calibrate
 from marketsim.config import TICKS_PER_DAY
+from marketsim.isolation import isolate
 from marketsim.sim import Scenario, Simulation, TickFrame, World, json_safe
 from marketsim.sim import save as save_run
 
@@ -82,6 +83,8 @@ def execute(run_id: str, spec_json: str, run_dir: str, queue: Any, cancel: Any, 
         queue.put((run_id, "started", hello))
         if spec.mode in (RunMode.calibration, RunMode.backtest):
             summary, status = _analysis(run_id, spec, cfg, world, out, queue, cancel)
+        elif spec.mode == RunMode.isolation:
+            summary, status = _isolation(run_id, spec, cfg, scenario, world, n_ticks, out, queue, cancel)
         elif spec.mode == RunMode.single:
             summary, status = _single(
                 run_id, spec, cfg, scenario, world, sample, n_ticks, out, queue, cancel, pace
@@ -91,6 +94,45 @@ def execute(run_id: str, spec_json: str, run_dir: str, queue: Any, cancel: Any, 
         queue.put((run_id, "finished", {"status": status, "summary": summary}))
     except Exception as e:  # report, never crash the pool
         queue.put((run_id, "failed", {"error": f"{type(e).__name__}: {e}", "trace": traceback.format_exc()}))
+
+
+def _isolation(
+    run_id: str,
+    spec: RunSpec,
+    cfg: Any,
+    scenario: Scenario,
+    world: World,
+    n_ticks: int,
+    out: Path,
+    queue: Any,
+    cancel: Any,
+) -> tuple[dict[str, Any], str]:
+    """Paired counterfactual runs: every event's isolated effect (`marketsim.isolation`)."""
+
+    def progress(done: int, total: int) -> None:
+        queue.put((run_id, "msg", {"type": "progress", "done": done, "total": total}))
+
+    res = isolate(
+        cfg,
+        scenario,
+        [spec.seed + i for i in range(spec.runs)],
+        n_ticks,
+        world=world,
+        progress=progress,
+        should_stop=cancel.is_set,
+    )
+    (out / "isolation.json").write_text(json.dumps(res), encoding="utf-8")
+    if not res.get("seeds"):
+        return {"seeds": 0}, "cancelled"
+    top = max(res["events"], key=lambda e: abs(e["final"]["mean"]), default=None)
+    summary = {
+        "seeds": res["seeds"],
+        "events": len(res["events"]),
+        "total_effect": res["total"]["final"]["mean"],
+        "interaction": res["interaction"],
+        "largest": None if top is None else {"label": top["label"], "effect": top["final"]["mean"]},
+    }
+    return summary, "cancelled" if res["cancelled"] else "done"
 
 
 def _single(

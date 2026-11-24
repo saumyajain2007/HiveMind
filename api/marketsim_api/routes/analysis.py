@@ -150,6 +150,14 @@ def _get(store: Store, run_id: str, mode: RunMode, filename: str, step: str, job
     return {"run": run.model_dump(mode="json"), "result": result, "progress": steps}
 
 
+@router.get("/runs/{run_id}/isolation")
+def get_isolation(run_id: str, store: StoreDep, jobs: JobsDep) -> dict[str, Any]:
+    """Isolated effect of every event (start one with `POST /runs`, `mode: "isolation"`): per
+    event the paired with/without price-effect path, final effect with a 95% CI, peak, timing,
+    pass-through and extra volume, plus the total move and the interaction between events."""
+    return _get(store, run_id, RunMode.isolation, "isolation.json", "progress", jobs)
+
+
 @router.post("/calibrations", response_model=RunDetail, status_code=status.HTTP_201_CREATED)
 def create_calibration(
     body: CalibrationCreate, request: Request, store: StoreDep, jobs: JobsDep

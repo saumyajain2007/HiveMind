@@ -78,3 +78,22 @@ test("run library: compare two runs, duplicate one into the Builder", async ({ p
   await expect(page).toHaveURL(/\/builder$/);
   await expect(page.getByRole("heading", { name: /\(copy\)$/ })).toBeVisible();
 });
+
+test("event lab: isolate the demo's events, real moves, the library", async ({ page }) => {
+  await page.goto("/event-lab");
+  await page.getByRole("button", { name: /^Isolate \d+ events?/ }).click();
+  await expect(
+    page.getByRole("img", { name: /Isolated price effect of every event/ }),
+  ).toBeVisible();
+  await expect(page.getByText("Interaction").first()).toBeVisible();
+  await axe(page);
+  await page.getByRole("tab", { name: "Real earnings moves" }).click();
+  await expect(page.getByRole("combobox", { name: "Earnings window" })).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: /Each filing's isolated contribution/ }),
+  ).toBeVisible();
+  await axe(page);
+  await page.getByRole("tab", { name: "Event library" }).click();
+  await expect(page.getByText("Isolated real effect of each event type")).toBeVisible();
+  await axe(page);
+});
