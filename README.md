@@ -197,17 +197,36 @@ The fetch step saves adjusted closes for the stock and SPY, every 8-K / 10-Q / 1
 
 The **Real data** page shows the experiment (`GET /api/v1/experiments/{ticker}`). The **Strategy** page shows expected prices, forecast statistics and the trading results (`GET /api/v1/experiments/{ticker}/strategy`).
 
-**Results for AAPL** (726 one-day and 361 five-day forecasts, January 2024 to November 2026). Skill is 1 − CRPS / random-walk CRPS: above zero beats a random walk.
+**Results for AAPL**, with the agents fitted to 2016–2023 (726 one-day and 361 five-day forecasts, January 2024 to November 2026). Skill is 1 − CRPS / random-walk CRPS: above zero beats a random walk.
 
 | model | 1-day skill | 1-day 90% coverage | 5-day skill | 5-day 90% coverage |
 |---|---|---|---|---|
-| Random walk (trailing 20-day volatility) | 0 | 89% | 0 | 85% |
-| Random walk + predicted earnings jumps | −0.7% | 90% | −0.4% | 88% |
-| Agent model, raw | −6.0% | 85% | −4.1% | 77% |
-| Agent model, recalibrated on 2016–2023 | −1.6% | 86% | −0.3% | 83% |
-| Agent model told the true reactions (oracle, leaks the future) | −6.5% | 85% | −0.7% | 74% |
+| Random walk (trailing 20-day volatility) | 0 | 88% | 0 | 85% |
+| Random walk + predicted earnings jumps | −0.7% | 89% | −0.5% | 87% |
+| Agent model, raw | −15.3% | 71% | −12.2% | 50% |
+| Agent model, recalibrated on 2016–2023 | −0.8% | 87% | −1.8% | 80% |
+| Agent model told the true reactions (oracle, leaks the future) | −17.9% | 70% | −8.9% | 49% |
 
-No forecaster beats the random walk out of sample; direction accuracy is 48–52% everywhere. The classifier predicts the *size* of a filing's reaction (correlation 0.58 with the actual size) but not its *direction* (50% of 12 moves). Knowing the true reaction helps only when an earnings release falls inside the window: +20.7% at 5 days on those 29 forecasts. See [the full report](docs/experiments/AAPL/report.md) and DECISIONS.md for the method and its caveats.
+**Trading on it** (daily, 5 bp costs, rules fixed in advance; `strategy.json` and the Strategy page):
+
+| strategy | total return | Sharpe (95% CI) | max drawdown |
+|---|---|---|---|
+| Buy and hold | +90.4% | 0.95 (−0.13 to 2.03) | −33.4% |
+| Direction long/short | −62.1% | −1.09 (−2.04 to −0.16) | −66.7% |
+| Direction long/flat | −9.4% | −0.11 (−1.20 to 1.00) | −28.1% |
+| Volatility target, model sd | +99.2% | 0.92 (−0.14 to 2.02) | −33.8% |
+| Volatility target, trailing sd | +96.2% | 0.91 (−0.21 to 2.01) | −34.0% |
+| Earnings classifier | −9.4% | −0.48 (−1.49 to 0.68) | −14.4% |
+
+**What this says.**
+
+- No forecaster beats the random walk out of sample, and no strategy beats buy and hold with any statistical confidence.
+- The model's expected return has no relation to the next day's return (information coefficient −0.014, t −0.37). Strategies that trade its direction therefore lose to costs and noise. Before the agent fit, the same long/short rule happened to make +4%; after it, −62%. A swing that large between two variants is what noise looks like.
+- The model's spread is mildly informative about the *size* of the next move: its correlation with the size of the next day's move is 0.20, against 0.18 for trailing volatility. Volatility targeting is the one use that does not lose, and it adds almost nothing over plain trailing volatility.
+- Fitting the agents to AAPL's statistical fingerprint made the simulation look more like AAPL but forecast worse (raw skill −6% → −15% at one day). Matching the statistics of a price series does not make day-to-day forecasts better.
+- The classifier predicts the *size* of a filing's reaction (correlation 0.58) but not its direction (50% of 12 moves).
+
+See [the full report](docs/experiments/AAPL/report.md) and DECISIONS.md for the method and its caveats.
 
 ## API
 
