@@ -196,6 +196,37 @@ export interface StrategyResult {
   mean_daily: number;
   t_mean: number;
   equity: number[];
+  drawdown?: number[];
+  probabilistic_sharpe?: number;
+  deflated_sharpe?: number;
+  trials?: number;
+  n_trades?: number;
+  win_rate?: number;
+  profit_factor?: number | null;
+  expectancy?: number;
+  max_drawdown_days?: number;
+  information_ratio?: number | null;
+  trades?: {
+    side: string;
+    entry: string;
+    exit: string;
+    bars: number;
+    weight: number;
+    ret: number;
+  }[];
+}
+
+export interface Fitness {
+  n: number;
+  information_coefficient: number;
+  ic_t: number;
+  rank_ic: number;
+  hit_rate: number;
+  brier: number;
+  brier_climatology: number;
+  log_loss: number;
+  log_loss_climatology: number;
+  calibration: { p_mean: number; freq_up: number; n: number }[];
 }
 
 export type LatestHorizon = DistStats & {
@@ -212,8 +243,10 @@ export interface StrategyDoc {
   agent_params: Record<string, number>;
   latest: { date: string; close: number; horizons: Record<string, LatestHorizon> };
   forecasts: Record<string, { summary: ForecastSummary; rows: ForecastRow[] }>;
+  fitness?: Record<string, { train: Fitness; test: Fitness }>;
   strategy: {
     cost_bps: number;
+    trials?: number;
     max_leverage: number;
     vol_target_daily: number;
     dates: string[];

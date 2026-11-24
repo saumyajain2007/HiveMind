@@ -105,6 +105,8 @@ class ExperimentConfig:
     # fitted agent behaviour (`marketsim.agent_fit`); None = read docs/experiments/<T>/agent_fit.json
     # if it exists, {} = the config defaults
     agent_params: dict[str, float] | None = None
+    # the population's real-data inputs (marketsim.survey); "" = the PLACEHOLDER population
+    survey: str = "us"
 
 
 def load_agent_params(ticker: str) -> dict[str, float]:
@@ -166,8 +168,9 @@ def _scenario(rows: list[tuple[int, str, float, float, float, float]]) -> Scenar
 _WORLD: dict[str, Any] = {}
 
 
-def _init_worker(n_agents: int, seed: int) -> None:
+def _init_worker(n_agents: int, seed: int, survey: str = "us") -> None:
     cfg = replace(Config(), n_agents=n_agents, seed=seed)
+    cfg = replace(cfg, population=replace(cfg.population, survey=survey))
     _WORLD["cfg"], _WORLD["world"] = cfg, World.build(cfg)
 
 
@@ -454,7 +457,7 @@ class Experiment:
     def _run_tasks(self, ex: ProcessPoolExecutor | None, tasks: list[OriginTask]) -> list[np.ndarray]:
         if ex is None:
             if "world" not in _WORLD:
-                _init_worker(self.cfg.n_agents, self.cfg.seed)
+                _init_worker(self.cfg.n_agents, self.cfg.seed, self.cfg.survey)
             return [_simulate(t) for t in tasks]
         return list(ex.map(_simulate, tasks, chunksize=4))
 
@@ -569,7 +572,9 @@ class Experiment:
         print(f"impact model: l2={self.l2}, test accuracy {impact['test']['accuracy']:.2f}")
         ex = (
             ProcessPoolExecutor(
-                self.cfg.workers, initializer=_init_worker, initargs=(self.cfg.n_agents, self.cfg.seed)
+                self.cfg.workers,
+                initializer=_init_worker,
+                initargs=(self.cfg.n_agents, self.cfg.seed, self.cfg.survey),
             )
             if self.cfg.workers > 1
             else None

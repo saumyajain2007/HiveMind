@@ -186,7 +186,7 @@ def decompose_real_move(
     from .experiment import _WORLD, CLOSE_TICK, _init_worker, _scenario
 
     if "world" not in _WORLD:
-        _init_worker(exp.cfg.n_agents, exp.cfg.seed)
+        _init_worker(exp.cfg.n_agents, exp.cfg.seed, exp.cfg.survey)
     task = exp.task(o, h, params or {}, oracle=True)
     rows = task.events[0]
     hist = exp.ds.history

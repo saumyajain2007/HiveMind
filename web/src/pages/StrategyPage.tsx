@@ -14,7 +14,7 @@ import { XYChart } from "@/components/charts/XYChart";
 import { Panel } from "@/components/Panel";
 import { Stat } from "@/components/Stat";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { ForecastSummary, StrategyDoc } from "@/lib/api/experiments";
+import type { Fitness, ForecastSummary, StrategyDoc } from "@/lib/api/experiments";
 import { useExperiments, useStrategy } from "@/lib/api/queries";
 import { formatPct, formatPrice, formatSigned, formatSignedPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -172,7 +172,12 @@ function ForecastStats({ s }: { s: ForecastSummary }) {
     ],
   ];
   return (
-    <div className="overflow-x-auto">
+    <div
+      className="overflow-x-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+      tabIndex={0}
+      role="region"
+      aria-label="Forecast statistics table"
+    >
       <table className="w-full min-w-[640px] text-sm">
         <thead>
           <tr className="border-b text-left text-xs text-muted-foreground">
@@ -194,6 +199,72 @@ function ForecastStats({ s }: { s: ForecastSummary }) {
         </tbody>
       </table>
     </div>
+  );
+}
+
+function FitnessPanel({ fitness }: { fitness: NonNullable<StrategyDoc["fitness"]> }) {
+  const rows: [string, (f: Fitness) => string][] = [
+    ["Forecasts", (f) => String(f.n)],
+    [
+      "Information coefficient (t)",
+      (f) => `${formatSigned(f.information_coefficient, 3)} (${formatSigned(f.ic_t, 1)})`,
+    ],
+    ["Rank IC", (f) => formatSigned(f.rank_ic, 3)],
+    ["Direction hit rate", (f) => formatPct(f.hit_rate, 1)],
+    [
+      "Brier score (climatology)",
+      (f) => `${f.brier.toFixed(4)} (${f.brier_climatology.toFixed(4)})`,
+    ],
+    [
+      "Log loss (climatology)",
+      (f) => `${f.log_loss.toFixed(4)} (${f.log_loss_climatology.toFixed(4)})`,
+    ],
+  ];
+  const hs = Object.keys(fitness).sort((a, b) => Number(a) - Number(b));
+  return (
+    <Panel
+      title="Model fitness: training vs test"
+      icon={Sigma}
+      subtitle="Training: the origins the recalibration was fitted on (in sample). Test: every later day (out of sample). A gap is overfitting."
+    >
+      <div
+        className="overflow-x-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+        tabIndex={0}
+        role="region"
+        aria-label="Model fitness table"
+      >
+        <table className="w-full min-w-[760px] text-sm">
+          <thead>
+            <tr className="border-b text-left text-xs text-muted-foreground">
+              <th className="py-2 font-medium">Statistic</th>
+              {hs.flatMap((h) => [
+                <th key={`${h}tr`} className={th}>
+                  {h}-day, training
+                </th>,
+                <th key={`${h}te`} className={th}>
+                  {h}-day, test
+                </th>,
+              ])}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(([label, fmt]) => (
+              <tr key={label} className="border-b last:border-0">
+                <td className="py-2">{label}</td>
+                {hs.flatMap((h) => [
+                  <td key={`${h}tr`} className={cn(td, "text-muted-foreground")}>
+                    {fmt(fitness[h]!.train)}
+                  </td>,
+                  <td key={`${h}te`} className={cn(td, "font-medium")}>
+                    {fmt(fitness[h]!.test)}
+                  </td>,
+                ])}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Panel>
   );
 }
 
@@ -353,7 +424,12 @@ function Body({ doc }: { doc: StrategyDoc }) {
         icon={CalendarClock}
         subtitle="The latest 15 test forecasts · z: (actual − forecast centre) / forecast sd, in log terms"
       >
-        <div className="overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+          tabIndex={0}
+          role="region"
+          aria-label="Recent forecasts table"
+        >
           <table className="w-full min-w-[880px] text-sm">
             <thead>
               <tr className="border-b text-left text-xs text-muted-foreground">
@@ -399,8 +475,13 @@ function Body({ doc }: { doc: StrategyDoc }) {
         icon={WalletCards}
         subtitle={`Daily, ${st.start} to ${doc.period.test[1]} · positions set at each close, held to the next · ${st.cost_bps} bp cost per unit of turnover`}
       >
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[1000px] text-sm">
+        <div
+          className="overflow-x-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+          tabIndex={0}
+          role="region"
+          aria-label="Strategy results table"
+        >
+          <table className="w-full min-w-[1320px] text-sm">
             <thead>
               <tr className="border-b text-left text-xs text-muted-foreground">
                 <th className="py-2 font-medium">Strategy</th>
@@ -414,6 +495,11 @@ function Body({ doc }: { doc: StrategyDoc }) {
                 <th className={th}>Beta</th>
                 <th className={th}>Hit rate</th>
                 <th className={th}>Turnover / yr</th>
+                <th className={th}>Trades</th>
+                <th className={th}>Win rate</th>
+                <th className={th}>Profit factor</th>
+                <th className={th}>PSR</th>
+                <th className={th}>DSR</th>
               </tr>
             </thead>
             <tbody>
@@ -454,6 +540,17 @@ function Body({ doc }: { doc: StrategyDoc }) {
                   <td className={td}>{s.beta.toFixed(2)}</td>
                   <td className={td}>{formatPct(s.hit_rate, 0)}</td>
                   <td className={td}>{s.turnover_per_year.toFixed(0)}×</td>
+                  <td className={td}>{s.n_trades ?? "–"}</td>
+                  <td className={td}>{s.win_rate == null ? "–" : formatPct(s.win_rate, 0)}</td>
+                  <td className={td}>
+                    {s.profit_factor == null ? "–" : s.profit_factor.toFixed(2)}
+                  </td>
+                  <td className={td}>
+                    {s.probabilistic_sharpe == null ? "–" : formatPct(s.probabilistic_sharpe, 0)}
+                  </td>
+                  <td className={cn(td, "font-medium")}>
+                    {s.deflated_sharpe == null ? "–" : formatPct(s.deflated_sharpe, 0)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -461,6 +558,13 @@ function Body({ doc }: { doc: StrategyDoc }) {
         </div>
       </Panel>
 
+      <p className="-mt-2 text-xs text-muted-foreground">
+        PSR: probability the true Sharpe is above 0 given the track record&apos;s length, skew and
+        fat tails. DSR (deflated Sharpe): the same against the best Sharpe{" "}
+        {st.trials ?? strat.length} skill-less strategies would show by luck, so trying many
+        variants and keeping the best is charged for. Built with <code>marketsim.backtester</code>.
+      </p>
+      {doc.fitness && <FitnessPanel fitness={doc.fitness} />}
       <Panel title="Growth of $1" icon={Gauge} subtitle="Each strategy's equity after costs">
         <XYChart
           x={st.dates.map((_, i) => i)}
@@ -477,6 +581,29 @@ function Body({ doc }: { doc: StrategyDoc }) {
           label="Equity of every strategy after costs"
         />
       </Panel>
+
+      {strat.some(([, s]) => s.drawdown) && (
+        <Panel
+          title="Drawdowns"
+          icon={Gauge}
+          subtitle="Distance below each strategy's running peak"
+        >
+          <XYChart
+            x={st.dates.map((_, i) => i)}
+            series={strat.map(([k, s]) => ({
+              key: k,
+              label: s.label,
+              values: (s.drawdown ?? []).map((v) => v * 100),
+              color: STRAT_COLOR[k] ?? "var(--muted-foreground)",
+            }))}
+            height={220}
+            zeroLine={0}
+            xFormat={(i) => st.dates[Math.round(i)] ?? ""}
+            yFormat={(v) => `${v.toFixed(0)}%`}
+            label="Drawdown of every strategy"
+          />
+        </Panel>
+      )}
 
       {Object.keys(doc.agent_params).length > 0 && (
         <Panel

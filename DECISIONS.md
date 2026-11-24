@@ -351,3 +351,24 @@ Caveats:
 - 15-minute returns that are far too fat-tailed (excess kurtosis 42) and too autocorrelated (lag-1 0.31).
 
 So the census population does not by itself make the tick dynamics realistic.
+
+### Backtesting framework (`marketsim.backtester`)
+
+A small framework instead of a third-party one (backtesting.py is AGPL; vectorbt and bt pull in heavy dependencies), so it can live inside the engine and the API. `Backtest(dates, returns, benchmark, costs).run_all(signals, n_trials=...)`.
+
+- **Timing.** Positions are decided at close t and paid the t → t+1 return, so a signal never sees its own return.
+- **Costs.** Commission plus slippage (default 1 + 4 bp) on every change of position, and a borrow fee on shorts (30 bp a year).
+- **Statistics.** Sharpe with a stationary-bootstrap CI, Sortino, Calmar, max drawdown and its duration, per-trade win rate, profit factor and expectancy, alpha, beta and information ratio, skew and kurtosis.
+- **Overfitting-aware ratios.** The **probabilistic Sharpe ratio** and the **deflated Sharpe ratio** (Bailey & López de Prado). The deflated version measures a Sharpe against the best one N skill-less variants would produce by luck. Pass the true number of variants tried, including discarded ones; otherwise it flatters the result.
+- **Forecast fitness.** `forecast_fitness` scores the forecasts themselves: IC, rank IC, hit rate, Brier score and log loss against climatology, and calibration bins.
+
+`marketsim.strategy` now runs its six pre-specified rules through it and reports fitness on the training origins and the test period. AAPL shows overfitting directly:
+
+| fitness | 1-day IC | 5-day IC |
+|---|---|---|
+| training origins (in sample) | 0.27 | 0.26 |
+| test period (out of sample) | −0.01 | −0.03 |
+
+The recalibration was fitted on those very training origins. Deflated Sharpe over the 6 rules: buy and hold 0.38, volatility targeting 0.35, direction rules 0.00–0.02.
+
+**On overfitting experiments (agreed scope).** Fitting the model hard to many custom events for one stock is fine as an experiment, as long as every result reports in-sample and out-of-sample side by side and the deflated Sharpe uses the real number of trials. Results are never fabricated or tuned on the test period.

@@ -30,6 +30,7 @@ from typing import Any
 import numpy as np
 from scipy.stats import norm
 
+from .backtester import Backtest, Costs, Signal, forecast_fitness
 from .experiment import (
     ROOT,
     Experiment,
@@ -67,12 +68,14 @@ def _t(x: np.ndarray) -> float:
     return float(x.mean() / (x.std(ddof=1) / math.sqrt(len(x)))) if len(x) > 2 and x.std() > 0 else 0.0
 
 
-def forecast_table(exp: Experiment, res: dict[str, Any], ens: Any, h: int) -> dict[str, Any]:
+def forecast_table(
+    exp: Experiment, res: dict[str, Any], ens: Any, h: int, part: str = "test"
+) -> dict[str, Any]:
     close = exp.ds.history.close
     dates = exp.ds.history.dates
     rc = Recalibration(**res["simulation"]["recalibration"][str(h)])
-    origins = ens[f"test_h{h}_origins"]
-    runs = ens[f"test_h{h}"]
+    origins = ens[f"{part}_h{h}_origins"]
+    runs = ens[f"{part}_h{h}"]
     rows = []
     for o, r in zip(origins, runs, strict=True):
         o = int(o)
@@ -143,15 +146,11 @@ def forecast_table(exp: Experiment, res: dict[str, Any], ens: Any, h: int) -> di
 # --------------------------------------------------------------------------- strategies
 
 
-def _max_drawdown(eq: np.ndarray) -> float:
-    peak = np.maximum.accumulate(eq)
-    return float(np.min(eq / peak - 1.0))
-
-
-def _bootstrap_sharpe(r: np.ndarray, b: np.ndarray, rng: np.random.Generator, n: int = 2000, block: int = 10):
-    """Stationary block bootstrap: 95% CI of the annualised Sharpe and P(Sharpe <= buy & hold)."""
+def _p_not_above(r: np.ndarray, b: np.ndarray, n: int = 2000, block: int = 10) -> float:
+    """Stationary block bootstrap: P(Sharpe of r <= Sharpe of b)."""
+    rng = np.random.default_rng(5)
     T = len(r)
-    shs, diffs = [], []
+    worse = 0
     for _ in range(n):
         idx = np.empty(T, dtype=int)
         i = 0
@@ -161,54 +160,19 @@ def _bootstrap_sharpe(r: np.ndarray, b: np.ndarray, rng: np.random.Generator, n:
             idx[i : i + L] = (start + np.arange(L)) % T
             i += L
         rr, bb = r[idx], b[idx]
-        sr = rr.mean() / rr.std() * math.sqrt(252) if rr.std() > 0 else 0.0
-        sb = bb.mean() / bb.std() * math.sqrt(252) if bb.std() > 0 else 0.0
-        shs.append(sr)
-        diffs.append(sr - sb)
-    return (float(np.quantile(shs, 0.025)), float(np.quantile(shs, 0.975))), float(
-        np.mean(np.array(diffs) <= 0)
+        sr = rr.mean() / rr.std() if rr.std() > 0 else 0.0
+        sb = bb.mean() / bb.std() if bb.std() > 0 else 0.0
+        worse += sr <= sb
+    return worse / n
+
+
+def fitness(table: dict[str, Any]) -> dict[str, Any]:
+    rows = table["rows"]
+    return forecast_fitness(
+        np.array([r["expected_return"] for r in rows]),
+        np.array([r["p_up"] for r in rows]),
+        np.array([r["actual_return"] for r in rows]),
     )
-
-
-def strategy_stats(
-    w: np.ndarray, ret: np.ndarray, bench: np.ndarray, rng: np.random.Generator
-) -> dict[str, Any]:
-    dw = np.abs(np.diff(np.concatenate([[0.0], w])))
-    net = w * ret - dw * COST_BPS / 1e4
-    eq = np.cumprod(1.0 + net)
-    years = len(net) / 252
-    vol = float(net.std(ddof=1) * math.sqrt(252))
-    down = net[net < 0]
-    sharpe = float(net.mean() / net.std(ddof=1) * math.sqrt(252)) if net.std() > 0 else 0.0
-    X = np.c_[np.ones_like(bench), bench]
-    coef, *_ = np.linalg.lstsq(X, net, rcond=None)
-    resid = net - X @ coef
-    se = math.sqrt(resid.var(ddof=2) * np.linalg.inv(X.T @ X)[0, 0])
-    ci, p_worse = _bootstrap_sharpe(net, bench, rng)
-    active = w != 0
-    mdd = _max_drawdown(np.concatenate([[1.0], eq]))
-    cagr = float(eq[-1] ** (1 / years) - 1) if years > 0 else 0.0
-    return {
-        "total_return": float(eq[-1] - 1.0),
-        "cagr": cagr,
-        "ann_vol": vol,
-        "sharpe": sharpe,
-        "sharpe_ci95": ci,
-        "p_sharpe_not_above_buy_hold": p_worse,
-        "sortino": float(net.mean() * 252 / (down.std(ddof=1) * math.sqrt(252))) if len(down) > 2 else 0.0,
-        "max_drawdown": mdd,
-        "calmar": cagr / abs(mdd) if mdd < 0 else 0.0,
-        "hit_rate": float((net[active] > 0).mean()) if active.any() else 0.0,
-        "exposure": float(np.abs(w).mean()),
-        "turnover_per_year": float(dw.sum() / years) if years > 0 else 0.0,
-        "costs": float((dw * COST_BPS / 1e4).sum()),
-        "alpha_ann": float(coef[0] * 252),
-        "alpha_t": float(coef[0] / se) if se > 0 else 0.0,
-        "beta": float(coef[1]),
-        "mean_daily": float(net.mean()),
-        "t_mean": _t(net),
-        "equity": eq.tolist(),
-    }
 
 
 def strategies(exp: Experiment, table: dict[str, Any]) -> dict[str, Any]:
@@ -266,11 +230,26 @@ def strategies(exp: Experiment, table: dict[str, Any]) -> dict[str, Any]:
             w_earn,
         ),
     }
-    rng = np.random.default_rng(3)
+    bt = Backtest(
+        [r["target"] for r in rows],
+        ret,
+        benchmark=ret,
+        costs=Costs(commission_bps=1.0, slippage_bps=COST_BPS - 1.0, borrow_bps_annual=30.0),
+        max_leverage=MAX_LEVERAGE,
+    )
+    signals = [Signal(k, label, desc, w) for k, (label, desc, w) in rules.items()]
+    results = bt.run_all(signals, n_trials=len(signals))
     out = {}
-    for k, (label, desc, w) in rules.items():
-        out[k] = {"label": label, "description": desc, **strategy_stats(w, ret, ret, rng)}
+    for r in results:
+        d = r.to_dict()
+        d.pop("positions")
+        # what the bootstrap says about beating buy and hold (kept for the page)
+        d["p_sharpe_not_above_buy_hold"] = _p_not_above(r.net, results[0].net)
+        out[r.name] = d
     return {
+        "framework": "marketsim.backtester",
+        "costs": {"commission_bps": 1.0, "slippage_bps": COST_BPS - 1.0, "borrow_bps_annual": 30.0},
+        "trials": len(signals),
         "cost_bps": COST_BPS,
         "max_leverage": MAX_LEVERAGE,
         "vol_target_daily": target,
@@ -297,7 +276,7 @@ def latest_forecast(exp: Experiment, res: dict[str, Any]) -> dict[str, Any]:
     h_all = [int(h) for h in res["simulation"]["recalibration"]]
     o = len(exp.ds.history.dates) - 1
     p0 = float(exp.ds.history.close[o])
-    _init_worker(exp.cfg.n_agents, exp.cfg.seed)
+    _init_worker(exp.cfg.n_agents, exp.cfg.seed, exp.cfg.survey)
     params = dict(res["simulation"]["params"])
     days = _next_business_days(exp.ds.history.dates[o], max(h_all))
     out: dict[str, Any] = {"date": exp.ds.history.dates[o], "close": p0, "horizons": {}}
@@ -335,10 +314,19 @@ def write_strategy(ticker: str, out_dir: Path | None = None, n_agents: int | Non
             lookback_days=c["lookback_days"],
             vol_window=c["vol_window"],
             agent_params=c.get("agent_params") or {},
+            survey=c.get("survey", ""),  # results from before the census population used placeholders
             data_root=c.get("data_root"),
         )
     )
     tables = {h: forecast_table(exp, res, ens, int(h)) for h in res["simulation"]["recalibration"]}
+    # model fitness out of sample (test) and in sample (training origins the recalibration saw)
+    fit = {
+        h: {
+            "test": fitness(t),
+            "train": fitness(forecast_table(exp, res, ens, int(h), part="train")),
+        }
+        for h, t in tables.items()
+    }
     doc = {
         "ticker": res["ticker"],
         "name": res["name"],
@@ -347,6 +335,7 @@ def write_strategy(ticker: str, out_dir: Path | None = None, n_agents: int | Non
         "latest": latest_forecast(exp, res),
         "forecasts": tables,
         "strategy": strategies(exp, tables["1"]),
+        "fitness": fit,
     }
     p = out / "strategy.json"
     p.write_text(json.dumps(json_safe(doc)), encoding="utf-8")

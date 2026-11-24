@@ -189,6 +189,20 @@ print("interaction", res["interaction"])
 
 Across 9,881 filings from 50 stocks, earnings days move a stock 3.9× as much as an ordinary day (beyond the market). Reg FD disclosures move it 1.3×. Every other filing type moves it about 1×, the same as an ordinary day. No type has a reliable average direction. Details are in DECISIONS.md and `docs/experiments/events/report.md`.
 
+## Backtesting framework
+
+`marketsim.backtester` turns any signal (a target position per day) into a backtest with costs and the usual statistics. These are Sharpe with a CI, Sortino, Calmar, drawdown and its duration, trades, win rate, profit factor, alpha, beta and information ratio. It also reports the **probabilistic and deflated Sharpe ratios**, which tell a real edge from the best of many lucky variants, plus forecast fitness (IC, hit rate, Brier score, calibration). The Strategy page shows it for the AAPL model, training vs test.
+
+```python
+from marketsim.backtester import Backtest, Costs, Signal
+
+bt = Backtest(
+    dates, next_day_returns, benchmark=next_day_returns, costs=Costs(commission_bps=1, slippage_bps=4)
+)
+results = bt.run_all([Signal("long_flat", "Long/flat", "long when P(up) > 50%", positions)], n_trials=20)
+print(results[0].stats["sharpe"], results[0].stats["deflated_sharpe"], len(results[0].trades))
+```
+
 ## Real stock, real events
 
 Train on a real company's history and its own SEC filings, then forecast its later closes out of sample:
