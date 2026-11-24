@@ -46,6 +46,8 @@ Published values to fit the generators against. The numbers are for the whole pl
 |---|---|---|
 | `base_share`, `salience_decay` | Share and decay rates | Cascade studies on SNAP `higgs-twitter`; Reddit comment timing |
 | `mu0`, `adopt_rate`, `mutate_rate` | Belief dynamics | Calibrated in #12 (not directly observable) |
+| `share_ttl` | How long a share stays visible in followers' feeds | Platform feed-decay studies; post engagement half-life by platform |
+| `exposure_scale` | Overall reach per share (cascade size) | Fit to cascade-size distributions (SNAP `higgs-twitter` retweet cascades); calibrated in #12 |
 
 ## Market (`MarketConfig`, `TradingConfig`)
 

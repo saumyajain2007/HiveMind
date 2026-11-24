@@ -237,13 +237,16 @@ class Population:
     def investor_ids(self) -> np.ndarray:
         return np.flatnonzero((self.category != NON_INVESTOR) & (self.category != MEDIA))
 
-    def online_prob(self, hour: float) -> np.ndarray:
+    def online_prob(self, hour: float, base_online: float | None = None) -> np.ndarray:
         """Chance each agent is online at ``hour`` (0-24):
-        ``base_online * (0.3 + 0.7 * gaussian bump around the agent's peak hour)``."""
+        ``base_online * (0.3 + 0.7 * gaussian bump around the agent's peak hour)``.
+
+        ``base_online`` defaults to this population's config; diffusion passes its own."""
         d = np.abs(float(hour) % 24.0 - self.peak_hour)
         d = np.minimum(d, 24.0 - d)
         bump = np.exp(-0.5 * (d / self.cfg.population.online_width) ** 2)
-        return self.cfg.diffusion.base_online * (0.3 + 0.7 * bump)
+        base = self.cfg.diffusion.base_online if base_online is None else base_online
+        return base * (0.3 + 0.7 * bump)
 
     # -- appending ----------------------------------------------------------
     def add_agents(self, n: int) -> np.ndarray:

@@ -298,6 +298,18 @@ export interface components {
        */
       retire_salience: number;
       /**
+       * Share Ttl
+       * @description Ticks a share stays in followers' feeds (8h)
+       * @default 32
+       */
+      share_ttl: number;
+      /**
+       * Exposure Scale
+       * @description Multiplies every layer's reach (salient rumours go viral)
+       * @default 4
+       */
+      exposure_scale: number;
+      /**
        * Max Items
        * @description Active items kept in memory
        * @default 128

@@ -198,8 +198,19 @@ class Layer:
         self.reach = float(reach)
         self.trust = float(trust)
 
-    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+    def receivers(
+        self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Sparse exposure: (agent ids, float32 weights), reach applied, agents may repeat.
+
+        Costs O(edges of the sharers), never O(N). Diffusion uses this to combine many items.
+        """
         raise NotImplementedError
+
+    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+        """Dense exposure of length N (reach applied): the bincount of `receivers`."""
+        agents, w = self.receivers(sharers, topic=topic, popularity=popularity)
+        return np.bincount(agents, weights=w, minlength=self.n).astype(np.float32)
 
     def stats(self) -> dict[str, Any]:
         raise NotImplementedError
@@ -255,11 +266,11 @@ class DirectedLayer(Layer):
     def n_edges(self) -> int:
         return len(self.follower)
 
-    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+    def receivers(
+        self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
         followers, _ = gather_rows(self.indptr, self.indices, sharers)
-        out = np.bincount(followers, minlength=self.n).astype(np.float32)
-        out *= self.reach
-        return out
+        return followers.astype(np.int64), np.full(len(followers), self.reach, np.float32)
 
     def in_degree(self) -> np.ndarray:
         return np.bincount(self.followee, minlength=self.n)
@@ -390,11 +401,11 @@ class FriendshipLayer(Layer):
     def degree(self) -> np.ndarray:
         return np.diff(self.indptr)
 
-    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+    def receivers(
+        self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
         friends, _ = gather_rows(self.indptr, self.indices, sharers)
-        out = np.bincount(friends, minlength=self.n).astype(np.float32)
-        out *= self.reach
-        return out
+        return friends.astype(np.int64), np.full(len(friends), self.reach, np.float32)
 
     def edge_keys(self) -> np.ndarray:
         return self.a.astype(np.int64) * self.n + self.b
@@ -480,15 +491,17 @@ class RedditLayer(Layer):
         self.sub_ptr, self.sub_members = build_csr(self.sub, self.member, self.n_subs)
         self.user_ptr, self.user_subs = build_csr(self.member, self.sub, self.n)
 
-    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+    def receivers(
+        self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
         subs, _ = gather_rows(self.user_ptr, self.user_subs, sharers)
         score = np.bincount(subs, minlength=self.n_subs)
         active = np.flatnonzero(score)
         if len(active) == 0:
-            return np.zeros(self.n, np.float32)
+            return np.zeros(0, np.int64), np.zeros(0, np.float32)
         intensity = self.reach * score[active] / np.sqrt(self.sub_size[active])
         members, pos = gather_rows(self.sub_ptr, self.sub_members, active)
-        return np.bincount(members, weights=intensity[pos], minlength=self.n).astype(np.float32)
+        return members.astype(np.int64), intensity[pos].astype(np.float32)
 
     def stats(self) -> dict[str, Any]:
         per_user = np.diff(self.user_ptr)[self.users]
@@ -560,14 +573,17 @@ class TikTokLayer(Layer):
         self.interest_unit = (interests / np.where(norm > 0, norm, 1.0)).astype(np.float32)
         self.activity = np.asarray(pop.platform_intensity[:, col], np.float32)
 
-    def push(self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None) -> np.ndarray:
+    def receivers(
+        self, sharers: np.ndarray, *, topic: int = 0, popularity: float | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Every TikTok user with a positive score; `popularity` defaults to the sharer count."""
         pop_ = float(len(sharers)) if popularity is None else float(popularity)
-        out = np.zeros(self.n, np.float32)
         if pop_ <= 0:
-            return out
+            return np.zeros(0, np.int64), np.zeros(0, np.float32)
         u = self.users
-        out[u] = self.reach * np.sqrt(pop_) * self.interest_unit[u, topic] * self.activity[u]
-        return out
+        w = (self.reach * np.sqrt(pop_) * self.interest_unit[u, topic] * self.activity[u]).astype(np.float32)
+        keep = w > 0
+        return u[keep].astype(np.int64), w[keep]
 
     def stats(self) -> dict[str, Any]:
         return {

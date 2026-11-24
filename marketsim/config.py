@@ -121,6 +121,8 @@ class DiffusionConfig:
     broadcast_rate: float = 0.15          # TV / push alerts, scaled by salience x media_attention
     salience_decay: float = 0.97          # per tick (half-life ~6h)
     retire_salience: float = 0.03
+    share_ttl: int = 32                   # PLACEHOLDER: ticks a share stays in followers' feeds (8h)
+    exposure_scale: float = 4.0           # PLACEHOLDER: multiplies every layer's reach (salient rumours go viral)
     max_items: int = 128                  # active items kept in memory
     mutate_rate: float = 0.04
     invent_rate: float = 0.002

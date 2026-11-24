@@ -678,6 +678,24 @@
             "default": 0.03,
             "placeholder": false
           },
+          "share_ttl": {
+            "type": "integer",
+            "maximum": 960.0,
+            "minimum": 1.0,
+            "title": "Share Ttl",
+            "description": "Ticks a share stays in followers' feeds (8h)",
+            "default": 32,
+            "placeholder": true
+          },
+          "exposure_scale": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Exposure Scale",
+            "description": "Multiplies every layer's reach (salient rumours go viral)",
+            "default": 4.0,
+            "placeholder": true
+          },
           "max_items": {
             "type": "integer",
             "maximum": 4096.0,

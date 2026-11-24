@@ -287,6 +287,8 @@
       "broadcast_rate": 0.15,
       "salience_decay": 0.97,
       "retire_salience": 0.03,
+      "share_ttl": 32,
+      "exposure_scale": 4.0,
       "max_items": 128,
       "mutate_rate": 0.04,
       "invent_rate": 0.002,

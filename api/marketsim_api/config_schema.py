@@ -101,6 +101,8 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "diffusion.broadcast_rate": (0.0, 1.0),
     "diffusion.salience_decay": (0.0, 1.0),
     "diffusion.retire_salience": (0.0, 1.0),
+    "diffusion.share_ttl": (1, 960),
+    "diffusion.exposure_scale": (0.0, 100.0),
     "diffusion.max_items": (8, 4096),
     "diffusion.mutate_rate": (0.0, 1.0),
     "diffusion.invent_rate": (0.0, 1.0),

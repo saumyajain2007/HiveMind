@@ -719,6 +719,26 @@
           "placeholder": false
         },
         {
+          "name": "share_ttl",
+          "key": "diffusion.share_ttl",
+          "kind": "int",
+          "default": 32,
+          "min": 1.0,
+          "max": 960.0,
+          "description": "Ticks a share stays in followers' feeds (8h)",
+          "placeholder": true
+        },
+        {
+          "name": "exposure_scale",
+          "key": "diffusion.exposure_scale",
+          "kind": "float",
+          "default": 4.0,
+          "min": 0.0,
+          "max": 100.0,
+          "description": "Multiplies every layer's reach (salient rumours go viral)",
+          "placeholder": true
+        },
+        {
           "name": "max_items",
           "key": "diffusion.max_items",
           "kind": "int",
