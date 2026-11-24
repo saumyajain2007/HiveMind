@@ -256,7 +256,8 @@ export interface paths {
      * @description Awareness of each event family over time, split by platform users and by category.
      *
      *     `rows` columns follow `columns`: tick, root, total, one count per platform's users, one per
-     *     category. Divide by `platform_sizes` / `category_sizes` for shares.
+     *     category. Divide by `platform_sizes` / `category_sizes` for shares. `items` maps each item id
+     *     to its own [tick, aware] rows while it was active.
      */
     get: operations["awareness_api_v1_runs__run_id__awareness_get"];
     put?: never;

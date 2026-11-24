@@ -22,6 +22,9 @@ const MonteCarloPage = lazy(() =>
 const NetworkPage = lazy(() =>
   import("@/pages/NetworkPage").then((m) => ({ default: m.NetworkPage })),
 );
+const NarrativesPage = lazy(() =>
+  import("@/pages/NarrativesPage").then((m) => ({ default: m.NarrativesPage })),
+);
 const DesignPage = lazy(() =>
   import("@/pages/DesignPage").then((m) => ({ default: m.DesignPage })),
 );
@@ -58,7 +61,7 @@ function page<P extends object>(C: LazyExoticComponent<ComponentType<P>>, props:
   );
 }
 
-const BUILT = ["/", "/cockpit", "/builder", "/monte-carlo", "/network"];
+const BUILT = ["/", "/cockpit", "/builder", "/monte-carlo", "/network", "/narratives"];
 const planned = NAV.filter((n) => !BUILT.includes(n.path));
 
 export const routes: RouteObject[] = [
@@ -71,6 +74,7 @@ export const routes: RouteObject[] = [
       { path: "builder", element: page(BuilderPage, {}) },
       { path: "monte-carlo", element: page(MonteCarloPage, {}) },
       { path: "network", element: page(NetworkPage, {}) },
+      { path: "narratives", element: page(NarrativesPage, {}) },
       ...planned.map((item) => ({
         path: item.path.slice(1),
         element: page(PlannedPage, { item }),

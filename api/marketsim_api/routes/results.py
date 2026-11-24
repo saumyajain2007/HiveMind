@@ -169,7 +169,8 @@ def awareness(
     """Awareness of each event family over time, split by platform users and by category.
 
     `rows` columns follow `columns`: tick, root, total, one count per platform's users, one per
-    category. Divide by `platform_sizes` / `category_sizes` for shares."""
+    category. Divide by `platform_sizes` / `category_sizes` for shares. `items` maps each item id
+    to its own [tick, aware] rows while it was active."""
     res = _single_result(store, _finished(store, run_id))
     fam = np.asarray(res["family"])
     if every > 1 and len(fam):
@@ -179,7 +180,16 @@ def awareness(
         rows = fam[fam[:, 1] == f["root"]] if len(fam) else fam
         families.append({**f, "rows": rows.tolist()})
     meta = res["meta"]
+    aw = np.asarray(res["awareness"])
+    items: dict[str, list[list[int]]] = {}
+    if len(aw):
+        if every > 1:
+            aw = aw[(aw[:, 0] % every == 0) | (aw[:, 0] == aw[:, 0].max())]
+        for item in np.unique(aw[:, 1]):
+            rows = aw[aw[:, 1] == item]
+            items[str(int(item))] = rows[:, [0, 2]].tolist()
     return {
+        "items": items,
         "columns": list(FAMILY_COLUMNS),
         "platforms": list(ALL_PLATFORMS),
         "categories": list(CATEGORIES),

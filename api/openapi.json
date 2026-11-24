@@ -740,7 +740,7 @@
           "results"
         ],
         "summary": "Awareness",
-        "description": "Awareness of each event family over time, split by platform users and by category.\n\n`rows` columns follow `columns`: tick, root, total, one count per platform's users, one per\ncategory. Divide by `platform_sizes` / `category_sizes` for shares.",
+        "description": "Awareness of each event family over time, split by platform users and by category.\n\n`rows` columns follow `columns`: tick, root, total, one count per platform's users, one per\ncategory. Divide by `platform_sizes` / `category_sizes` for shares. `items` maps each item id\nto its own [tick, aware] rows while it was active.",
         "operationId": "awareness_api_v1_runs__run_id__awareness_get",
         "parameters": [
           {

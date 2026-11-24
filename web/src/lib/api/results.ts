@@ -92,6 +92,8 @@ export interface Family {
 }
 
 export interface AwarenessResponse {
+  /** item id -> [tick, agents aware] rows while the item was active */
+  items: Record<string, [number, number][]>;
   columns: string[];
   platforms: string[];
   categories: string[];

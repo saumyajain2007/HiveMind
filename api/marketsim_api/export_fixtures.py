@@ -12,6 +12,7 @@ after changing the engine or the result endpoints.
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 import time
 from pathlib import Path
@@ -45,7 +46,19 @@ def _write(name: str, data: Any) -> None:
     print(f"  {name}.json  {(OUT / f'{name}.json').stat().st_size / 1024:.0f} kB")
 
 
+def _write_single(c: TestClient, run: dict[str, Any]) -> None:
+    s = run["id"]
+    _write("run-single", run)
+    _write("series", c.get(f"{V1}/runs/{s}/series").json())
+    _write("awareness", c.get(f"{V1}/runs/{s}/awareness?every=2").json())
+    _write("lineage", c.get(f"{V1}/runs/{s}/lineage").json())
+    _write("stylized", c.get(f"{V1}/runs/{s}/stylized-facts").json())
+    _write("graph", c.get(f"{V1}/runs/{s}/graph?sample=1200").json())
+    _write("node-seen", c.get(f"{V1}/runs/{s}/node-seen").json())
+
+
 def main() -> None:
+    single_only = "--single-only" in sys.argv  # refresh just the single-run fixtures (faster)
     with tempfile.TemporaryDirectory() as tmp:
         settings = Settings(data_dir=Path(tmp), log_json=False, run_jobs=True, max_jobs=4, executor="thread")
         with TestClient(create_app(settings)) as c:
@@ -59,6 +72,9 @@ def main() -> None:
             # Dynamics seed 15 of this world is one where the rumour mutates (2 mutations, 2 inventions),
             # so the Narratives page has a family tree to show; with default rates most seeds have none.
             single = c.post(f"{V1}/runs", json={"scenario": scenario, "seed": 15}).json()
+            if single_only:
+                _write_single(c, _wait(c, single["id"]))
+                return
             mc = c.post(
                 f"{V1}/runs",
                 json={"scenario": {**scenario, "n_agents": 2_000}, "mode": "montecarlo", "runs": 20},
@@ -88,19 +104,13 @@ def main() -> None:
             runs = {
                 k: _wait(c, r["id"]) for k, r in {"single": single, "mc": mc, "cal": cal, "bt": bt}.items()
             }
-            s, m = single["id"], mc["id"]
-            _write("run-single", runs["single"])
+            m = mc["id"]
+            _write_single(c, runs["single"])
             _write("run-montecarlo", runs["mc"])
-            _write("series", c.get(f"{V1}/runs/{s}/series").json())
             _write("series-mc", c.get(f"{V1}/runs/{m}/series").json())
             _write("quantiles", c.get(f"{V1}/runs/{m}/quantiles").json())
             _write("paths", c.get(f"{V1}/runs/{m}/paths?sample=20&every=2").json())
-            _write("awareness", c.get(f"{V1}/runs/{s}/awareness?every=2").json())
-            _write("lineage", c.get(f"{V1}/runs/{s}/lineage").json())
-            _write("stylized", c.get(f"{V1}/runs/{s}/stylized-facts").json())
             _write("stylized-mc", c.get(f"{V1}/runs/{m}/stylized-facts").json())
-            _write("graph", c.get(f"{V1}/runs/{s}/graph?sample=1200").json())
-            _write("node-seen", c.get(f"{V1}/runs/{s}/node-seen").json())
             _write("dataset", c.get(f"{V1}/data/{ds['id']}").json())
             _write("calibration", c.get(f"{V1}/calibrations/{cal['id']}").json())
             _write("backtest", c.get(f"{V1}/backtests/{bt['id']}").json())
