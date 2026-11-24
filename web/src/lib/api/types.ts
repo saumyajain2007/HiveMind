@@ -183,10 +183,390 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/runs/{run_id}/series": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Series
+     * @description Per-tick price, V_true, volume, mean investor confidence, IV, ATM call, market-maker
+     *     inventory and order imbalance, plus daily OHLC.
+     */
+    get: operations["series_api_v1_runs__run_id__series_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/quantiles": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Quantiles
+     * @description Monte Carlo quantile bands (5/25/50/75/95%) of the price, and the mean V_true path.
+     */
+    get: operations["quantiles_api_v1_runs__run_id__quantiles_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/paths": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Paths
+     * @description Up to `sample` simulated price paths (the first ones, in seed order).
+     */
+    get: operations["paths_api_v1_runs__run_id__paths_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/awareness": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Awareness
+     * @description Awareness of each event family over time, split by platform users and by category.
+     *
+     *     `rows` columns follow `columns`: tick, root, total, one count per platform's users, one per
+     *     category. Divide by `platform_sizes` / `category_sizes` for shares.
+     */
+    get: operations["awareness_api_v1_runs__run_id__awareness_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/lineage": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Lineage
+     * @description Every item ever created (id, parent, root, origin, sentiment, credibility, born, final
+     *     awareness, shares, ...), for the narrative tree.
+     */
+    get: operations["lineage_api_v1_runs__run_id__lineage_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/stylized-facts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Stylized Facts
+     * @description Open-tick return histogram (in sd units) vs normal, kurtosis, and ACF of r and |r|.
+     *     Monte Carlo runs pool every path.
+     */
+    get: operations["stylized_facts_api_v1_runs__run_id__stylized_facts_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/graph": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Graph
+     * @description The run's sampled nodes (the same sample streamed in `node_seen`), their attributes, the
+     *     edges among them on the chosen layer(s), and every layer's statistics.
+     */
+    get: operations["graph_api_v1_runs__run_id__graph_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/node-seen": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Node Seen
+     * @description When each sampled node became aware of each item: rows of [tick, sample index, item].
+     */
+    get: operations["node_seen_api_v1_runs__run_id__node_seen_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data/upload": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Upload
+     * @description Store a `date,close` CSV and its dated events after validating both.
+     */
+    post: operations["upload_api_v1_data_upload_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List Datasets */
+    get: operations["list_datasets_api_v1_data_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data/{dataset_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get Dataset */
+    get: operations["get_dataset_api_v1_data__dataset_id__get"];
+    put?: never;
+    post?: never;
+    /** Delete Dataset */
+    delete: operations["delete_dataset_api_v1_data__dataset_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/calibrations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Create Calibration
+     * @description Start a calibration; watch it on `WS /runs/{id}/stream` (one `trial` message per trial).
+     */
+    post: operations["create_calibration_api_v1_calibrations_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/calibrations/{run_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Calibration
+     * @description The run, its result (trial log, best parameters, best path vs observed, sensitivity)
+     *     once finished, and the trials finished so far while running.
+     */
+    get: operations["get_calibration_api_v1_calibrations__run_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/backtests": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Create Backtest
+     * @description Start a backtest; watch it on `WS /runs/{id}/stream` (one `origin` message per origin).
+     */
+    post: operations["create_backtest_api_v1_backtests_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/backtests/{run_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Backtest
+     * @description The run, its result (CRPS per origin for the model and the random walk, skill score)
+     *     once finished, and the origins finished so far while running.
+     */
+    get: operations["get_backtest_api_v1_backtests__run_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/events/parse": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Parse */
+    post: operations["parse_api_v1_events_parse_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /**
+     * BacktestCreate
+     * @description CRPS backtest of the model against a random walk on an uploaded dataset.
+     */
+    BacktestCreate: {
+      /** Name */
+      name?: string | null;
+      /** Dataset Id */
+      dataset_id: string;
+      /**
+       * N Agents
+       * @default 3000
+       */
+      n_agents: number;
+      /**
+       * Seed
+       * @default 0
+       */
+      seed: number;
+      /** @description Base model parameters; defaults if omitted */
+      parameters?: components["schemas"]["Parameters"] | null;
+      /**
+       * Origins
+       * @description Day indices to forecast from; default every day from day 20 on
+       */
+      origins?: number[] | null;
+      /**
+       * Horizon
+       * @description Days ahead
+       * @default 1
+       */
+      horizon: number;
+      /**
+       * Runs
+       * @description Monte Carlo runs per origin
+       * @default 10
+       */
+      runs: number;
+      /**
+       * Lookback Days
+       * @default 3
+       */
+      lookback_days: number;
+    };
+    /** BacktestSpec */
+    BacktestSpec: {
+      /** Dataset Id */
+      dataset_id: string;
+      /** Dataset Sha256 */
+      dataset_sha256: string;
+      /** Origins */
+      origins: number[] | null;
+      /** Horizon */
+      horizon: number;
+      /** Runs */
+      runs: number;
+      /** Lookback Days */
+      lookback_days: number;
+    };
     /**
      * BeliefParams
      * @description Belief parameters (generated from config.BeliefConfig).
@@ -241,6 +621,60 @@ export interface components {
        */
       invent_salience: number;
     };
+    /**
+     * CalibrationCreate
+     * @description Random-search calibration against an uploaded dataset's daily closes.
+     */
+    CalibrationCreate: {
+      /** Name */
+      name?: string | null;
+      /** Dataset Id */
+      dataset_id: string;
+      /**
+       * N Agents
+       * @default 3000
+       */
+      n_agents: number;
+      /**
+       * Seed
+       * @default 0
+       */
+      seed: number;
+      /** @description Base model parameters; defaults if omitted */
+      parameters?: components["schemas"]["Parameters"] | null;
+      /**
+       * Space
+       * @description Parameter -> (low, high). Names: impact_Y, base_share, mu0, sentiment_scale or 'section.field'
+       */
+      space?: {
+        [key: string]: [number, number];
+      };
+      /**
+       * N Trials
+       * @default 40
+       */
+      n_trials: number;
+      /**
+       * Runs Per Trial
+       * @default 4
+       */
+      runs_per_trial: number;
+    };
+    /** CalibrationSpec */
+    CalibrationSpec: {
+      /** Dataset Id */
+      dataset_id: string;
+      /** Dataset Sha256 */
+      dataset_sha256: string;
+      /** Space */
+      space: {
+        [key: string]: [number, number];
+      };
+      /** N Trials */
+      n_trials: number;
+      /** Runs Per Trial */
+      runs_per_trial: number;
+    };
     /** Clock */
     Clock: {
       /**
@@ -293,6 +727,75 @@ export interface components {
        * @description Target correlation
        */
       rho: number;
+    };
+    /** DatasetDetail */
+    DatasetDetail: {
+      /** Id */
+      id: string;
+      /** Name */
+      name: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** N Days */
+      n_days: number;
+      /** First Date */
+      first_date: string;
+      /** Last Date */
+      last_date: string;
+      /** N Events */
+      n_events: number;
+      /** Sha256 */
+      sha256: string;
+      /** Dates */
+      dates: string[];
+      /** Closes */
+      closes: number[];
+      /** Events */
+      events: {
+        [key: string]: unknown;
+      }[];
+    };
+    /** DatasetRecord */
+    DatasetRecord: {
+      /** Id */
+      id: string;
+      /** Name */
+      name: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** N Days */
+      n_days: number;
+      /** First Date */
+      first_date: string;
+      /** Last Date */
+      last_date: string;
+      /** N Events */
+      n_events: number;
+      /** Sha256 */
+      sha256: string;
+    };
+    /**
+     * DatasetUpload
+     * @description A daily close series (CSV text with a `date,close` header) plus optional dated events.
+     */
+    DatasetUpload: {
+      /** Name */
+      name: string;
+      /** Csv */
+      csv: string;
+      /**
+       * Events
+       * @description Event objects with `date` (or `day`) and optional `time` instead of `tick`
+       */
+      events?: {
+        [key: string]: unknown;
+      }[];
     };
     /**
      * DiffusionParams
@@ -680,6 +1183,16 @@ export interface components {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
+    /** HeadlineIn */
+    HeadlineIn: {
+      /** Text */
+      text: string;
+      /**
+       * Tick
+       * @default 0
+       */
+      tick: number;
+    };
     /** Health */
     Health: {
       /**
@@ -830,6 +1343,40 @@ export interface components {
       belief?: components["schemas"]["BeliefParams"];
       trading?: components["schemas"]["TradingParams"];
       market?: components["schemas"]["MarketParams"];
+    };
+    /** ParseRequest */
+    ParseRequest: {
+      /** Headlines */
+      headlines: components["schemas"]["HeadlineIn"][];
+      /**
+       * Responses
+       * @description LLM replies pasted by hand, one per headline (the manual flow when no provider is configured)
+       */
+      responses?: string[] | null;
+      /**
+       * Ticker
+       * @default 0
+       */
+      ticker: number;
+      /**
+       * First Id
+       * @default 0
+       */
+      first_id: number;
+    };
+    /** ParseResponse */
+    ParseResponse: {
+      /** Provider */
+      provider: string;
+      /**
+       * Prompts
+       * @description Prompts to paste into an LLM
+       */
+      prompts?: string[];
+      /** Events */
+      events?: components["schemas"]["EventSpec"][];
+      /** Errors */
+      errors?: string[];
     };
     /**
      * PopulationParams
@@ -1286,7 +1833,7 @@ export interface components {
      * RunMode
      * @enum {string}
      */
-    RunMode: "single" | "montecarlo";
+    RunMode: "single" | "montecarlo" | "calibration" | "backtest";
     /** RunRecord */
     RunRecord: {
       /** Id */
@@ -1345,6 +1892,8 @@ export interface components {
       /** Scenario Id */
       scenario_id?: string | null;
       parameters: components["schemas"]["Parameters"];
+      calibration?: components["schemas"]["CalibrationSpec"] | null;
+      backtest?: components["schemas"]["BacktestSpec"] | null;
     };
     /**
      * RunStatus
@@ -1903,6 +2452,567 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["RunDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  series_api_v1_runs__run_id__series_get: {
+    parameters: {
+      query?: {
+        /** @description Keep every n-th tick */
+        every?: number;
+        /** @description b64 = packed float32 arrays */
+        encoding?: "json" | "b64";
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  quantiles_api_v1_runs__run_id__quantiles_get: {
+    parameters: {
+      query?: {
+        /** @description b64 = packed float32 arrays */
+        encoding?: "json" | "b64";
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  paths_api_v1_runs__run_id__paths_get: {
+    parameters: {
+      query?: {
+        sample?: number;
+        every?: number;
+        /** @description b64 = packed float32 arrays */
+        encoding?: "json" | "b64";
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  awareness_api_v1_runs__run_id__awareness_get: {
+    parameters: {
+      query?: {
+        every?: number;
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  lineage_api_v1_runs__run_id__lineage_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  stylized_facts_api_v1_runs__run_id__stylized_facts_get: {
+    parameters: {
+      query?: {
+        lags?: number;
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  graph_api_v1_runs__run_id__graph_get: {
+    parameters: {
+      query?: {
+        /** @description A platform name, or 'all' */
+        layer?: string;
+        sample?: number;
+      };
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  node_seen_api_v1_runs__run_id__node_seen_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  upload_api_v1_data_upload_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DatasetUpload"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DatasetRecord"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  list_datasets_api_v1_data_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DatasetRecord"][];
+        };
+      };
+    };
+  };
+  get_dataset_api_v1_data__dataset_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        dataset_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DatasetDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  delete_dataset_api_v1_data__dataset_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        dataset_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  create_calibration_api_v1_calibrations_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CalibrationCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RunDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_calibration_api_v1_calibrations__run_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  create_backtest_api_v1_backtests_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BacktestCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RunDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_backtest_api_v1_backtests__run_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  parse_api_v1_events_parse_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ParseRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ParseResponse"];
         };
       };
       /** @description Validation Error */

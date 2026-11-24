@@ -13,17 +13,21 @@ shared flag polled before every tick (single runs) or between runs (Monte Carlo)
 
 from __future__ import annotations
 
+import json
 import time
 import traceback
 from collections.abc import Mapping
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 
 from marketsim import montecarlo
+from marketsim.backtest import CLOSE_TICK, DatedEvent, backtest, load_dated_events, load_price_csv
+from marketsim.calibration import calibrate
 from marketsim.config import TICKS_PER_DAY
-from marketsim.sim import Scenario, Simulation, TickFrame, World
+from marketsim.sim import Scenario, Simulation, TickFrame, World, json_safe
 from marketsim.sim import save as save_run
 
 from .config_schema import parameters_to_engine
@@ -76,7 +80,9 @@ def execute(run_id: str, spec_json: str, run_dir: str, queue: Any, cancel: Any, 
             "node_sample": sample.tolist() if spec.mode == RunMode.single else [],
         }
         queue.put((run_id, "started", hello))
-        if spec.mode == RunMode.single:
+        if spec.mode in (RunMode.calibration, RunMode.backtest):
+            summary, status = _analysis(run_id, spec, cfg, world, out, queue, cancel)
+        elif spec.mode == RunMode.single:
             summary, status = _single(
                 run_id, spec, cfg, scenario, world, sample, n_ticks, out, queue, cancel, pace
             )
@@ -101,8 +107,10 @@ def _single(
     pace: float,
 ) -> tuple[dict[str, Any], str]:
     start = time.perf_counter()
+    seen: list[tuple[int, int, int]] = []  # (tick, sample index, item) for the network view
 
     def on_tick(frame: TickFrame) -> None:
+        seen.extend((frame["tick"], i, item) for i, item in frame.get("node_seen", []))
         for m in frame["born"]:
             queue.put((run_id, "msg", m))
         queue.put((run_id, "msg", tick_message(frame)))
@@ -117,7 +125,83 @@ def _single(
     )
     res = sim.run(n_ticks)
     save_run(res, out / "result")
+    np.save(out / "result" / "node_seen.npy", np.asarray(seen, np.int64).reshape(-1, 3))
+    np.save(out / "result" / "node_sample.npy", sample)
     return res["summary"], "cancelled" if res["meta"]["cancelled"] else "done"
+
+
+def _dataset(out: Path) -> tuple[list[str], np.ndarray, list[DatedEvent]]:
+    dates, closes = load_price_csv(out / "prices.csv")
+    events = load_dated_events(out / "events.json", dates)
+    return dates, closes, events
+
+
+def _analysis(
+    run_id: str, spec: RunSpec, cfg: Any, world: World, out: Path, queue: Any, cancel: Any
+) -> tuple[dict[str, Any], str]:
+    """Calibration or backtest on the dataset copied into the run folder."""
+    dates, closes, dated = _dataset(out)
+    if spec.calibration is not None:
+        c = spec.calibration
+        days = len(closes)
+        events = [replace(e.event, tick=e.time) for e in dated]
+
+        def on_trial(i: int, n: int, trial: dict[str, Any]) -> None:
+            queue.put((run_id, "msg", {"type": "trial", "done": i + 1, "total": n, **trial}))
+
+        cal = calibrate(
+            np.log(closes),
+            Scenario(events),
+            c.space,
+            c.n_trials,
+            c.runs_per_trial,
+            config=cfg,
+            seed=spec.seed,
+            world=world,
+            on_trial=on_trial,
+            should_stop=cancel.is_set,
+            observed_ticks=[d * TICKS_PER_DAY + CLOSE_TICK for d in range(days)],
+            relative=True,
+        )
+        doc = {**cal.to_dict(), "dates": dates}
+        (out / "calibration.json").write_text(json.dumps(json_safe(doc)), encoding="utf-8")
+        summary = {
+            "best": cal.best,
+            "best_rmse": cal.best_rmse,
+            "n_trials": len(cal.trials),
+            "sensitivity": cal.sensitivity(),
+        }
+        return json_safe(summary), "cancelled" if len(cal.trials) < c.n_trials else "done"
+    assert spec.backtest is not None
+    b = spec.backtest
+    origins = b.origins or list(range(min(20, len(closes) - b.horizon - 1), len(closes) - b.horizon))
+
+    def on_origin(k: int, n: int, row: dict[str, Any]) -> None:
+        queue.put((run_id, "msg", {"type": "origin", "done": k + 1, "total": n, **row}))
+
+    res = backtest(
+        closes,
+        dated,
+        origins,
+        b.horizon,
+        config=cfg,
+        runs=b.runs,
+        lookback_days=b.lookback_days,
+        dates=dates,
+        seed=spec.seed,
+        world=world,
+        on_origin=on_origin,
+        should_stop=cancel.is_set,
+    )
+    doc = {**res.to_dict(), "dates": dates, "closes": closes.tolist()}
+    (out / "backtest.json").write_text(json.dumps(json_safe(doc)), encoding="utf-8")
+    summary = {
+        "skill": res.skill if res.origins else None,
+        "mean_crps_model": res.mean_crps_model if res.origins else None,
+        "mean_crps_rw": res.mean_crps_rw if res.origins else None,
+        "n_origins": len(res.origins),
+    }
+    return json_safe(summary), "cancelled" if len(res.origins) < len(origins) else "done"
 
 
 def _montecarlo(

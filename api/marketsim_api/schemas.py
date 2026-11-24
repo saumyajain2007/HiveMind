@@ -149,6 +149,8 @@ class RunStatus(StrEnum):
 class RunMode(StrEnum):
     single = "single"
     montecarlo = "montecarlo"
+    calibration = "calibration"
+    backtest = "backtest"
 
 
 class RunCreate(_Strict):
@@ -176,7 +178,140 @@ class RunCreate(_Strict):
             raise ValueError("give exactly one of scenario_id or scenario")
         if self.mode == RunMode.single and self.runs != 1:
             raise ValueError("a single run has runs = 1; use mode 'montecarlo' for more")
+        if self.mode not in (RunMode.single, RunMode.montecarlo):
+            raise ValueError("use POST /calibrations or POST /backtests for those modes")
         return self
+
+
+# --------------------------------------------------------------------------- analysis jobs (#18)
+
+CALIBRATION_SPACE = {
+    "impact_Y": (0.3, 1.5),
+    "base_share": (0.1, 0.5),
+    "mu0": (0.1, 0.7),
+    "sentiment_scale": (0.01, 0.10),
+}
+
+
+class CalibrationSpec(_Strict):
+    dataset_id: str
+    dataset_sha256: str
+    space: dict[str, tuple[float, float]]
+    n_trials: int
+    runs_per_trial: int
+
+
+class BacktestSpec(_Strict):
+    dataset_id: str
+    dataset_sha256: str
+    origins: list[int] | None
+    horizon: int
+    runs: int
+    lookback_days: int
+
+
+class _AnalysisCreate(_Strict):
+    name: str | None = Field(None, max_length=120)
+    dataset_id: str
+    n_agents: int = Field(3_000, ge=100, le=200_000)
+    seed: int = Field(0, ge=0, le=2**32 - 1)
+    parameters: Parameters | None = Field(None, description="Base model parameters; defaults if omitted")
+
+
+class CalibrationCreate(_AnalysisCreate):
+    """Random-search calibration against an uploaded dataset's daily closes."""
+
+    space: dict[str, tuple[float, float]] = Field(
+        default_factory=lambda: dict(CALIBRATION_SPACE),
+        description="Parameter -> (low, high). Names: impact_Y, base_share, mu0, sentiment_scale or "
+        "'section.field'",
+    )
+    n_trials: int = Field(40, ge=1, le=1_000)
+    runs_per_trial: int = Field(4, ge=1, le=50)
+
+    @model_validator(mode="after")
+    def _check_space(self) -> CalibrationCreate:
+        from marketsim.calibration import with_params
+        from marketsim.config import Config
+
+        if not self.space:
+            raise ValueError("space needs at least one parameter")
+        for name, (lo, hi) in self.space.items():
+            if not lo <= hi:
+                raise ValueError(f"{name}: low must not exceed high")
+            try:
+                with_params(Config(), {name: lo})
+            except (KeyError, ValueError, TypeError):
+                raise ValueError(f"unknown or non-numeric parameter {name!r}") from None
+        return self
+
+
+class BacktestCreate(_AnalysisCreate):
+    """CRPS backtest of the model against a random walk on an uploaded dataset."""
+
+    origins: list[int] | None = Field(
+        None, description="Day indices to forecast from; default every day from day 20 on"
+    )
+    horizon: int = Field(1, ge=1, le=60, description="Days ahead")
+    runs: int = Field(10, ge=1, le=200, description="Monte Carlo runs per origin")
+    lookback_days: int = Field(3, ge=0, le=30)
+
+
+# --------------------------------------------------------------------------- datasets (#18)
+
+
+class DatasetUpload(_Strict):
+    """A daily close series (CSV text with a `date,close` header) plus optional dated events."""
+
+    name: str = Field(min_length=1, max_length=120)
+    csv: str = Field(min_length=1, max_length=5_000_000)
+    events: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Event objects with `date` (or `day`) and optional `time` instead of `tick`",
+    )
+
+
+class DatasetRecord(_Strict):
+    id: str
+    name: str
+    created_at: datetime
+    n_days: int
+    first_date: str
+    last_date: str
+    n_events: int
+    sha256: str
+
+
+class DatasetDetail(DatasetRecord):
+    dates: list[str]
+    closes: list[float]
+    events: list[dict[str, Any]]
+
+
+# --------------------------------------------------------------------------- headline parsing (#18)
+
+
+class HeadlineIn(_Strict):
+    text: str = Field(min_length=1, max_length=1_000)
+    tick: int = Field(0, ge=0)
+
+
+class ParseRequest(_Strict):
+    headlines: list[HeadlineIn] = Field(min_length=1, max_length=200)
+    responses: list[str] | None = Field(
+        None,
+        description="LLM replies pasted by hand, one per headline (the manual flow when no provider "
+        "is configured)",
+    )
+    ticker: int = Field(0, ge=0)
+    first_id: int = Field(0, ge=0)
+
+
+class ParseResponse(_Strict):
+    provider: str
+    prompts: list[str] = Field(default_factory=list, description="Prompts to paste into an LLM")
+    events: list[EventSpec] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
 
 
 class RunSpec(_Strict):
@@ -190,6 +325,8 @@ class RunSpec(_Strict):
     scenario: ScenarioSpec
     scenario_id: str | None = None
     parameters: Parameters
+    calibration: CalibrationSpec | None = None
+    backtest: BacktestSpec | None = None
 
 
 class RunRecord(_Strict):

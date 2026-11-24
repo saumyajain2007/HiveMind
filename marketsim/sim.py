@@ -395,6 +395,8 @@ class Simulation:
             "n_ticks": self.tick,
             "ticks_per_day": TICKS_PER_DAY,
             "cancelled": self.cancelled,
+            "category_sizes": np.bincount(self.pop.category, minlength=len(CATEGORIES)).tolist(),
+            "platform_sizes": self.pop.platform_use.sum(axis=0).tolist(),
         }
         return {
             "meta": meta,

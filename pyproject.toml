@@ -17,6 +17,10 @@ api = [
     "uvicorn[standard]>=0.30",
     "pydantic>=2.7",
 ]
+# Optional Claude provider for POST /events/parse (MARKETSIM_LLM_PROVIDER=anthropic).
+llm = [
+    "anthropic>=1.0",
+]
 
 [dependency-groups]
 dev = [

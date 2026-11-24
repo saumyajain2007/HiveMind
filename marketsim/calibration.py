@@ -116,11 +116,15 @@ def calibrate(
     world: World | None = None,
     on_trial: TrialFn | None = None,
     should_stop: Callable[[], bool] | None = None,
+    observed_ticks: Sequence[int] | None = None,
+    relative: bool = False,
 ) -> CalibrationResult:
     """Random search minimising RMSE(median simulated log price, observed log price).
 
-    `observed_log_prices` has one value per tick from tick 0; the simulation runs that many
-    ticks. `on_trial(i, n_trials, trial)` is called after each trial (the UI plots the log).
+    `observed_log_prices` has one value per tick from tick 0, or one value per entry of
+    `observed_ticks` (e.g. daily closes: `day * 96 + 63`). With `relative`, both paths are
+    measured from their first value, so an observed series at any price level can be matched.
+    `on_trial(i, n_trials, trial)` is called after each trial (the UI plots the log).
     """
     cfg = config or Config()
     space = dict(param_space or DEFAULT_SPACE)
@@ -129,7 +133,12 @@ def calibrate(
             raise ValueError(f"empty range for {name}")
         with_params(cfg, {name: lo})  # fails early on unknown names
     observed = np.asarray(observed_log_prices, np.float64)
-    n_ticks = len(observed)
+    ticks = np.arange(len(observed)) if observed_ticks is None else np.asarray(observed_ticks, np.int64)
+    if len(ticks) != len(observed) or len(ticks) == 0 or np.any(np.diff(ticks) <= 0):
+        raise ValueError("observed_ticks must be increasing and match observed_log_prices")
+    n_ticks = int(ticks[-1]) + 1
+    if relative:
+        observed = observed - observed[0]
     scenario = events or Scenario()
     world = world or World.build(cfg)
     rng = np.random.default_rng([seed, 12])
@@ -140,7 +149,9 @@ def calibrate(
         if should_stop is not None and should_stop():
             break
         params = {k: float(rng.uniform(lo, hi)) for k, (lo, hi) in space.items()}
-        path = median_log_path(with_params(cfg, params), scenario, seeds, n_ticks, world)
+        path = median_log_path(with_params(cfg, params), scenario, seeds, n_ticks, world)[ticks]
+        if relative:
+            path = path - path[0]
         err = rmse(path, observed)
         trial = {"trial": i, "params": params, "rmse": err}
         trials.append(trial)
@@ -157,7 +168,14 @@ def calibrate(
         best_rmse=best[0],
         best_path=best[2],
         observed=observed,
-        meta={"runs_per_trial": runs_per_trial, "n_ticks": n_ticks, "n_agents": cfg.n_agents, "seed": seed},
+        meta={
+            "runs_per_trial": runs_per_trial,
+            "n_ticks": n_ticks,
+            "observed_ticks": ticks.tolist(),
+            "relative": relative,
+            "n_agents": cfg.n_agents,
+            "seed": seed,
+        },
     )
 
 

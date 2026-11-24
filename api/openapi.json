@@ -512,10 +512,998 @@
           }
         }
       }
+    },
+    "/api/v1/runs/{run_id}/series": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Series",
+        "description": "Per-tick price, V_true, volume, mean investor confidence, IV, ATM call, market-maker\ninventory and order imbalance, plus daily OHLC.",
+        "operationId": "series_api_v1_runs__run_id__series_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "every",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 96,
+              "minimum": 1,
+              "description": "Keep every n-th tick",
+              "default": 1,
+              "title": "Every"
+            },
+            "description": "Keep every n-th tick"
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "json",
+                "b64"
+              ],
+              "type": "string",
+              "description": "b64 = packed float32 arrays",
+              "default": "json",
+              "title": "Encoding"
+            },
+            "description": "b64 = packed float32 arrays"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Series Api V1 Runs  Run Id  Series Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/quantiles": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Quantiles",
+        "description": "Monte Carlo quantile bands (5/25/50/75/95%) of the price, and the mean V_true path.",
+        "operationId": "quantiles_api_v1_runs__run_id__quantiles_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "json",
+                "b64"
+              ],
+              "type": "string",
+              "description": "b64 = packed float32 arrays",
+              "default": "json",
+              "title": "Encoding"
+            },
+            "description": "b64 = packed float32 arrays"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Quantiles Api V1 Runs  Run Id  Quantiles Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/paths": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Paths",
+        "description": "Up to `sample` simulated price paths (the first ones, in seed order).",
+        "operationId": "paths_api_v1_runs__run_id__paths_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "sample",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 50,
+              "title": "Sample"
+            }
+          },
+          {
+            "name": "every",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 96,
+              "minimum": 1,
+              "default": 1,
+              "title": "Every"
+            }
+          },
+          {
+            "name": "encoding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "json",
+                "b64"
+              ],
+              "type": "string",
+              "description": "b64 = packed float32 arrays",
+              "default": "json",
+              "title": "Encoding"
+            },
+            "description": "b64 = packed float32 arrays"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Paths Api V1 Runs  Run Id  Paths Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/awareness": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Awareness",
+        "description": "Awareness of each event family over time, split by platform users and by category.\n\n`rows` columns follow `columns`: tick, root, total, one count per platform's users, one per\ncategory. Divide by `platform_sizes` / `category_sizes` for shares.",
+        "operationId": "awareness_api_v1_runs__run_id__awareness_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "every",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 96,
+              "minimum": 1,
+              "default": 1,
+              "title": "Every"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Awareness Api V1 Runs  Run Id  Awareness Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/lineage": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Lineage",
+        "description": "Every item ever created (id, parent, root, origin, sentiment, credibility, born, final\nawareness, shares, ...), for the narrative tree.",
+        "operationId": "lineage_api_v1_runs__run_id__lineage_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Lineage Api V1 Runs  Run Id  Lineage Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/stylized-facts": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Stylized Facts",
+        "description": "Open-tick return histogram (in sd units) vs normal, kurtosis, and ACF of r and |r|.\nMonte Carlo runs pool every path.",
+        "operationId": "stylized_facts_api_v1_runs__run_id__stylized_facts_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "lags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 10,
+              "title": "Lags"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Stylized Facts Api V1 Runs  Run Id  Stylized Facts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/graph": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Graph",
+        "description": "The run's sampled nodes (the same sample streamed in `node_seen`), their attributes, the\nedges among them on the chosen layer(s), and every layer's statistics.",
+        "operationId": "graph_api_v1_runs__run_id__graph_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "A platform name, or 'all'",
+              "default": "all",
+              "title": "Layer"
+            },
+            "description": "A platform name, or 'all'"
+          },
+          {
+            "name": "sample",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 3000,
+              "minimum": 10,
+              "default": 3000,
+              "title": "Sample"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Graph Api V1 Runs  Run Id  Graph Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/node-seen": {
+      "get": {
+        "tags": [
+          "results"
+        ],
+        "summary": "Node Seen",
+        "description": "When each sampled node became aware of each item: rows of [tick, sample index, item].",
+        "operationId": "node_seen_api_v1_runs__run_id__node_seen_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Node Seen Api V1 Runs  Run Id  Node Seen Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data/upload": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Upload",
+        "description": "Store a `date,close` CSV and its dated events after validating both.",
+        "operationId": "upload_api_v1_data_upload_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetUpload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "List Datasets",
+        "operationId": "list_datasets_api_v1_data_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetRecord"
+                  },
+                  "type": "array",
+                  "title": "Response List Datasets Api V1 Data Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data/{dataset_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Dataset",
+        "operationId": "get_dataset_api_v1_data__dataset_id__get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Delete Dataset",
+        "operationId": "delete_dataset_api_v1_data__dataset_id__delete",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calibrations": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Create Calibration",
+        "description": "Start a calibration; watch it on `WS /runs/{id}/stream` (one `trial` message per trial).",
+        "operationId": "create_calibration_api_v1_calibrations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalibrationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calibrations/{run_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Calibration",
+        "description": "The run, its result (trial log, best parameters, best path vs observed, sensitivity)\nonce finished, and the trials finished so far while running.",
+        "operationId": "get_calibration_api_v1_calibrations__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Calibration Api V1 Calibrations  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/backtests": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Create Backtest",
+        "description": "Start a backtest; watch it on `WS /runs/{id}/stream` (one `origin` message per origin).",
+        "operationId": "create_backtest_api_v1_backtests_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BacktestCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/backtests/{run_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Backtest",
+        "description": "The run, its result (CRPS per origin for the model and the random walk, skill score)\nonce finished, and the origins finished so far while running.",
+        "operationId": "get_backtest_api_v1_backtests__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Backtest Api V1 Backtests  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/parse": {
+      "post": {
+        "tags": [
+          "events"
+        ],
+        "summary": "Parse",
+        "operationId": "parse_api_v1_events_parse_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParseResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "BacktestCreate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "n_agents": {
+            "type": "integer",
+            "maximum": 200000.0,
+            "minimum": 100.0,
+            "title": "N Agents",
+            "default": 3000
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 0
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Parameters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Base model parameters; defaults if omitted"
+          },
+          "origins": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origins",
+            "description": "Day indices to forecast from; default every day from day 20 on"
+          },
+          "horizon": {
+            "type": "integer",
+            "maximum": 60.0,
+            "minimum": 1.0,
+            "title": "Horizon",
+            "description": "Days ahead",
+            "default": 1
+          },
+          "runs": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Runs",
+            "description": "Monte Carlo runs per origin",
+            "default": 10
+          },
+          "lookback_days": {
+            "type": "integer",
+            "maximum": 30.0,
+            "minimum": 0.0,
+            "title": "Lookback Days",
+            "default": 3
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id"
+        ],
+        "title": "BacktestCreate",
+        "description": "CRPS backtest of the model against a random walk on an uploaded dataset."
+      },
+      "BacktestSpec": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "dataset_sha256": {
+            "type": "string",
+            "title": "Dataset Sha256"
+          },
+          "origins": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origins"
+          },
+          "horizon": {
+            "type": "integer",
+            "title": "Horizon"
+          },
+          "runs": {
+            "type": "integer",
+            "title": "Runs"
+          },
+          "lookback_days": {
+            "type": "integer",
+            "title": "Lookback Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_sha256",
+          "origins",
+          "horizon",
+          "runs",
+          "lookback_days"
+        ],
+        "title": "BacktestSpec"
+      },
       "BeliefParams": {
         "properties": {
           "mu0": {
@@ -595,6 +1583,137 @@
         "type": "object",
         "title": "BeliefParams",
         "description": "Belief parameters (generated from config.BeliefConfig)."
+      },
+      "CalibrationCreate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "n_agents": {
+            "type": "integer",
+            "maximum": 200000.0,
+            "minimum": 100.0,
+            "title": "N Agents",
+            "default": 3000
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 0
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Parameters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Base model parameters; defaults if omitted"
+          },
+          "space": {
+            "additionalProperties": {
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2
+            },
+            "type": "object",
+            "title": "Space",
+            "description": "Parameter -> (low, high). Names: impact_Y, base_share, mu0, sentiment_scale or 'section.field'"
+          },
+          "n_trials": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "title": "N Trials",
+            "default": 40
+          },
+          "runs_per_trial": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Runs Per Trial",
+            "default": 4
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id"
+        ],
+        "title": "CalibrationCreate",
+        "description": "Random-search calibration against an uploaded dataset's daily closes."
+      },
+      "CalibrationSpec": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "dataset_sha256": {
+            "type": "string",
+            "title": "Dataset Sha256"
+          },
+          "space": {
+            "additionalProperties": {
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2
+            },
+            "type": "object",
+            "title": "Space"
+          },
+          "n_trials": {
+            "type": "integer",
+            "title": "N Trials"
+          },
+          "runs_per_trial": {
+            "type": "integer",
+            "title": "Runs Per Trial"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_sha256",
+          "space",
+          "n_trials",
+          "runs_per_trial"
+        ],
+        "title": "CalibrationSpec"
       },
       "Clock": {
         "properties": {
@@ -691,6 +1810,164 @@
           "rho"
         ],
         "title": "Correlation"
+      },
+      "DatasetDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "n_days": {
+            "type": "integer",
+            "title": "N Days"
+          },
+          "first_date": {
+            "type": "string",
+            "title": "First Date"
+          },
+          "last_date": {
+            "type": "string",
+            "title": "Last Date"
+          },
+          "n_events": {
+            "type": "integer",
+            "title": "N Events"
+          },
+          "sha256": {
+            "type": "string",
+            "title": "Sha256"
+          },
+          "dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dates"
+          },
+          "closes": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Closes"
+          },
+          "events": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "n_days",
+          "first_date",
+          "last_date",
+          "n_events",
+          "sha256",
+          "dates",
+          "closes",
+          "events"
+        ],
+        "title": "DatasetDetail"
+      },
+      "DatasetRecord": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "n_days": {
+            "type": "integer",
+            "title": "N Days"
+          },
+          "first_date": {
+            "type": "string",
+            "title": "First Date"
+          },
+          "last_date": {
+            "type": "string",
+            "title": "Last Date"
+          },
+          "n_events": {
+            "type": "integer",
+            "title": "N Events"
+          },
+          "sha256": {
+            "type": "string",
+            "title": "Sha256"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "n_days",
+          "first_date",
+          "last_date",
+          "n_events",
+          "sha256"
+        ],
+        "title": "DatasetRecord"
+      },
+      "DatasetUpload": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "csv": {
+            "type": "string",
+            "maxLength": 5000000,
+            "minLength": 1,
+            "title": "Csv"
+          },
+          "events": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Events",
+            "description": "Event objects with `date` (or `day`) and optional `time` instead of `tick`"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "csv"
+        ],
+        "title": "DatasetUpload",
+        "description": "A daily close series (CSV text with a `date,close` header) plus optional dated events."
       },
       "DiffusionParams": {
         "properties": {
@@ -1345,6 +2622,28 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "HeadlineIn": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Tick",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "HeadlineIn"
+      },
       "Health": {
         "properties": {
           "status": {
@@ -1583,6 +2882,88 @@
         "type": "object",
         "title": "Parameters",
         "description": "All model parameters, one object per config section."
+      },
+      "ParseRequest": {
+        "properties": {
+          "headlines": {
+            "items": {
+              "$ref": "#/components/schemas/HeadlineIn"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Headlines"
+          },
+          "responses": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Responses",
+            "description": "LLM replies pasted by hand, one per headline (the manual flow when no provider is configured)"
+          },
+          "ticker": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Ticker",
+            "default": 0
+          },
+          "first_id": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "First Id",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "headlines"
+        ],
+        "title": "ParseRequest"
+      },
+      "ParseResponse": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "prompts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prompts",
+            "description": "Prompts to paste into an LLM"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/EventSpec"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "provider"
+        ],
+        "title": "ParseResponse"
       },
       "PopulationParams": {
         "properties": {
@@ -2265,7 +3646,9 @@
         "type": "string",
         "enum": [
           "single",
-          "montecarlo"
+          "montecarlo",
+          "calibration",
+          "backtest"
         ],
         "title": "RunMode"
       },
@@ -2406,6 +3789,26 @@
           },
           "parameters": {
             "$ref": "#/components/schemas/Parameters"
+          },
+          "calibration": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CalibrationSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "backtest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BacktestSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,

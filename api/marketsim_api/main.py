@@ -13,13 +13,15 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
 import marketsim
 
 from . import __version__
+from .datasets import DatasetStore
 from .jobs import JobRegistry
 from .log import RequestLogMiddleware, configure_logging, logger
-from .routes import config, runs, scenarios, stream
+from .routes import analysis, config, parse, results, runs, scenarios, stream
 from .schemas import Health
 from .settings import Settings
 from .storage import Store
@@ -40,6 +42,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         store = Store(settings.data_dir)
         app.state.store = store
+        app.state.datasets = DatasetStore(settings.data_dir)
         interrupted = store.fail_interrupted()
         app.state.jobs = (
             JobRegistry(store, settings.max_jobs, settings.executor) if settings.run_jobs else None
@@ -60,6 +63,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.state.settings = settings
     app.add_middleware(RequestLogMiddleware)
+    app.add_middleware(GZipMiddleware, minimum_size=1_000)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -77,6 +81,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(scenarios.router)
     v1.include_router(runs.router)
     v1.include_router(stream.router)
+    v1.include_router(results.router)
+    v1.include_router(analysis.router)
+    v1.include_router(parse.router)
     app.include_router(v1)
     return app
 

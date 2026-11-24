@@ -156,9 +156,16 @@ FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives un
 | `POST /runs` | Start a run (single or Monte Carlo) from a saved or inline scenario; `pace` slows a single run down for live viewing |
 | `GET /runs`, `GET/DELETE /runs/{id}` | Run index (paged, filter by status) and run details |
 | `POST /runs/{id}/cancel` | Stop a queued or running run (it ends as `cancelled`, keeping what it computed) |
+| `GET /runs/{id}/series`, `/quantiles`, `/paths`, `/awareness`, `/lineage`, `/stylized-facts`, `/graph`, `/node-seen` | Stored results (`?encoding=b64` packs float arrays; `?every=n` downsamples) |
+| `POST /data/upload`, `GET/DELETE /data/{id}` | Datasets: a `date,close` CSV plus dated events, validated on upload |
+| `POST /calibrations`, `GET /calibrations/{id}` | Random-search calibration on a dataset, as a job (stream sends one `trial` per trial) |
+| `POST /backtests`, `GET /backtests/{id}` | CRPS backtest vs a random walk on a dataset, as a job (one `origin` per origin) |
+| `POST /events/parse` | Headlines → events. No provider by default: it returns prompts to paste into any LLM, then validates the replies you post back |
 | `WS /runs/{id}/stream` | Live frames: `hello`, then `tick` / `event` / `narrative` (or Monte Carlo `progress`), then `done` or `error`; `?after=<tick>` resumes |
 
 The parameter models are generated from the `config.py` dataclasses, so adding a field there adds it to the API (give it a range in `config_schema.FIELD_RANGES`; a test enforces this). Runs are stored under `MARKETSIM_DATA_DIR` (default `./runs`): `index.sqlite3` plus `runs/<id>/spec.json` and the results (`result/` for a single run, `mc/` for Monte Carlo). Jobs run in a process pool of `MARKETSIM_MAX_JOBS` workers (default 2); further runs wait as `queued`. Each run has a `spec_hash`, and equal hashes mean identical results.
+
+**Headline parsing with Claude (optional).** `uv sync --extra llm` and set `MARKETSIM_LLM_PROVIDER=anthropic` plus an Anthropic credential (`ANTHROPIC_API_KEY` or an `ant auth login` profile). The API then calls `claude-opus-5-5` (`MARKETSIM_LLM_MODEL` to change it) at low effort, caches every reply in `<data dir>/llm_cache.json`, and turns on server-side refusal fallbacks. Without the variable the API makes no network calls.
 
 After changing the API, regenerate the spec and the web types (CI checks both):
 

@@ -86,3 +86,24 @@ def test_recovery_test_end_to_end() -> None:
 
 def test_rmse() -> None:
     assert rmse(np.array([0.0, 1.0]), np.array([0.0, 0.0, 5.0])) == pytest.approx(np.sqrt(0.5))
+
+
+def test_calibrate_on_daily_closes_relative() -> None:
+    world = World.build(CFG)
+    path = median_log_path(CFG, scenarios.demo(), [5], 2 * TICKS_PER_DAY, world)
+    ticks = [63, 96 + 63]
+    obs = path[ticks] + 3.0  # a different price level: relative mode ignores it
+    res = calibrate(
+        obs,
+        scenarios.demo(),
+        {"impact_Y": (0.6, 0.8)},
+        n_trials=2,
+        runs_per_trial=1,
+        config=CFG,
+        world=world,
+        observed_ticks=ticks,
+        relative=True,
+    )
+    assert len(res.best_path) == 2 and res.best_path[0] == 0.0 and res.observed[0] == 0.0
+    with pytest.raises(ValueError):
+        calibrate(obs, None, n_trials=1, config=CFG, world=world, observed_ticks=[63])
