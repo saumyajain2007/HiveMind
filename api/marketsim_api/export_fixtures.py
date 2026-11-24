@@ -35,7 +35,7 @@ def _wait(c: TestClient, run_id: str) -> dict[str, Any]:
         if run["status"] in ("done", "failed", "cancelled"):
             if run["status"] != "done":
                 raise RuntimeError(f"run {run_id} {run['status']}: {run.get('error')}")
-            return run  # type: ignore[no-any-return]
+            return dict(run)
         time.sleep(0.2)
 
 
