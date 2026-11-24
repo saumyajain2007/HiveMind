@@ -33,6 +33,46 @@ export const series = {
   imbalance: new SeriesBuffer(LIVE_CAPACITY),
 };
 
+/** What the feed and charts need to know about each item (event or narrative). */
+export interface ItemMeta {
+  item: number;
+  tick: number;
+  kind: string;
+  origin: "event" | "mutation" | "invention" | "price_news";
+  label: string;
+  parent: number;
+  sentiment: number;
+  credibility: number;
+  seeding?: string;
+}
+
+/** Everything born during the run, in order (event markers, feed history); never trimmed. */
+export const born: ItemMeta[] = [];
+/** Awareness history per item id: parallel tick / count arrays. */
+export const awarenessHistory = new Map<number, { ticks: number[]; counts: number[] }>();
+
+function remember(msg: Extract<StreamMessage, { type: "event" | "narrative" }>): void {
+  const isEvent = msg.type === "event";
+  born.push({
+    item: isEvent ? (msg.item ?? msg.id) : msg.id,
+    tick: msg.tick,
+    kind: isEvent ? msg.kind : msg.origin === "price_news" ? "price_move" : msg.origin,
+    origin: isEvent ? (msg.kind === "price_move" ? "price_news" : "event") : msg.origin,
+    label: msg.label ?? (isEvent ? msg.kind : msg.origin),
+    parent: msg.parent ?? -1,
+    sentiment: msg.sentiment,
+    credibility: msg.credibility,
+    seeding: isEvent ? msg.seeding : undefined,
+  });
+}
+
+/** Frames per second over the last second of wall-clock time. */
+const frameTimes: number[] = [];
+export function framesPerSecond(now = performance.now()): number {
+  while (frameTimes.length && now - frameTimes[0]! > 1000) frameTimes.shift();
+  return frameTimes.length;
+}
+
 export interface LiveState {
   runId: string | null;
   status: LiveStatus;
@@ -110,12 +150,23 @@ export function ingest(msg: StreamMessage): void {
       series.atmCall.push(msg.atm_call);
       series.mmInventory.push(msg.mm_inventory ?? 0);
       series.imbalance.push(msg.imbalance ?? 0);
+      if (msg.awareness)
+        for (const [k, n] of Object.entries(msg.awareness)) {
+          const id = Number(k);
+          let h = awarenessHistory.get(id);
+          if (!h) awarenessHistory.set(id, (h = { ticks: [], counts: [] }));
+          h.ticks.push(msg.tick);
+          h.counts.push(n);
+        }
+      frameTimes.push(typeof performance !== "undefined" ? performance.now() : Date.now());
+      if (frameTimes.length > 4000) frameTimes.splice(0, 2000);
       pendingLast = msg;
       pendingFrames += 1;
       scheduleFlush();
       return;
     case "event":
     case "narrative":
+      remember(msg);
       pendingFeed.push({ ...msg, receivedAt: Date.now() });
       pendingFrames += 1;
       scheduleFlush();
@@ -142,6 +193,9 @@ export function resetLive(): void {
   socket?.close();
   socket = null;
   for (const b of Object.values(series)) b.clear();
+  born.length = 0;
+  awarenessHistory.clear();
+  frameTimes.length = 0;
   pendingLast = null;
   pendingFeed = [];
   pendingFrames = 0;
