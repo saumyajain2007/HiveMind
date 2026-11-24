@@ -10,6 +10,7 @@ import type { StreamMessage } from "@/lib/live/types";
 
 import { configDefaults, configSchema } from "./fixtures";
 import { makeRecording } from "./recording";
+import { fixtures, resetResultMocks, resultHandlers } from "./results";
 
 type RunDetail = Schemas["RunDetail"];
 type ScenarioSpec = Schemas["ScenarioSpec"];
@@ -89,6 +90,17 @@ export function seedRuns(now = Date.now()): Map<string, RunDetail> {
       spec: runSpec(scenario, mode, runs, seed),
     });
   });
+  // runs whose results were exported from the real engine (see mocks/results.ts)
+  const real = [
+    fixtures.runSingle,
+    fixtures.runMonteCarlo,
+    (fixtures.calibration as unknown as { run: RunDetail }).run,
+    (fixtures.backtest as unknown as { run: RunDetail }).run,
+  ];
+  real.forEach((r, i) => {
+    const t = new Date(now - (i + 1) * 600_000).toISOString();
+    db.set(r.id, { ...r, created_at: t, updated_at: t });
+  });
   return db;
 }
 
@@ -98,6 +110,7 @@ let counter = 0;
 export function resetMockDb(): void {
   runs = seedRuns();
   counter = 0;
+  resetResultMocks();
 }
 
 const health = () =>
@@ -175,7 +188,10 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
-  http.get("*/api/v1/scenarios", () => HttpResponse.json([])),
+  ...resultHandlers({
+    getRun: (id) => runs.get(id),
+    addRun: (r) => void runs.set(r.id, r),
+  }),
 
   ws.link("ws://*/api/v1/runs/:id/stream").addEventListener("connection", ({ client, params }) => {
     const id = String(params.id);
@@ -186,6 +202,38 @@ export const handlers = [
       days: run?.days ?? 5,
     });
     const after = Number(new URL(client.url).searchParams.get("after") ?? -1);
+    if (run?.mode === "montecarlo") {
+      const q = fixtures.quantiles as unknown as {
+        quantiles: Record<string, number[]>;
+        summary: Record<string, unknown>;
+      };
+      const total = run.runs;
+      const mcQueue: StreamMessage[] = [
+        { ...rec.hello, run_id: id, mode: "montecarlo", runs: total },
+        ...Array.from({ length: total }, (_, k) => ({
+          type: "progress" as const,
+          done: k + 1,
+          total,
+          quantiles: q.quantiles,
+        })),
+        { type: "done", status: "done", summary: q.summary },
+      ];
+      let j = 0;
+      const t = setInterval(() => {
+        const m = mcQueue[j++];
+        if (!m) return clearInterval(t);
+        client.send(JSON.stringify(m));
+        if (m.type === "done")
+          runs.set(id, {
+            ...run,
+            status: "done",
+            summary: q.summary,
+            updated_at: new Date().toISOString(),
+          });
+      }, 120);
+      client.addEventListener("close", () => clearInterval(t));
+      return;
+    }
     const queue: StreamMessage[] = [
       { ...rec.hello, run_id: id },
       ...rec.messages.filter((m) => !("tick" in m) || m.tick > after),
