@@ -64,14 +64,14 @@ Chosen: `{'market.noise_frac': 0.263}`.
 | Event-aware random walk | 0.891 | -0.7% | 89% | 48% | 0.251 |
 | Agent model, raw ensemble | 1.021 | -15.3% | 71% | 47% | 0.267 |
 | Agent model, recalibrated | 0.893 | -0.8% | 87% | 47% | 0.253 |
-| Agent model + true event reactions (oracle) | 1.044 | -17.9% | 70% | 50% | 0.260 |
+| Agent model + true event reactions (oracle) | 1.002 | -13.1% | 71% | 50% | 0.261 |
 
 | skill vs random walk | earnings in horizon | other days |
 |---|---|---|
 | Event-aware random walk | -19.3% (n=12) | +0.0% (n=714) |
 | Agent model, raw ensemble | -40.6% (n=12) | -14.4% (n=714) |
 | Agent model, recalibrated | -2.0% (n=12) | -0.8% (n=714) |
-| Agent model + true event reactions (oracle) | -30.6% (n=12) | -17.5% (n=714) |
+| Agent model + true event reactions (oracle) | +62.0% (n=12) | -15.8% (n=714) |
 
 **Biggest differences between the agent model and the random walk** (CRPS gap, % of price):
 
@@ -94,18 +94,18 @@ Chosen: `{'market.noise_frac': 0.263}`.
 
 | release day | actual move | RW 90% | event-RW 90% | ABM 90% | ABM P(up) | oracle median | winner (CRPS) |
 |---|---|---|---|---|---|---|---|
-| 2024-02-02 | -0.5% | -2.3% … +2.2% | -8.5% … +10.5% | -2.7% … +2.1% | 43% | -2.3% | Agent model, recalibrated |
-| 2024-05-03 | +6.0% | -2.6% … +2.6% | -8.3% … +10.7% | -3.0% … +4.7% | 62% | +10.6% | Event-aware random walk |
-| 2024-08-02 | +0.7% | -2.5% … +2.5% | -7.9% … +10.4% | -3.2% … +3.9% | 57% | +6.2% | Random walk |
-| 2024-11-01 | -1.3% | -2.1% … +2.1% | -7.1% … +9.6% | -2.6% … +3.7% | 59% | -3.3% | Random walk |
-| 2025-01-31 | -0.7% | -3.1% … +3.1% | -7.7% … +8.4% | -3.5% … +3.5% | 50% | -0.1% | Random walk |
-| 2025-05-02 | -3.7% | -7.8% … +8.3% | -24.1% … +36.1% | -12.1% … +13.5% | 51% | -13.2% | Random walk |
-| 2025-08-01 | -2.5% | -1.2% … +1.2% | -7.3% … +8.2% | -2.2% … +2.9% | 59% | -0.3% | Event-aware random walk |
-| 2025-10-31 | -0.4% | -2.5% … +2.6% | -7.8% … +10.2% | -3.1% … +5.0% | 66% | -1.3% | Random walk |
-| 2026-01-30 | +0.5% | -2.1% … +2.1% | -6.8% … +8.0% | -2.9% … +1.8% | 36% | +1.0% | Random walk |
-| 2026-05-01 | +3.2% | -2.5% … +2.5% | -9.5% … +13.8% | -3.1% … +4.5% | 61% | +6.7% | Agent model, recalibrated |
-| 2026-07-31 | -7.4% | -2.9% … +3.0% | -7.9% … +12.5% | -1.7% … +4.8% | 77% | -12.5% | Random walk |
-| 2026-11-03 | -1.9% | -1.6% … +1.7% | -6.7% … +8.5% | -2.9% … +2.5% | 44% | -3.4% | Agent model, recalibrated |
+| 2024-02-02 | -0.5% | -2.3% … +2.2% | -8.5% … +10.5% | -2.7% … +2.1% | 43% | -1.2% | Agent model, recalibrated |
+| 2024-05-03 | +6.0% | -2.6% … +2.6% | -8.3% … +10.7% | -3.0% … +4.7% | 62% | +5.5% | Event-aware random walk |
+| 2024-08-02 | +0.7% | -2.5% … +2.5% | -7.9% … +10.4% | -3.2% … +3.9% | 57% | +3.0% | Random walk |
+| 2024-11-01 | -1.3% | -2.1% … +2.1% | -7.1% … +9.6% | -2.6% … +3.7% | 59% | -1.7% | Random walk |
+| 2025-01-31 | -0.7% | -3.1% … +3.1% | -7.7% … +8.4% | -3.5% … +3.5% | 50% | +0.2% | Random walk |
+| 2025-05-02 | -3.7% | -7.8% … +8.3% | -24.1% … +36.1% | -12.1% … +13.5% | 51% | -6.4% | Random walk |
+| 2025-08-01 | -2.5% | -1.2% … +1.2% | -7.3% … +8.2% | -2.2% … +2.9% | 59% | -0.2% | Event-aware random walk |
+| 2025-10-31 | -0.4% | -2.5% … +2.6% | -7.8% … +10.2% | -3.1% … +5.0% | 66% | -0.4% | Random walk |
+| 2026-01-30 | +0.5% | -2.1% … +2.1% | -6.8% … +8.0% | -2.9% … +1.8% | 36% | +0.6% | Random walk |
+| 2026-05-01 | +3.2% | -2.5% … +2.5% | -9.5% … +13.8% | -3.1% … +4.5% | 61% | +3.0% | Agent model, recalibrated |
+| 2026-07-31 | -7.4% | -2.9% … +3.0% | -7.9% … +12.5% | -1.7% … +4.8% | 77% | -7.6% | Random walk |
+| 2026-11-03 | -1.9% | -1.6% … +1.7% | -6.7% … +8.5% | -2.9% … +2.5% | 44% | -1.6% | Agent model, recalibrated |
 
 ![forecast band](forecast_band_h1.png)
 
@@ -123,14 +123,14 @@ Chosen: `{'market.noise_frac': 0.263}`.
 | Event-aware random walk | 2.147 | -0.5% | 87% | 47% | 0.251 |
 | Agent model, raw ensemble | 2.398 | -12.2% | 50% | 48% | 0.267 |
 | Agent model, recalibrated | 2.174 | -1.8% | 80% | 48% | 0.257 |
-| Agent model + true event reactions (oracle) | 2.327 | -8.9% | 49% | 51% | 0.266 |
+| Agent model + true event reactions (oracle) | 2.339 | -9.5% | 47% | 50% | 0.264 |
 
 | skill vs random walk | earnings in horizon | other days |
 |---|---|---|
 | Event-aware random walk | -4.6% (n=29) | +0.0% (n=332) |
 | Agent model, raw ensemble | -14.0% (n=29) | -12.0% (n=332) |
 | Agent model, recalibrated | -13.9% (n=29) | -0.3% (n=332) |
-| Agent model + true event reactions (oracle) | +8.2% (n=29) | -11.1% (n=332) |
+| Agent model + true event reactions (oracle) | +4.8% (n=29) | -11.3% (n=332) |
 
 **Biggest differences between the agent model and the random walk** (CRPS gap, % of price):
 

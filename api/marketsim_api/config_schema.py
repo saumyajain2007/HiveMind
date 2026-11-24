@@ -345,6 +345,11 @@ def _field_spec(section: str, f: dataclasses.Field[Any], default_json: Any) -> t
         # Literal items put the enum on each array item (not on the array) in the JSON schema.
         platform: Any = Literal.__getitem__(tuple(engine_config.ALL_PLATFORMS))
         return list[platform], field(min_length=1)
+    if section == "population" and f.name == "survey":
+        from marketsim.survey import DATA
+
+        options: Any = Literal.__getitem__(("", *sorted(p.stem for p in DATA.glob("*.json"))))
+        return options, field()
     if section == "graph" and f.name == "youtube_lag_ticks":
         extra.update(minimum=lo, maximum=hi)
         return tuple[int, int], field()

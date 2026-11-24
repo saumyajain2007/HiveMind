@@ -23,6 +23,8 @@ Generative model
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
 from scipy.special import betaincinv, expit, gammaincinv, ndtr
 
@@ -37,6 +39,7 @@ from .config import (
     TOPICS,
     Config,
 )
+from .survey import apply_survey
 
 # Order of the copula (rows/columns of R). belief_tolerance, media_attention and loss_aversion
 # are extra fields the model needs (see DECISIONS.md).
@@ -130,6 +133,12 @@ def _marginal_ppf(spec: tuple, z: np.ndarray) -> np.ndarray:
         _, median, sigma = spec
         return np.exp(np.log(median) + sigma * z)
     u = np.clip(ndtr(z), 1e-12, 1.0 - 1e-12)
+    if kind in ("empirical", "empirical_log"):  # quantiles on an even probability grid (survey data)
+        q = np.asarray(spec[1], np.float64)
+        grid = np.linspace(0.0, 1.0, len(q))
+        if kind == "empirical_log":
+            return np.exp(np.interp(u, grid, np.log(np.maximum(q, 1e-9))))
+        return np.interp(u, grid, q)
     if kind == "beta":
         _, a, b, loc, scale = spec
         return loc + scale * betaincinv(a, b, u)
@@ -185,7 +194,9 @@ class Population:
     connections: np.ndarray
 
     def __init__(self, config: Config | None = None, rng: np.random.Generator | None = None):
-        self.cfg = config if config is not None else Config()
+        cfg = config if config is not None else Config()
+        # real-data marginals, correlations and investor share (Census + SCF) when configured
+        self.cfg = replace(cfg, population=apply_survey(cfg.population))
         self.rng = rng if rng is not None else np.random.default_rng(self.cfg.seed)
         pc = self.cfg.population
         self.target_corr = repair_psd(build_correlation_matrix(pc.correlations), pc.psd_eps)

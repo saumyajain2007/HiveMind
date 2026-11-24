@@ -1,6 +1,7 @@
 {
   "parameters": {
     "population": {
+      "survey": "us",
       "investor_share": 0.15,
       "media_per_100k": 50.0,
       "community_mean_size": 60.0,

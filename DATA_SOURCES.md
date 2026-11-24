@@ -6,9 +6,9 @@ Where each `PLACEHOLDER` in `marketsim/config.py` should eventually come from. N
 
 | Parameter | What to estimate | Candidate source |
 |---|---|---|
-| `investor_share` | Share of adults with a brokerage account | Fed SCF; FINRA Investor Education Foundation surveys |
+| `investor_share` | Share of adults with a brokerage account | **Done:** Fed SCF 2022, direct stock ownership 21% (`data/population/us.json`) |
 | `correlations` | Correlations between age, wealth, risk tolerance, knowledge, impulsiveness | Survey microdata (SCF, FINRA NFCS, UK FCA Financial Lives) |
-| Trait marginals | Age, wealth and literacy distributions | Census / ONS; SCF wealth percentiles |
+| Trait marginals | Age, wealth and literacy distributions | **Done for age (Census V2024), wealth and knowledge (SCF 2022)**; others still PLACEHOLDER |
 | `community_mean_size` | Offline community sizes | Sociology literature on workplace / school group sizes |
 
 ## Platforms and graphs (`GraphConfig`)

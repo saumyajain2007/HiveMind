@@ -1554,8 +1554,15 @@ export interface components {
      */
     PopulationParams: {
       /**
+       * Survey
+       * @description Real-data inputs (marketsim/survey.py): "us" = US Census age + Federal Reserve SCF 2022 wealth, knowledge, stock ownership and trait correlations, from data/population/us.json; "" = the values below everywhere.
+       * @default us
+       * @enum {string}
+       */
+      survey: "" | "us";
+      /**
        * Investor Share
-       * @description Share of agents holding a brokerage account
+       * @description (overridden by `survey`): share of agents holding stock
        * @default 0.15
        */
       investor_share: number;

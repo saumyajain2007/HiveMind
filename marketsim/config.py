@@ -19,7 +19,11 @@ ALL_PLATFORMS = ("twitter", "reddit", "friendship", "instagram", "tiktok", "yout
 
 @dataclass
 class PopulationConfig:
-    investor_share: float = 0.15          # PLACEHOLDER: share of agents holding a brokerage account
+    # Real-data inputs (marketsim/survey.py): "us" = US Census age + Federal Reserve SCF 2022 wealth,
+    # knowledge, stock ownership and trait correlations, from data/population/us.json; "" = the
+    # PLACEHOLDER values below everywhere.
+    survey: str = "us"
+    investor_share: float = 0.15          # PLACEHOLDER (overridden by `survey`): share of agents holding stock
     media_per_100k: float = 50.0          # media outlet nodes per 100k agents
     community_mean_size: float = 60.0     # offline communities (school, work)
     # Trait correlation matrix (Gaussian copula), order = COPULA_TRAITS in population.py

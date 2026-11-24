@@ -23,6 +23,7 @@ from marketsim.population import (
     repair_psd,
     solve_intercept,
 )
+from marketsim.survey import apply_survey, load_survey
 
 N = 10_000
 
@@ -49,7 +50,7 @@ def test_correlations_match_repaired_target(pop):
 def test_investor_share_within_one_point(pop):
     cat = pop.category[pop.person_ids]
     share = np.mean(cat != NON_INVESTOR)
-    assert abs(share - Config().population.investor_share) < 0.01
+    assert abs(share - apply_survey(Config().population).investor_share) < 0.01  # Census + SCF target
     assert set(np.unique(cat)) == {NON_INVESTOR, LONG_TERM, SWING, DAY_TRADER}
 
 
@@ -118,13 +119,15 @@ def test_same_seed_same_population():
 
 def test_trait_ranges_and_marginals(pop):
     p = pop.person_ids
-    assert pop.age[p].min() >= 18 and pop.age[p].max() <= 85
+    assert pop.age[p].min() >= 18 and pop.age[p].max() <= 95  # Census adults; 85+ spread over 85-95
     assert pop.belief_tolerance.min() >= 0.2 and pop.belief_tolerance.max() <= 1.2
     assert pop.loss_aversion.min() >= 1.0
     for f in ("impulsiveness", "risk_tolerance", "knowledge", "media_attention"):
         assert getattr(pop, f).min() >= 0.0 and getattr(pop, f).max() <= 1.0
-    assert abs(np.median(pop.wealth[p]) / 50_000 - 1) < 0.08
-    assert abs(np.std(np.log(pop.wealth[p])) - 1.3) < 0.05
+    # wealth follows the SCF 2022 financial-assets distribution (median and 90th percentile)
+    q = np.asarray(load_survey("us")["wealth_quantiles"])
+    assert abs(np.median(pop.wealth[p]) / q[100] - 1) < 0.08
+    assert abs(np.quantile(pop.wealth[p], 0.9) / q[180] - 1) < 0.15
 
 
 def test_categories_follow_traits(pop):

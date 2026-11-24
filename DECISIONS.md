@@ -323,3 +323,31 @@ Reported for the whole scenario: **interaction**, the move with all events minus
 - **Direction:** no event type has a reliable average direction (all |t| < 2).
 
 The impact model trained on all stocks predicts the size of a reaction out of sample with correlation 0.53. Direction is 53% on 1,217 moves beyond ±1%. On the same test events, the pooled model's size correlation is 0.53, against 0.50 for a model trained only on each stock's own events.
+
+### Real population data: US Census + Federal Reserve SCF (`population.survey = "us"`, default)
+
+`uv run --with pandas python scripts/fetch_population_data.py` builds `data/population/us.json`. The Census API now requires a key, so age comes from the Census Bureau's keyless CSV of Vintage 2024 national estimates by single year of age (85+ spread over 85–95). Everything else comes from the Federal Reserve's Survey of Consumer Finances 2022 summary extract (22,975 records, survey-weighted).
+
+| input | was (PLACEHOLDER) | now (data) |
+|---|---|---|
+| age | Beta on 18–85, median 43.9 | Census adults, median 46.8 |
+| wealth (investable) | lognormal, median $50k, p90 $265k | SCF financial assets, median $40k, p90 ≈ $1.0M |
+| knowledge | Beta(2, 4), median 0.31 | SCF self-rated 0–10 / 10, median 0.8 |
+| investor share | 15% | 21.0%: households owning stocks directly (the Fed's published figure is 21%) |
+| investor logit | wealth 1.0, knowledge 0.6, risk 0.4 | SCF weighted logistic: wealth 0.98, knowledge 0.16, risk 0.60 |
+| correlations (age, wealth, knowledge, risk) | guesses | SCF on normal scores: age–wealth 0.22, age–knowledge 0.22, age–risk −0.19, wealth–knowledge 0.27, wealth–risk 0.36, knowledge–risk 0.09 |
+
+Caveats:
+
+- **Units and households.** SCF records are households, with the head's age, and dollars as given in the current extract: its median net worth is $210.9k, above the published $192.9k, so the extract is apparently in more recent dollars. Age itself comes from the Census.
+- **Knowledge is self-rated** and probably overstates objective literacy (SCF `FINLIT`, a 3-question quiz, is the alternative).
+- **Risk tolerance is coarse.** Its marginal stays PLACEHOLDER; only its correlations come from the SCF 3-level risk question.
+- **Not covered.** Impulsiveness, belief tolerance, media attention, loss aversion, the investor-category mix, platform usage and the social graph keep their PLACEHOLDER values; these surveys do not measure them.
+
+`survey = ""` restores the placeholders. A 1,000,000-agent demo run with this population (run `93cd05b5f7d5`, 5 days) produced:
+
+- the rumour reaching 67% of agents, with 626 mutations;
+- a price path of 108.1 → 108.8 → 103.4 → 99.1 → 99.7;
+- 15-minute returns that are far too fat-tailed (excess kurtosis 42) and too autocorrelated (lag-1 0.31).
+
+So the census population does not by itself make the tick dynamics realistic.

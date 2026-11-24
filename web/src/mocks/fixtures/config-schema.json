@@ -4,13 +4,23 @@
       "name": "population",
       "fields": [
         {
+          "name": "survey",
+          "key": "population.survey",
+          "kind": "json",
+          "default": "us",
+          "min": null,
+          "max": null,
+          "description": "Real-data inputs (marketsim/survey.py): \"us\" = US Census age + Federal Reserve SCF 2022 wealth, knowledge, stock ownership and trait correlations, from data/population/us.json; \"\" = the values below everywhere.",
+          "placeholder": true
+        },
+        {
           "name": "investor_share",
           "key": "population.investor_share",
           "kind": "float",
           "default": 0.15,
           "min": 0.0,
           "max": 1.0,
-          "description": "Share of agents holding a brokerage account",
+          "description": "(overridden by `survey`): share of agents holding stock",
           "placeholder": true
         },
         {
