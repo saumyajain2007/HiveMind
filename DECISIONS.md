@@ -132,6 +132,8 @@ The 10,000 people come with 5 media outlets (`media_per_100k = 50`). The outlets
 - **2026-11-24 · #11 · Monte Carlo reuses one world.** `montecarlo.run` builds the population and graph once from `config.seed`; runs use dynamics seeds 1..R. With `workers > 1` each worker process builds the same world once (deterministic), and results are identical to a serial run (tested). The representative run kept for the awareness and lineage plots is the one with the median final price.
 - **2026-11-24 · #11 · Stylised facts pool open-tick returns across runs** (kurtosis on the pooled sample, ACF averaged over runs). At 10k × 20 runs the demo reports excess kurtosis ≈ 59, dominated by the earnings gap, and |r| ACF at lag 1 ≈ 0.03 (little volatility clustering). Returns show positive ACF at lags 1–2 (≈0.2): order flow is persistent because agents come online gradually. Reported, not asserted (HANDOFF §4 M6); calibration (#12) is where this should be addressed.
 - **2026-11-24 · #11 · Plot colours** come from the web app's light theme (validated in #19). Families use the six categorical hues in a fixed order by family id, so a family keeps its colour across plots; extra families are grey. Lines also differ by dash style and lineage markers by shape (origin).
+- **2026-11-24 · #12 · Common random numbers in calibration.** Every trial runs the same dynamics seeds (1..`runs_per_trial`) on one world, so trial-to-trial differences come from the parameters. Search is uniform random inside the given ranges, as the handoff specifies. Parameter names are the handoff's four (`impact_Y`, `base_share`, `mu0`, `sentiment_scale`) or any `section.field`.
+- **2026-11-24 · #12 · Identifiability is judged two ways:** the error as a share of the search range (recovered if ≤ 15%), and the Spearman rank correlation between each parameter and the trial RMSE (|ρ| < 0.2 = weakly identified: the objective barely depends on it).
 
 ## Simplifications
 
@@ -145,7 +147,31 @@ _(none yet)_
 
 ### Parameter-recovery test (#12)
 
-_(pending)_
+`python -m marketsim.calibration [observed_runs]`: demo scenario, 5,000 agents, 5 days, true parameters at the middle of each range, 40 random trials × 4 dynamics seeds, RMSE on the median log-price path.
+
+**Observed = one simulated path** (what calibrating on real history looks like):
+
+| parameter | range | true | recovered | error (% of range) | rank corr. with RMSE | verdict |
+|---|---|---|---|---|---|---|
+| `impact_Y` | 0.3–1.5 | 0.9 | 1.33 | 35% | +0.16 | not recovered, weakly identified |
+| `base_share` | 0.1–0.5 | 0.3 | 0.125 | 44% | −0.15 | not recovered, weakly identified |
+| `mu0` | 0.1–0.7 | 0.4 | 0.39 | 2% | +0.10 | recovered (by luck), weakly identified |
+| `sentiment_scale` | 0.01–0.10 | 0.055 | 0.084 | 33% | −0.29 | not recovered |
+
+Best RMSE 0.0119 vs 0.0180 at the true parameters: the search fits the noise of the single observed path better than the truth does.
+
+**Observed = median of 8 paths** (a noise-free target):
+
+| parameter | true | recovered | error (% of range) | rank corr. with RMSE | verdict |
+|---|---|---|---|---|---|
+| `impact_Y` | 0.9 | 0.701 | 17% | +0.39 | not recovered (closest) |
+| `base_share` | 0.3 | 0.348 | 12% | +0.13 | recovered, weakly identified |
+| `mu0` | 0.4 | 0.145 | 42% | −0.09 | not recovered, weakly identified |
+| `sentiment_scale` | 0.055 | 0.033 | 24% | +0.08 | not recovered, weakly identified |
+
+Best RMSE 0.0040 vs 0.0078 at the true parameters.
+
+**Conclusion.** One 5-day price path does not identify these four parameters. `impact_Y` carries the most signal (it scales every move); `mu0` and `sentiment_scale` barely change the median path, because belief steps and the sentiment term are small next to the fundamental and momentum terms and the public-news re-quote; `base_share` mainly changes *who* hears a rumour, which the price shows only weakly. Before trusting calibrated values: fit to many events (or several stocks) at once, add awareness or volume targets alongside price, and fix the non-identified parameters from outside data (survey or platform data in DATA_SOURCES.md) rather than fitting them.
 
 ### Benchmarks (#15)
 

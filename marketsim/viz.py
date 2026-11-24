@@ -17,6 +17,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.collections import PathCollection
 
 from .config import ALL_PLATFORMS, CATEGORIES, TICKS_PER_DAY
 from .metrics import acf, excess_kurtosis, open_tick_returns
@@ -214,7 +215,7 @@ def lineage_tree(res: Mapping[str, Any], path: Path) -> Path:
     ax.set_title("Narrative lineage (size = final awareness, shape = origin, colour = family)")
     leg = ax.legend(loc="lower left", ncols=4)
     for h in leg.legend_handles:  # legend shows shape only: neutral colour, one size
-        if h is not None and hasattr(h, "set_sizes"):
+        if isinstance(h, PathCollection):
             h.set_sizes([40])
             h.set_facecolor(MUTED)
     return _save(fig, path)
