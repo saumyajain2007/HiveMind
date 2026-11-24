@@ -652,6 +652,23 @@
           "max": 5.0,
           "description": "How much people trust what reaches them on each platform (belief weight).",
           "placeholder": false
+        },
+        {
+          "name": "attention_boost",
+          "key": "graph.attention_boost",
+          "kind": "map",
+          "default": {
+            "twitter": 1.0,
+            "instagram": 1.0,
+            "friendship": 1.2,
+            "reddit": 1.0,
+            "tiktok": 1.1,
+            "youtube": 1.0
+          },
+          "min": 0.0,
+          "max": 10.0,
+          "description": "How strongly items arriving on each platform compete for an agent's attention slots",
+          "placeholder": true
         }
       ]
     },
@@ -726,6 +743,16 @@
           "min": 1.0,
           "max": 960.0,
           "description": "Ticks a share stays in followers' feeds (8h)",
+          "placeholder": true
+        },
+        {
+          "name": "outrage_weight",
+          "key": "diffusion.outrage_weight",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.0,
+          "max": 5.0,
+          "description": "Extra sharing when an item contradicts the agent's view",
           "placeholder": true
         },
         {
@@ -1216,6 +1243,36 @@
           "max": 9600.0,
           "description": "Funds know V_true with a 1-day lag",
           "placeholder": false
+        },
+        {
+          "name": "company_buyback_programme",
+          "key": "market.company_buyback_programme",
+          "kind": "float",
+          "default": 0.02,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Buyback cash vs total investor wealth (0 = no company agent)",
+          "placeholder": true
+        },
+        {
+          "name": "company_buyback_threshold",
+          "key": "market.company_buyback_threshold",
+          "kind": "float",
+          "default": 0.08,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Discount to its own value at which the company buys back",
+          "placeholder": true
+        },
+        {
+          "name": "company_buyback_daily",
+          "key": "market.company_buyback_daily",
+          "kind": "float",
+          "default": 0.1,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of the programme it may spend per day",
+          "placeholder": true
         }
       ]
     }

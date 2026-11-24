@@ -35,7 +35,7 @@ from .beliefs import Beliefs
 from .config import ALL_PLATFORMS, CATEGORIES, MEDIA, TICKS_PER_DAY, Config
 from .diffusion import Diffusion
 from .events import Event, EventQueue, apply_to_market, assign_ids, event_from_dict, seed_agents
-from .firms import build_firms
+from .firms import build_company, build_firms
 from .graph import DirectedLayer, FriendshipLayer, SocialGraph
 from .items import ORIGINS, ItemStore
 from .market import MarketState, is_market_open
@@ -109,6 +109,7 @@ class World:
     def build(cls, cfg: Config) -> World:
         pop = Population.build(cfg)
         graph = SocialGraph.build(pop, cfg.graph, np.random.default_rng([cfg.seed, 1]))
+        pop.connections[:] = connectedness(pop, graph)
         return cls(pop, graph)
 
 
@@ -169,9 +170,12 @@ class Simulation:
         self.market_rng, self.event_rng = streams[3], streams[4]
         self.market = MarketState(cfg.market)
         self.props, self.funds = build_firms(cfg.market, float(pop.wealth[pop.investor_ids].sum()))
+        self.company = build_company(cfg.market, float(pop.wealth[pop.investor_ids].sum()))
         self.queue = EventQueue(replace(e) for e in self.scenario.events)
         self.labels = dict(self.scenario.labels)
-        self.connectedness = connectedness(pop, self.graph)
+        if not pop.connections.any():  # worlds built outside World.build
+            pop.connections[:] = connectedness(pop, self.graph)
+        self.connectedness = pop.connections
         self.on_tick, self.should_stop = on_tick, should_stop
         self.node_sample = None if node_sample is None else np.asarray(node_sample, np.int64)
         self._sample_seen: dict[int, np.ndarray] = {}
@@ -221,8 +225,9 @@ class Simulation:
         if is_market_open(t):
             retail = self.trading.orders(market, online)
             firm_p, firm_f = self.props.orders(market), self.funds.orders(market)
-            q = np.concatenate([retail.qty, firm_p.qty, firm_f.qty])
-            lim = np.concatenate([retail.limit, firm_p.limit, firm_f.limit])
+            corp = self.company.orders(market)
+            q = np.concatenate([retail.qty, firm_p.qty, firm_f.qty, corp.qty])
+            lim = np.concatenate([retail.limit, firm_p.limit, firm_f.limit, corp.limit])
             held = float(
                 pop.shares.sum()
                 + np.maximum(self.props.shares, 0).sum()
@@ -233,6 +238,7 @@ class Simulation:
             self.trading.settle(retail, res.price)
             self.props.settle(firm_p, res.price)
             self.funds.settle(firm_f, res.price)
+            self.company.settle(corp, res.price)
             self.props.observe(retail)
             imbalance = self.props.imbalance
             market.record_tick(t, res)

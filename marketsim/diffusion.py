@@ -20,7 +20,8 @@ randomness." One `step(tick)`:
    the next tick and stays in followers' feeds for `share_ttl` ticks, so followers who come
    online later in that window can still see it. Share probability:
    p = base_share · salience · (0.3 + impulsiveness)
-       · (0.6 + 0.8·max(agreement, 0) + 0.4·|sentiment|·impulsiveness + 0.5·talking_your_book)
+       · (0.6 + 0.8·max(agreement, 0) + outrage_weight·max(−agreement, 0)
+          + 0.4·|sentiment|·impulsiveness + 0.5·talking_your_book)
    where agreement = sentiment × confidence and talking_your_book = 1 when a holder of the stock
    who is in profit (entry price <= `price`, once the simulation sets it) meets a bullish item
    (v1 has no short positions).
@@ -46,6 +47,7 @@ from .population import Population
 MINUTES_PER_TICK = 24 * 60 // TICKS_PER_DAY
 BROADCAST_EXPOSURE = 1.0  # exposure added for an agent reached by TV / push alerts
 BROADCAST_TRUST = 1.0  # trust weight of TV / push alerts (layers carry their own `trust`)
+BROADCAST_BOOST = 1.0  # attention boost of TV / push alerts (layers use `graph.attention_boost`)
 
 
 @dataclass
@@ -134,17 +136,27 @@ class Diffusion:
         agent_parts: list[np.ndarray] = []
         w_parts: list[np.ndarray] = []
         t_parts: list[np.ndarray] = []
+        b_parts: list[np.ndarray] = []
+        boost_of = self.cfg.graph.attention_boost
 
         forced_parts: list[np.ndarray] = []  # (slot * n + agent) keys reached by broadcast
 
         scale = dc.exposure_scale
 
-        def add(slot: int, agents: np.ndarray, w: np.ndarray, trust: float, social: bool = True) -> None:
+        def add(
+            slot: int,
+            agents: np.ndarray,
+            w: np.ndarray,
+            trust: float,
+            boost: float = 1.0,
+            social: bool = True,
+        ) -> None:
             if len(agents):
                 slot_parts.append(np.full(len(agents), slot, np.int64))
                 agent_parts.append(agents)
                 w_parts.append(w * scale if social else w)
                 t_parts.append(np.full(len(agents), trust, np.float32))
+                b_parts.append(np.full(len(agents), boost, np.float32))
 
         due_yt = self._due_youtube(tick)
         tiktok = self.graph.layers.get("tiktok")
@@ -158,15 +170,20 @@ class Diffusion:
                 for name, layer in self.graph.layers.items():
                     if name in ("youtube", "tiktok"):
                         continue
-                    add(slot, *layer.receivers(sharers), layer.trust)
+                    add(slot, *layer.receivers(sharers), layer.trust, boost_of.get(name, 1.0))
                 if tiktok is not None:
                     on_tiktok = int(np.isin(sharers, tiktok.users).sum())
                     if on_tiktok:
-                        add(slot, *tiktok.receivers(sharers, topic=topic, popularity=on_tiktok), tiktok.trust)
+                        add(
+                            slot,
+                            *tiktok.receivers(sharers, topic=topic, popularity=on_tiktok),
+                            tiktok.trust,
+                            boost_of.get("tiktok", 1.0),
+                        )
             creators = due_yt.get(int(items.item_id[slot]))
             if creators is not None:
                 yt = self.graph.layers["youtube"]
-                add(slot, *yt.receivers(creators), yt.trust)
+                add(slot, *yt.receivers(creators), yt.trust, boost_of.get("youtube", 1.0))
             if items.born[slot] == tick and items.broadcast[slot]:
                 hits = broadcast_hits(
                     float(items.salience[slot]), pop.media_attention, dc.broadcast_rate, rng
@@ -176,6 +193,7 @@ class Diffusion:
                     hits,
                     np.full(len(hits), BROADCAST_EXPOSURE, np.float32),
                     BROADCAST_TRUST,
+                    BROADCAST_BOOST,
                     social=False,
                 )
                 forced_parts.append(np.full(len(hits), slot, np.int64) * n + hits)
@@ -189,7 +207,7 @@ class Diffusion:
         )
         if slot_parts:
             forced = np.concatenate(forced_parts) if forced_parts else np.zeros(0, np.int64)
-            self._absorb(tick, slot_parts, agent_parts, w_parts, t_parts, online, forced, result)
+            self._absorb(tick, slot_parts, agent_parts, w_parts, t_parts, b_parts, online, forced, result)
 
         # 7. decay and retirement
         items.decay(dc.salience_decay)
@@ -204,6 +222,7 @@ class Diffusion:
         agent_parts: list[np.ndarray],
         w_parts: list[np.ndarray],
         t_parts: list[np.ndarray],
+        b_parts: list[np.ndarray],
         online: np.ndarray,
         forced: np.ndarray,
         result: DiffusionResult,
@@ -215,6 +234,7 @@ class Diffusion:
         agents = np.concatenate(agent_parts)
         w = np.concatenate(w_parts).astype(np.float64)
         tw = w * np.concatenate(t_parts)
+        bw = w * np.concatenate(b_parts)
 
         # keep agents who are online (or reached by broadcast) and have not seen the item,
         # then sum exposure per (item, agent)
@@ -222,25 +242,27 @@ class Diffusion:
         if len(forced):
             reached |= np.isin(slots * n + agents, forced)
         keep = reached & ~items.aware[slots, agents]
-        slots, agents, w, tw = slots[keep], agents[keep], w[keep], tw[keep]
+        slots, agents, w, tw, bw = slots[keep], agents[keep], w[keep], tw[keep], bw[keep]
         if len(slots) == 0:
             return
         keys, inv = np.unique(slots * n + agents, return_inverse=True)
         exposure = np.bincount(inv, weights=w)
         trust = np.bincount(inv, weights=tw) / np.maximum(exposure, 1e-12)
+        boost = np.bincount(inv, weights=bw) / np.maximum(exposure, 1e-12)
         slots, agents = keys // n, keys % n
         result.exposure_pairs = len(keys)
 
         # 3. p_see
         score = exposure * items.salience[slots]
         hit = rng.random(len(score)) < 1.0 - np.exp(-score)
-        slots, agents, score, trust = slots[hit], agents[hit], score[hit], trust[hit]
+        slots, agents, score, trust, boost = slots[hit], agents[hit], score[hit], trust[hit], boost[hit]
         result.candidates = len(slots)
         if len(slots) == 0:
             return
 
-        # 4. attention cap: per agent, highest score first
-        order = np.lexsort((-score, agents))
+        # 4. attention cap: per agent, highest score first; items compete on
+        #    exposure × salience × platform boost (the design notes' "platform boost")
+        order = np.lexsort((-(score * boost), agents))
         slots, agents, trust = slots[order], agents[order], trust[order]
         run_start = np.r_[0, np.flatnonzero(np.diff(agents)) + 1]
         run_len = np.diff(np.r_[run_start, len(agents)])
@@ -255,7 +277,9 @@ class Diffusion:
         # 6. sharing (goes out from the next tick)
         sent = items.sentiment[slots]
         imp = pop.impulsiveness[agents]
-        agreement = np.maximum(sent * pop.confidence[agents], 0.0)
+        stance = sent * pop.confidence[agents]
+        agreement = np.maximum(stance, 0.0)
+        outrage = np.maximum(-stance, 0.0)  # sharing out of disagreement (the notes' "or outrage")
         holder = pop.shares[agents] > 0
         if self.price is not None:  # "profitable holders talk up their book" (HANDOFF §4 M4)
             holder &= pop.entry_price[agents] <= self.price
@@ -264,7 +288,7 @@ class Diffusion:
             dc.base_share
             * items.salience[slots]
             * (0.3 + imp)
-            * (0.6 + 0.8 * agreement + 0.4 * np.abs(sent) * imp + 0.5 * book)
+            * (0.6 + 0.8 * agreement + dc.outrage_weight * outrage + 0.4 * np.abs(sent) * imp + 0.5 * book)
         )
         share = rng.random(len(slots)) < np.clip(p_share, 0.0, 1.0)
         s_slots, s_agents = slots[share], agents[share]

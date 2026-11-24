@@ -846,6 +846,12 @@ export interface components {
        */
       share_ttl: number;
       /**
+       * Outrage Weight
+       * @description Extra sharing when an item contradicts the agent's view
+       * @default 0.3
+       */
+      outrage_weight: number;
+      /**
        * Exposure Scale
        * @description Multiplies every layer's reach (salient rumours go viral)
        * @default 4
@@ -1178,6 +1184,21 @@ export interface components {
       trust: {
         [key: string]: number;
       };
+      /**
+       * Attention Boost
+       * @description How strongly items arriving on each platform compete for an agent's attention slots
+       * @default {
+       *       "twitter": 1,
+       *       "instagram": 1,
+       *       "friendship": 1.2,
+       *       "reddit": 1,
+       *       "tiktok": 1.1,
+       *       "youtube": 1
+       *     }
+       */
+      attention_boost: {
+        [key: string]: number;
+      };
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -1332,6 +1353,24 @@ export interface components {
        * @default 96
        */
       fund_lag_ticks: number;
+      /**
+       * Company Buyback Programme
+       * @description Buyback cash vs total investor wealth (0 = no company agent)
+       * @default 0.02
+       */
+      company_buyback_programme: number;
+      /**
+       * Company Buyback Threshold
+       * @description Discount to its own value at which the company buys back
+       * @default 0.08
+       */
+      company_buyback_threshold: number;
+      /**
+       * Company Buyback Daily
+       * @description Share of the programme it may spend per day
+       * @default 0.1
+       */
+      company_buyback_daily: number;
     };
     /**
      * Parameters

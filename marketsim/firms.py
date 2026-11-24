@@ -148,6 +148,57 @@ class Funds(_Firms):
         return frac
 
 
+class Company:
+    """The listed company as a trader: a share buyback programme.
+
+    The company knows its own value (V_true) at once. On open ticks, when the price is more than
+    `threshold` below V_true, it buys back shares, at most `daily_budget` of its programme per day
+    and with limits at most 0.5% above the last price. Bought-back shares are retired (they leave
+    the float). It never sells.
+    """
+
+    LIMIT = 0.005
+
+    def __init__(self, programme: float, threshold: float, daily_budget: float) -> None:
+        self.programme = programme  # total cash set aside for buybacks
+        self.cash = programme
+        self.shares = 0.0  # retired shares bought back so far
+        self.threshold = threshold
+        self.daily_budget = daily_budget
+        self._day = -1
+        self._spent_today = 0.0
+
+    def orders(self, market: MarketState) -> OrderBatch:
+        day = market.tick // 96 if market.tick >= 0 else 0
+        if day != self._day:
+            self._day, self._spent_today = day, 0.0
+        P, V = market.price, market.v_true
+        if self.cash <= 0 or V * (1.0 - self.threshold) <= P:
+            return OrderBatch.empty()
+        room = min(self.cash, self.daily_budget * self.programme - self._spent_today)
+        if room <= 0:
+            return OrderBatch.empty()
+        # buy more the deeper the discount: a sixth of today's room per tick at the threshold
+        depth = min(1.0, (1.0 - P / V) / max(self.threshold, 1e-9) / 6.0)
+        limit = P * math.exp(self.LIMIT)
+        return OrderBatch(np.zeros(1, np.int64), np.array([room * depth / limit]), np.array([limit]))
+
+    def settle(self, batch: OrderBatch, price: float) -> None:
+        f = filled_mask(batch, price)
+        bought = float(batch.qty[f].sum())
+        self.shares += bought
+        self.cash -= bought * price
+        self._spent_today += bought * price
+
+
+def build_company(cfg: MarketConfig, total_investor_wealth: float) -> Company:
+    return Company(
+        cfg.company_buyback_programme * total_investor_wealth,
+        cfg.company_buyback_threshold,
+        cfg.company_buyback_daily,
+    )
+
+
 def build_firms(cfg: MarketConfig, total_investor_wealth: float) -> tuple[PropFirms, Funds]:
     """Each firm type gets half of `firm_capital_share` × total investor wealth."""
     cap = cfg.firm_capital_share * total_investor_wealth / 2.0

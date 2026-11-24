@@ -74,6 +74,10 @@ FIELD_SPECS: dict[str, tuple] = {
     "strategy_weights": (np.float64, (3,)),  # fundamentalist, chartist, sentiment
     "media_credibility": (np.float64, ()),  # 0 for non-media
     "media_bias": (np.float64, ()),  # 0 for non-media
+    "connections": (
+        np.float64,
+        (),
+    ),  # ties in the social graph (followers + friends); set once the graph exists
 }
 
 
@@ -178,6 +182,7 @@ class Population:
     strategy_weights: np.ndarray
     media_credibility: np.ndarray
     media_bias: np.ndarray
+    connections: np.ndarray
 
     def __init__(self, config: Config | None = None, rng: np.random.Generator | None = None):
         self.cfg = config if config is not None else Config()
@@ -406,6 +411,7 @@ class Population:
             "influence": influence,
             "media_credibility": np.zeros(n),
             "media_bias": np.zeros(n),
+            "connections": np.zeros(n),
         }
         batch.update(self._state(n, category, traits["wealth"], traits["knowledge"]))
         return batch
@@ -429,6 +435,7 @@ class Population:
             "influence": pc.media_influence_mult * (1.0 + rng.pareto(pc.influence_alpha, n)),
             "media_credibility": rng.beta(cred_a, cred_b, n),
             "media_bias": np.clip(rng.normal(0.0, pc.media_bias_sd, n), -1.0, 1.0),
+            "connections": np.zeros(n),
         }
         batch.update(
             self._state(n, category, traits["wealth"], traits["knowledge"], long_term_position=False)

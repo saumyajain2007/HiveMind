@@ -278,6 +278,14 @@
         "reddit": 0.9,
         "tiktok": 0.6,
         "youtube": 1.0
+      },
+      "attention_boost": {
+        "twitter": 1.0,
+        "instagram": 1.0,
+        "friendship": 1.2,
+        "reddit": 1.0,
+        "tiktok": 1.1,
+        "youtube": 1.0
       }
     },
     "diffusion": {
@@ -288,6 +296,7 @@
       "salience_decay": 0.97,
       "retire_salience": 0.03,
       "share_ttl": 32,
+      "outrage_weight": 0.3,
       "exposure_scale": 4.0,
       "max_items": 128,
       "mutate_rate": 0.04,
@@ -362,7 +371,10 @@
       "prop_momentum_k": 30.0,
       "prop_imbalance_k": 0.2,
       "fund_value_k": 5.0,
-      "fund_lag_ticks": 96
+      "fund_lag_ticks": 96,
+      "company_buyback_programme": 0.02,
+      "company_buyback_threshold": 0.08,
+      "company_buyback_daily": 0.1
     }
   },
   "scenario": {

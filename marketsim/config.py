@@ -111,6 +111,9 @@ class GraphConfig:
         "twitter": 0.08, "instagram": 0.05, "friendship": 0.25, "reddit": 0.6, "tiktok": 0.002, "youtube": 0.15})
     trust: dict = field(default_factory=lambda: {
         "twitter": 0.8, "instagram": 0.7, "friendship": 1.3, "reddit": 0.9, "tiktok": 0.6, "youtube": 1.0})
+    # PLACEHOLDER: how strongly items arriving on each platform compete for an agent's attention slots
+    attention_boost: dict = field(default_factory=lambda: {
+        "twitter": 1.0, "instagram": 1.0, "friendship": 1.2, "reddit": 1.0, "tiktok": 1.1, "youtube": 1.0})
 
 
 @dataclass
@@ -122,6 +125,7 @@ class DiffusionConfig:
     salience_decay: float = 0.97          # per tick (half-life ~6h)
     retire_salience: float = 0.03
     share_ttl: int = 32                   # PLACEHOLDER: ticks a share stays in followers' feeds (8h)
+    outrage_weight: float = 0.3          # PLACEHOLDER: extra sharing when an item contradicts the agent's view
     exposure_scale: float = 4.0           # PLACEHOLDER: multiplies every layer's reach (salient rumours go viral)
     max_items: int = 128                  # active items kept in memory
     mutate_rate: float = 0.04
@@ -181,6 +185,9 @@ class MarketConfig:
     prop_imbalance_k: float = 0.2         # PLACEHOLDER
     fund_value_k: float = 5.0             # PLACEHOLDER: fund target = capital * clip(k * (V - P) / P, -1, 1)
     fund_lag_ticks: int = 96              # funds know V_true with a 1-day lag
+    company_buyback_programme: float = 0.02  # PLACEHOLDER: buyback cash vs total investor wealth (0 = no company agent)
+    company_buyback_threshold: float = 0.08  # PLACEHOLDER: discount to its own value at which the company buys back
+    company_buyback_daily: float = 0.1       # PLACEHOLDER: share of the programme it may spend per day
 
 
 @dataclass

@@ -2034,6 +2034,15 @@
             "default": 32,
             "placeholder": true
           },
+          "outrage_weight": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "title": "Outrage Weight",
+            "description": "Extra sharing when an item contradicts the agent's view",
+            "default": 0.3,
+            "placeholder": true
+          },
           "exposure_scale": {
             "type": "number",
             "maximum": 100.0,
@@ -2602,6 +2611,33 @@
               "youtube"
             ],
             "placeholder": false
+          },
+          "attention_boost": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Attention Boost",
+            "description": "How strongly items arriving on each platform compete for an agent's attention slots",
+            "default": {
+              "twitter": 1.0,
+              "instagram": 1.0,
+              "friendship": 1.2,
+              "reddit": 1.0,
+              "tiktok": 1.1,
+              "youtube": 1.0
+            },
+            "keys": [
+              "twitter",
+              "instagram",
+              "friendship",
+              "reddit",
+              "tiktok",
+              "youtube"
+            ],
+            "placeholder": true
           }
         },
         "additionalProperties": false,
@@ -2850,6 +2886,33 @@
             "description": "Funds know V_true with a 1-day lag",
             "default": 96,
             "placeholder": false
+          },
+          "company_buyback_programme": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Company Buyback Programme",
+            "description": "Buyback cash vs total investor wealth (0 = no company agent)",
+            "default": 0.02,
+            "placeholder": true
+          },
+          "company_buyback_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Company Buyback Threshold",
+            "description": "Discount to its own value at which the company buys back",
+            "default": 0.08,
+            "placeholder": true
+          },
+          "company_buyback_daily": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Company Buyback Daily",
+            "description": "Share of the programme it may spend per day",
+            "default": 0.1,
+            "placeholder": true
           }
         },
         "additionalProperties": false,

@@ -167,6 +167,11 @@ The 10,000 people come with 5 media outlets (`media_per_100k = 50`). The outlets
 - **2026-11-24 · #25 · The Analysis page shows the recovery-test result from DECISIONS** (it is a one-minute engine run, not a per-user job) next to live calibrations and backtests. Uploads read the files in the browser and post their text (#18). Calibrations and backtests are listed by mode from the run index.
 - **2026-11-24 · #25 · Run summaries carry daily closes** (`price_spark`) and, for Monte Carlo, the median final price and return, so the run library shows the same sparkline and final move for real and mock runs.
 - **2026-11-24 · #25 · e2e reliability.** Waits use page load plus a content locator instead of `networkidle` (pages poll), assertions allow 10 s, axe runs after animations settle, and local runs use at most 6 workers against the single Vite dev server.
+- **2026-11-24 · notes gaps · Platform boost.** Items compete for an agent's attention slots on exposure × salience × platform boost, where the boost is the exposure-weighted `graph.attention_boost` of the layers that delivered the item (new PLACEHOLDER: friendship 1.2, TikTok 1.1, others 1.0; TV / push alerts 1.0). It only reorders the competition; whether an item is seen at all still follows p_see.
+- **2026-11-24 · notes gaps · Outrage.** Sharing gains `outrage_weight · max(−sentiment × confidence, 0)` (new PLACEHOLDER 0.3, against 0.8 for agreement), so an item that contradicts an agent's view can also be shared, as the notes say ("agreement (or outrage)").
+- **2026-11-24 · notes gaps · Connections are stored per agent** (`Population.connections`: followers on directed layers + friends), set when the world is built and used to pick insiders.
+- **2026-11-24 · notes gaps · The company is an agent.** `firms.Company` runs a buyback programme: it knows its own value at once and buys back (never sells) when the price is more than `company_buyback_threshold` (8%) below it, spending at most `company_buyback_daily` (10%) of its programme (2% of investor wealth) per day; bought shares are retired. All new PLACEHOLDERs.
+- **2026-11-24 · notes gaps · The `[TBD]` agent field stays out:** the notes never say what it is.
 
 ## Simplifications
 

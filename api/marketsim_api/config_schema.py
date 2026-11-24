@@ -94,6 +94,7 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "graph.reddit_zipf": (0.0, 3.0),
     "graph.reach": (0.0, 10.0),
     "graph.trust": (0.0, 5.0),
+    "graph.attention_boost": (0.0, 10.0),
     # diffusion
     "diffusion.base_online": (0.0, 1.0),
     "diffusion.attention_slots": (1, 50),
@@ -103,6 +104,7 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "diffusion.retire_salience": (0.0, 1.0),
     "diffusion.share_ttl": (1, 960),
     "diffusion.exposure_scale": (0.0, 100.0),
+    "diffusion.outrage_weight": (0.0, 5.0),
     "diffusion.max_items": (8, 4096),
     "diffusion.mutate_rate": (0.0, 1.0),
     "diffusion.invent_rate": (0.0, 1.0),
@@ -150,6 +152,9 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "market.prop_imbalance_k": (0.0, 100.0),
     "market.fund_value_k": (0.0, 100.0),
     "market.fund_lag_ticks": (0, 9600),
+    "market.company_buyback_programme": (0.0, 1.0),
+    "market.company_buyback_threshold": (0.0, 1.0),
+    "market.company_buyback_daily": (0.0, 1.0),
 }
 
 # Descriptions for fields whose comment in config.py does not describe them on its own.
