@@ -227,3 +227,37 @@ The 100k target (< 0.5 s per tick) is met with a wide margin. "Halved" halves ev
 **Profile at 1M (default degrees, one day, 23.5 s):** (1) `Diffusion._absorb`, 8.3 s: sorting and de-duplicating the (item, agent) exposure triples; (2) gathering receivers from the graph CSRs (`gather_rows` + `np.repeat`), ~5.5 s; (3) the online mask (`online_prob` + mask), 2.1 s. The easy win taken: the investor mask used during market hours is now cached instead of rebuilt every tick. The rest is already vectorised; the big lever is fewer items (next point).
 
 **At 1M a viral rumour mutates almost every tick.** The handoff's rule gives every sharer of a narrative a chance to mutate, with at most one child per parent per tick. With thousands of sharers per tick the cap binds every tick: 247 mutations in one day, and 122 items evicted from the 128-slot store. Kept as specified; v2 should make mutation a per-item rate.
+
+### Real stock, real events: the AAPL experiment
+
+`scripts/fetch_market_data.py AAPL` (one-off, network) → `data/AAPL/`; `python -m marketsim.experiment AAPL` (offline) → `docs/experiments/AAPL/` and the web app's **Real data** page.
+
+**Data.** Adjusted daily closes for AAPL and SPY from Yahoo's chart API; every 8-K, 8-K/A, 10-Q and 10-K from SEC EDGAR's submissions API, with item codes and the exact acceptance time; quarterly diluted EPS and revenue from SEC XBRL `companyfacts`. Requests send a generic User-Agent, nothing personal. The engine never calls the network.
+
+**Event timing.** EDGAR's `acceptanceDateTime` is UTC (an earnings release at 16:30 New York shows as 21:30 or 20:30), so times are converted to New York with the US DST rules. A filing accepted before 16:00 on a trading day is reflected in that day's close, otherwise in the next close.
+
+**Labels.** Market-model event study against SPY (120-day estimation window), abnormal log return on the reaction day only, window (0, 0). Labels are training and scoring targets, never forecast inputs.
+
+**Earnings own their reaction day.** Apple files a 10-Q (and often other 8-Ks) within days of its earnings 8-K. When several filings share a reaction day with an earnings release, only the release is a training example; otherwise the 10-Q "learns" the earnings move.
+
+**Impact model ("classification model or something").** Multinomial logistic regression with L2 on three classes (down < −1%, flat, up > +1% abnormal return), plus ridge regression on log |abnormal return| with a lognormal residual. Features known at the announcement: the filing group (8 groups from item codes), release after the close, 5- and 20-day stock return, 5-day market return, 20-day realised volatility, volume ratio and, for earnings only, year-on-year growth of the reported EPS and revenue. L2 is picked on the last 30% of the training years. Size is the predictable part (Apple's earnings move the stock about 4× more than other filings); direction is close to a coin flip, as it should be for a liquid large cap.
+
+**Forecasters** (each gives a distribution of the close h days ahead, scored by CRPS against a random walk):
+
+1. *Random walk*: lognormal with the trailing 20-day volatility.
+2. *Event-aware random walk*: the same, plus a jump drawn from the impact model for every scheduled earnings release inside the horizon.
+3. *Agent model, raw*: the simulation is started 5 trading days before the origin. The filings from that warm-up are injected at the impact model's expected reaction. Scheduled earnings in the horizon are injected with a reaction sampled from the impact model in each run; the release's numbers aren't known in advance, so EPS and revenue growth are masked. The R runs become a predictive distribution with the small-sample Student-t rule.
+4. *Agent model, recalibrated*: the same runs after a correction fitted on training origins only. The forecast log return is Normal(shrink × ensemble mean, sqrt((spread × ensemble sd)² + (w × trailing vol)²)), with the parameters fitted by minimum CRPS. This is the standard "model output statistics" step of ensemble weather forecasting.
+5. *Agent model, oracle*: the raw model, but every event in the horizon (scheduled or not) is injected with its true reaction. This leaks the future on purpose. It is an upper bound on what better event prediction could buy, not a forecaster.
+
+**Scoring ensembles fairly.** The first full run scored the agent model's 10 runs directly against a random walk scored on 4,000 samples, and that comparison is biased in two ways. The 5–95% interval of 10 draws contains a new draw only about 80% of the time, however good the model. The sample CRPS of an R-member ensemble is also inflated by about E|X − X'| / (2R), about 10% of the score at R = 10. That penalty grows with the spread, so the parameter grid preferred the narrowest ensemble. This was most of that run's "−9.5% skill, 71% coverage". Every forecaster is now scored on the same number of samples drawn from its predictive distribution.
+
+**Earnings jump scale.** The impact model's size distribution is fitted on all filings. A single scale on its sampled earnings jumps is chosen by the event-aware random walk's one-day CRPS over every training-period earnings release (33 of them), and it applies to both the event-aware random walk and the agent model.
+
+Only earnings count as scheduled (their dates are public weeks ahead); every other filing reaches a forecaster only after it happens. `tests/test_realdata.py` checks this.
+
+**Training the simulation.** A grid over `market.noise_frac` × `market.mm_news_pass_through`, scored by the raw ensemble's mean one-day CRPS on 200 training origins drawn at random from 2016–2023. The recalibration is then fitted per horizon on the same origins. An earlier version took the training origins around events only. That over-represented pre-earnings days and picked too little noise, so the agent model's 90% band covered only 57% of outcomes. Random origins fixed it.
+
+**Not fitted to data, still PLACEHOLDER:** the population (wealth, archetype mix, confidence) and the social graph (degrees, platform mix, trust). The experiment fits only the market-level noise and news pass-through. An agent-level fit needs survey and platform data (see DATA_SOURCES.md), not a price series.
+
+**All six platforms on by default.** The design notes list Twitter, Reddit, friendship, Instagram, TikTok and YouTube, and all are now built by default (`graph.platforms`); turn some off to compare. Platform `attention_boost` (friendship 1.2, TikTok 1.1, others 1.0) and `diffusion.outrage_weight` (0.3) are PLACEHOLDER.

@@ -3,6 +3,7 @@ import {
   ChartSpline,
   FlaskConical,
   GitBranch,
+  Landmark,
   Library,
   Network,
   Palette,
@@ -68,6 +69,13 @@ export const NAV: NavItem[] = [
     icon: FlaskConical,
     description: "Calibration and backtests",
     shortcut: "G A",
+  },
+  {
+    path: "/real-data",
+    label: "Real data",
+    icon: Landmark,
+    description: "Real stock, real filings: trained, then tested out of sample",
+    shortcut: "G D",
   },
 ];
 

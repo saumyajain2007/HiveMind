@@ -17,12 +17,14 @@ from .viz import CATEGORICAL, DOWN, FUNDAMENTAL, INK, MUTED, OFFICIAL, UP
 LABEL = {
     "random_walk": "Random walk",
     "event_random_walk": "Event-aware random walk",
-    "abm": "Agent model (ABM)",
-    "abm_oracle": "ABM + true event reactions (oracle)",
+    "abm_raw": "Agent model, raw ensemble",
+    "abm": "Agent model, recalibrated",
+    "abm_oracle": "Agent model + true event reactions (oracle)",
 }
 COLOR = {
     "random_walk": MUTED,
     "event_random_walk": OFFICIAL,
+    "abm_raw": CATEGORICAL[3],
     "abm": UP,
     "abm_oracle": FUNDAMENTAL,
 }
@@ -86,14 +88,15 @@ def plot_skill(summary: dict[str, Any], out: Path, h: int) -> str:
         ("earnings_in_horizon", "Earnings in horizon"),
         ("no_earnings", "Other days"),
     ]
-    models = ["event_random_walk", "abm", "abm_oracle"]
-    fig, ax = plt.subplots(figsize=(8.5, 3.8))
+    models = ["event_random_walk", "abm_raw", "abm", "abm_oracle"]
+    fig, ax = plt.subplots(figsize=(9, 3.8))
     x = np.arange(len(groups))
-    w = 0.26
+    w = 0.2
     for i, m in enumerate(models):
         vals = [summary[g].get(m, {}).get("skill_vs_random_walk", 0.0) * 100 for g, _ in groups]
-        ax.bar(x + (i - 1) * w, vals, width=w * 0.92, color=COLOR[m], label=LABEL[m])
-        for xi, v in zip(x + (i - 1) * w, vals, strict=True):
+        off = (i - (len(models) - 1) / 2) * w
+        ax.bar(x + off, vals, width=w * 0.92, color=COLOR[m], label=LABEL[m])
+        for xi, v in zip(x + off, vals, strict=True):
             ax.annotate(
                 f"{v:+.1f}%",
                 (xi, v),
@@ -197,6 +200,23 @@ def write_report(res: dict[str, Any], out: Path) -> Path:
             f"| Earnings only: direction hit rate / size corr. | {te['direction_hit_rate']:.0%} of {te['n_moves']} / "
             f"{te['size_corr']:.2f} |"
         )
+    if im.get("events"):
+        big = sorted(im["events"], key=lambda e: -abs(e["actual"]))[:15]
+        lines += [
+            "",
+            "**Predicted vs actual reaction, the 15 biggest test-period events** (abnormal return on the reaction day):",
+            "",
+            "| reaction day | filing | actual | P(down / flat / up) | predicted size | called it? |",
+            "|---|---|---|---|---|---|",
+        ]
+        for e in big:
+            call = "up" if e["p_up"] >= e["p_down"] else "down"
+            real = "up" if e["actual"] > 0 else "down"
+            lines.append(
+                f"| {e['date']} | {e['form']} {', '.join(e['items'])} ({e['group']}) | {_pct(e['actual'])} | "
+                f"{e['p_down']:.0%} / {e['p_flat']:.0%} / {e['p_up']:.0%} | ±{e['size'] * 100:.1f}% | "
+                f"{'yes' if call == real else 'no'} ({call}) |"
+            )
     lines += ["", "![impact weights](impact_size_weights.png)", ""]
     sim = res["simulation"]
     lines += [
@@ -214,6 +234,20 @@ def write_report(res: dict[str, Any], out: Path) -> Path:
         f"Chosen: `{sim['params']}`.",
         "",
     ]
+    if sim.get("recalibration"):
+        lines += [
+            "**Recalibration** (fitted on the same training origins): log return ~ Normal(shrink x ensemble mean, "
+            "sqrt((spread x ensemble sd)^2 + (vol weight x trailing vol)^2)).",
+            "",
+            "| horizon | shrink | spread | vol weight | training CRPS, raw -> recalibrated (log-return %) |",
+            "|---|---|---|---|---|",
+            *[
+                f"| {h} d | {r['shrink']:.2f} | {r['spread']:.2f} | {r['vol_weight']:.2f} | "
+                f"{r['raw_train_crps'] * 100:.3f} -> {r['train_crps'] * 100:.3f} |"
+                for h, r in sim["recalibration"].items()
+            ],
+            "",
+        ]
     for h, b in res["backtest"].items():
         s, rows = b["summary"], b["origins"]
         lines += [
@@ -222,15 +256,19 @@ def write_report(res: dict[str, Any], out: Path) -> Path:
             "| model | CRPS (% of price) | skill vs RW | 90% coverage | direction acc. | Brier (up) |",
             "|---|---|---|---|---|---|",
         ]
-        for m in ("random_walk", "event_random_walk", "abm", "abm_oracle"):
+        for m in LABEL:
+            if m not in s["all"]:
+                continue
             x = s["all"][m]
             lines.append(
                 f"| {LABEL[m]} | {x['mean_crps_pct']:.3f} | {_pct(x['skill_vs_random_walk'])} | {x['coverage_90']:.0%} | "
                 f"{x['direction_accuracy']:.0%} | {x['brier_up']:.3f} |"
             )
         lines += ["", "| skill vs random walk | earnings in horizon | other days |", "|---|---|---|"]
-        for m in ("event_random_walk", "abm", "abm_oracle"):
+        for m in ("event_random_walk", "abm_raw", "abm", "abm_oracle"):
             e, o = s["earnings_in_horizon"], s["no_earnings"]
+            if m not in o:
+                continue
             lines.append(
                 f"| {LABEL[m]} | {_pct(e[m]['skill_vs_random_walk']) if e['n'] else '–'} (n={e['n']}) | "
                 f"{_pct(o[m]['skill_vs_random_walk'])} (n={o['n']}) |"

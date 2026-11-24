@@ -32,6 +32,20 @@ test("analysis: start a calibration and a backtest", async ({ page }) => {
   await axe(page);
 });
 
+test("real data: horizons, bands and the biggest differences", async ({ page }) => {
+  await page.goto("/real-data");
+  await expect(page.getByRole("heading", { name: /AAPL/ })).toBeVisible();
+  await expect(page.getByRole("img", { name: /90% forecast band/ })).toBeVisible();
+  await expect(page.getByText("Biggest differences: agent model vs random walk")).toBeVisible();
+  await page.getByRole("tab", { name: "5 days ahead" }).click();
+  await expect(page.getByRole("tab", { name: "5 days ahead" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await page.getByRole("combobox", { name: "Window" }).selectOption("all");
+  await axe(page);
+});
+
 test("run library: compare two runs, duplicate one into the Builder", async ({ page }) => {
   await page.goto("/");
   const boxes = page.getByRole("checkbox", { name: /^Compare / });

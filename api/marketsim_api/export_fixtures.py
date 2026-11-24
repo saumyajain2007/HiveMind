@@ -57,8 +57,25 @@ def _write_single(c: TestClient, run: dict[str, Any]) -> None:
     _write("node-seen", c.get(f"{V1}/runs/{s}/node-seen").json())
 
 
+def write_experiment_fixture(ticker: str = "AAPL", keep: int = 200) -> bool:
+    """A trimmed copy of a real-data experiment (the last `keep` forecasts per horizon, full
+    summaries) for the Real data page's mocks. Returns False if the experiment has not been run."""
+    src = Path(__file__).resolve().parents[2] / "docs" / "experiments" / ticker / "results.json"
+    if not src.exists():
+        return False
+    res = json.loads(src.read_text(encoding="utf-8"))
+    for b in res["backtest"].values():
+        b["origins"] = b["origins"][-keep:]
+    res["simulation"].pop("grid_detail", None)
+    _write("experiment", res)
+    return True
+
+
 def main() -> None:
     single_only = "--single-only" in sys.argv  # refresh just the single-run fixtures (faster)
+    if "--experiment-only" in sys.argv:
+        write_experiment_fixture()
+        return
     with tempfile.TemporaryDirectory() as tmp:
         settings = Settings(data_dir=Path(tmp), log_json=False, run_jobs=True, max_jobs=4, executor="thread")
         with TestClient(create_app(settings)) as c:
@@ -114,6 +131,7 @@ def main() -> None:
             _write("dataset", c.get(f"{V1}/data/{ds['id']}").json())
             _write("calibration", c.get(f"{V1}/calibrations/{cal['id']}").json())
             _write("backtest", c.get(f"{V1}/backtests/{bt['id']}").json())
+    write_experiment_fixture()
 
 
 if __name__ == "__main__":

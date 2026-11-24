@@ -505,6 +505,47 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/experiments": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List Experiments
+     * @description Every experiment with its periods and headline skill (one-day horizon).
+     */
+    get: operations["list_experiments_api_v1_experiments_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/experiments/{ticker}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Experiment
+     * @description Full results: impact-model metrics, simulation training log, and every out-of-sample
+     *     forecast (date, actual close, each model's median / 90% interval / P(up) / CRPS).
+     */
+    get: operations["get_experiment_api_v1_experiments__ticker__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3056,6 +3097,61 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["ParseResponse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  list_experiments_api_v1_experiments_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          }[];
+        };
+      };
+    };
+  };
+  get_experiment_api_v1_experiments__ticker__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        ticker: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
         };
       };
       /** @description Validation Error */

@@ -10,6 +10,7 @@ RUN uv sync --locked --no-dev --extra api --no-install-project
 
 COPY marketsim ./marketsim
 COPY api ./api
+COPY docs/experiments ./docs/experiments
 RUN uv sync --locked --no-dev --extra api
 
 ENV MARKETSIM_DATA_DIR=/data MARKETSIM_MAX_JOBS=2 MARKETSIM_CORS_ORIGINS=http://localhost:8080

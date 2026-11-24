@@ -279,5 +279,30 @@ export function resultHandlers(ctx: Ctx) {
         ? HttpResponse.json({ ...backtest, run: r })
         : notFound("backtest");
     }),
+    // Real-data experiment (trimmed AAPL results), loaded on demand: it is the largest fixture.
+    http.get("*/api/v1/experiments", async () => {
+      const e = (await import("./fixtures/results/experiment.json")).default;
+      const one = e.backtest["1"].summary.all;
+      return HttpResponse.json([
+        {
+          ticker: e.ticker,
+          name: e.name,
+          period: e.period,
+          events: e.events,
+          horizons: Object.keys(e.backtest).map(Number),
+          skill: Object.fromEntries(
+            Object.entries(one)
+              .filter(([k]) => k !== "n")
+              .map(([k, v]) => [k, (v as { skill_vs_random_walk: number }).skill_vs_random_walk]),
+          ),
+        },
+      ]);
+    }),
+    http.get("*/api/v1/experiments/:ticker", async ({ params }) => {
+      const e = (await import("./fixtures/results/experiment.json")).default;
+      return String(params.ticker).toUpperCase() === e.ticker
+        ? HttpResponse.json(e)
+        : notFound("experiment");
+    }),
   ];
 }

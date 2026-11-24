@@ -14,12 +14,20 @@
    * ``random_walk``: lognormal, trailing 20-day volatility (the benchmark);
    * ``event_random_walk``: the same plus a jump for every *scheduled* earnings release in the
      horizon, drawn from the impact model (earnings dates are announced weeks ahead);
-   * ``abm``: the agent-based simulation, seeded with the events known at the forecast origin
-     (as the impact model reads them) plus scheduled earnings in the horizon (a fresh draw
-     from the impact model in each run);
-   * ``abm_oracle``: the simulation told every event in the window *and its true reaction*.
-     It uses the future and is not a forecast; it shows how much better perfect event
-     knowledge would make the simulation.
+   * ``abm_raw``: the agent-based simulation, seeded with the events known at the forecast
+     origin (as the impact model reads them) plus scheduled earnings in the horizon (a fresh
+     draw from the impact model in each run). Its R runs become a predictive distribution
+     with the small-sample Student-t rule (`raw_predictive`);
+   * ``abm``: the same runs, post-processed by a recalibration fitted on training origins only
+     (`Recalibration`: shrink the ensemble's centre, rescale its spread, blend in trailing
+     volatility; the "model output statistics" step of weather forecasting);
+   * ``abm_oracle``: the simulation told every event in the window *and its true reaction*
+     (raw ensemble). It uses the future and is not a forecast; it shows how much better
+     perfect event knowledge would make the simulation.
+
+   Every forecaster is scored on the same number of samples (`rw_samples`). Scoring a
+   16-member ensemble directly would add a penalty of about spread / (2 x 16) to its CRPS
+   and cap its 5-95% interval's coverage near 80%, which says nothing about the model.
 
 5. **Report:** `docs/experiments/<TICKER>/` gets results.json, report.md and plots, and
    `data/<TICKER>/events.json` gets the labelled events in the format the web app uploads.
@@ -42,6 +50,8 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import norm
 
 from .backtest import crps_sample
 from .calibration import with_params
@@ -53,7 +63,7 @@ from .sim import Scenario, Simulation, World, json_safe
 
 ROOT = Path(__file__).resolve().parents[1]
 CLOSE_TICK = 63
-MODELS = ("random_walk", "event_random_walk", "abm", "abm_oracle")
+MODELS = ("random_walk", "event_random_walk", "abm_raw", "abm", "abm_oracle")
 KIND = {
     "earnings": "earnings",
     "periodic_report": "regulatory",
@@ -79,12 +89,12 @@ class ExperimentConfig:
     vol_window: int = 20
     train_origins: int = 200
     test_every: int = 1  # forecast from every n-th trading day of the test period
+    long_every: int = 2  # and, for horizons > 1 day (overlapping windows), every n-th of those
     grid: dict[str, list[float]] = field(
         default_factory=lambda: {
             # the agents' own order flow is too smooth (thousands of independent choices average
             # out), so the unmodelled-flow noise is the main lever on the forecast spread
-            "market.noise_frac": [0.6, 1.0, 1.5, 2.2],
-            "market.impact_Y": [0.5, 0.9],
+            "market.noise_frac": [0.4, 0.6, 0.8, 1.1, 1.5],
             "market.mm_news_pass_through": [0.6, 1.0],
         }
     )
@@ -164,6 +174,74 @@ def _simulate(task: OriginTask) -> np.ndarray:
     return np.asarray(out)
 
 
+# --------------------------------------------------------------------------- ensembles -> forecasts
+
+
+def _log_stats(ratios: np.ndarray) -> tuple[float, float]:
+    lr = np.log(np.asarray(ratios, np.float64))
+    return float(lr.mean()), float(lr.std(ddof=1)) if len(lr) > 1 else 0.0
+
+
+def raw_predictive(ratios: np.ndarray, rng: np.random.Generator, n: int) -> np.ndarray:
+    """Predictive distribution of a new run given R runs (normal log returns, unknown mean and
+    variance): Student-t with R - 1 degrees of freedom, scale sd * sqrt(1 + 1/R)."""
+    m = len(ratios)
+    mu, sd = _log_stats(ratios)
+    scale = max(sd, 1e-6) * math.sqrt(1.0 + 1.0 / m)
+    return np.exp(mu + scale * rng.standard_t(max(m - 1, 1), n))
+
+
+def gaussian_crps(mu: np.ndarray, sigma: np.ndarray, y: np.ndarray) -> np.ndarray:
+    z = (y - mu) / sigma
+    return np.asarray(sigma * (z * (2 * norm.cdf(z) - 1) + 2 * norm.pdf(z) - 1 / math.sqrt(math.pi)))
+
+
+@dataclass
+class Recalibration:
+    """Ensemble -> forecast: log return ~ Normal(shrink * ensemble mean,
+    sqrt((spread * ensemble sd)^2 + (vol_weight * trailing vol * sqrt(h))^2)).
+    Fitted by minimum CRPS on training origins (Gneiting et al. 2005, EMOS)."""
+
+    shrink: float = 1.0
+    spread: float = 1.0
+    vol_weight: float = 0.0
+    train_crps: float = float("nan")
+    raw_train_crps: float = float("nan")
+
+    def params(self, ratios: np.ndarray, rv: float) -> tuple[float, float]:
+        mu, sd = _log_stats(ratios)
+        return self.shrink * mu, math.sqrt((self.spread * sd) ** 2 + (self.vol_weight * rv) ** 2) + 1e-9
+
+    def sample(self, ratios: np.ndarray, rv: float, rng: np.random.Generator, n: int) -> np.ndarray:
+        mu, s = self.params(ratios, rv)
+        return np.exp(rng.normal(mu, s, n))
+
+    @staticmethod
+    def fit(ensembles: Sequence[np.ndarray], rv: np.ndarray, y: np.ndarray) -> Recalibration:
+        stats = np.array([_log_stats(e) for e in ensembles])
+        mus, sds = stats[:, 0], stats[:, 1]
+        m = len(ensembles[0])
+
+        def loss(th: np.ndarray) -> float:
+            b, a, c = th[0], math.exp(th[1]), math.exp(th[2])
+            s = np.sqrt((a * sds) ** 2 + (c * rv) ** 2) + 1e-9
+            return float(np.mean(gaussian_crps(b * mus, s, y)))
+
+        fits = [
+            minimize(loss, np.array(x0), method="Nelder-Mead", options={"xatol": 1e-4, "fatol": 1e-9})
+            for x0 in ([1.0, 0.0, math.log(0.3)], [0.3, math.log(0.5), 0.0])
+        ]
+        best = min(fits, key=lambda r: float(r.fun))
+        raw = np.mean(gaussian_crps(mus, np.maximum(sds, 1e-6) * math.sqrt(1 + 1 / m), y))
+        return Recalibration(
+            shrink=float(best.x[0]),
+            spread=float(math.exp(best.x[1])),
+            vol_weight=float(math.exp(best.x[2])),
+            train_crps=float(best.fun),
+            raw_train_crps=float(raw),
+        )
+
+
 # --------------------------------------------------------------------------- the experiment
 
 
@@ -188,6 +266,10 @@ class Experiment:
         self.slots = {e.id: release_slot(self.ds, e) for e in self.ds.events}
         self.rng = np.random.default_rng([cfg.seed, 42])
         self.model = self._fit_impact_model()
+        self.jump_scale = 1.0
+        self.jump_scale, self.jump_fit = self._fit_jump_scale()
+        self.recal: dict[int, Recalibration] = {}
+        self.ensembles: dict[str, np.ndarray] = {}  # raw simulation runs, saved for re-scoring
 
     # ---------------------------------------------------------------- impact model
     def _fit_impact_model(self) -> ImpactModel:
@@ -203,6 +285,38 @@ class Experiment:
         assert best is not None
         self.l2 = best[1]
         return ImpactModel(l2=self.l2).fit(X, y)
+
+    def _fit_jump_scale(self) -> tuple[float, list[dict[str, float]]]:
+        """Scale on the impact model's sampled earnings jumps, chosen by the one-day CRPS of the
+        event-aware random walk over every training-period earnings release. The classifier's
+        size distribution is fitted on all filings, so its tails are not tuned to earnings."""
+        hist = self.ds.history
+        origins = [
+            e.reaction_idx - 1
+            for e in self.train_events
+            if e.group == "earnings" and e.reaction_idx - 1 >= self.from_idx
+        ]
+        if not origins:
+            return 1.0, []
+        fit = []
+        for k in (0.4, 0.6, 0.8, 1.0, 1.25, 1.5, 2.0):
+            rng = np.random.default_rng([self.cfg.seed, 11])  # common random numbers across k
+            crps = []
+            for o in origins:
+                s = self.trailing_vol(o)
+                z = rng.normal(-0.5 * s * s, s, self.cfg.rw_samples)
+                j = sum(
+                    (
+                        self.model.sample(self._masked_features(e, o), rng, self.cfg.rw_samples)[:, 0]
+                        for e in self.scheduled_in_horizon(o, 1)
+                    ),
+                    start=np.zeros(self.cfg.rw_samples),
+                )
+                crps.append(crps_sample(hist.close[o] * np.exp(z + k * j), hist.close[o + 1]) / hist.close[o])
+            fit.append({"scale": k, "mean_crps": float(np.mean(crps)), "n": len(origins)})
+        best = min(fit, key=lambda r: r["mean_crps"])
+        print(f"earnings jump scale: {best['scale']} (training earnings days: {len(origins)})")
+        return float(best["scale"]), fit
 
     def impact_report(self) -> dict[str, Any]:
         tr, te = self.train_events, self.test_events
@@ -223,6 +337,26 @@ class Experiment:
             k: float(self.model.W[i, 2] - self.model.W[i, 0]) for i, k in enumerate(FEATURES)
         }
         res["size_weights"] = {k: float(self.model.size_w[i]) for i, k in enumerate(FEATURES)}
+        # every out-of-sample event: the model's prediction next to what actually happened
+        if te:
+            X = feature_matrix(te)
+            p, size, exp = self.model.proba(X), self.model.size(X), self.model.expected(X)
+            res["events"] = [
+                {
+                    "date": self.ds.history.dates[e.reaction_idx],
+                    "released": e.released,
+                    "form": e.form,
+                    "items": e.items,
+                    "group": e.group,
+                    "actual": e.label,
+                    "p_down": float(p[i, 0]),
+                    "p_flat": float(p[i, 1]),
+                    "p_up": float(p[i, 2]),
+                    "size": float(size[i]),
+                    "expected": float(exp[i]),
+                }
+                for i, e in enumerate(te)
+            ]
         return res
 
     # ---------------------------------------------------------------- per-origin inputs
@@ -273,7 +407,7 @@ class Experiment:
                     r.append((tk, KIND[e.group], imp, float(p[2] - p[0]), sal, cx))
             elif e.group == "earnings":  # scheduled: a fresh draw of its reaction in every run
                 X = self._masked_features(e, o)
-                draws = self.model.sample(X, self.rng, runs)[:, 0]
+                draws = self.jump_scale * self.model.sample(X, self.rng, runs)[:, 0]
                 sal = float(np.clip(0.3 + 8.0 * self.model.size(X)[0], 0.2, 1.0))
                 for r, d in zip(rows, draws, strict=True):
                     r.append((tk, KIND[e.group], float(d), float(np.clip(20 * d, -1, 1)), sal, cx))
@@ -292,7 +426,10 @@ class Experiment:
         z = self.rng.normal(-0.5 * s * s, s, self.cfg.rw_samples)
         jumps = np.zeros(self.cfg.rw_samples)
         for e in self.scheduled_in_horizon(o, h):
-            jumps += self.model.sample(self._masked_features(e, o), self.rng, self.cfg.rw_samples)[:, 0]
+            jumps += (
+                self.jump_scale
+                * self.model.sample(self._masked_features(e, o), self.rng, self.cfg.rw_samples)[:, 0]
+            )
         return np.exp(z), np.exp(z + jumps)
 
     # ---------------------------------------------------------------- running
@@ -303,18 +440,22 @@ class Experiment:
             return [_simulate(t) for t in tasks]
         return list(ex.map(_simulate, tasks, chunksize=4))
 
+    def training_origins(self) -> list[int]:
+        # a representative sample of training days (earnings days at their natural rate), so the
+        # chosen spread fits ordinary days as well as event days
+        cand = np.arange(self.from_idx, self.split_idx - max(self.cfg.horizons))
+        rng = np.random.default_rng([self.cfg.seed, 7])
+        return sorted(
+            int(o) for o in rng.choice(cand, size=min(self.cfg.train_origins, len(cand)), replace=False)
+        )
+
     def train_simulation(
         self, ex: ProcessPoolExecutor | None
     ) -> tuple[dict[str, float], list[dict[str, Any]]]:
-        """Grid search over market parameters on training origins, scored by one-day CRPS."""
+        """Grid search over market parameters on training origins, scored by the one-day CRPS of
+        the raw ensemble's predictive distribution; then, per horizon, the recalibration."""
         h = 1
-        # a representative sample of training days (earnings days at their natural rate), so the
-        # chosen spread fits ordinary days as well as event days
-        cand = np.arange(self.from_idx, self.split_idx - h)
-        rng = np.random.default_rng([self.cfg.seed, 7])
-        origins = sorted(
-            int(o) for o in rng.choice(cand, size=min(self.cfg.train_origins, len(cand)), replace=False)
-        )
+        origins = self.training_origins()
         keys = list(self.cfg.grid)
         combos = [dict(zip(keys, vals, strict=True)) for vals in _product([self.cfg.grid[k] for k in keys])]
         close = self.ds.history.close
@@ -323,24 +464,53 @@ class Experiment:
             t0 = time.perf_counter()
             sims = self._run_tasks(ex, [self.task(o, h, params, oracle=False) for o in origins])
             crps = [
-                crps_sample(close[o] * s, close[o + h]) / close[o] for o, s in zip(origins, sims, strict=True)
+                crps_sample(close[o] * raw_predictive(s, self.rng, self.cfg.rw_samples), close[o + h])
+                / close[o]
+                for o, s in zip(origins, sims, strict=True)
             ]
             log.append(
-                {"params": params, "mean_crps": float(np.mean(crps)), "seconds": time.perf_counter() - t0}
+                {
+                    "params": params,
+                    "mean_crps": float(np.mean(crps)),
+                    "mean_ensemble_sd": float(np.mean([_log_stats(s)[1] for s in sims])),
+                    "seconds": time.perf_counter() - t0,
+                    "_sims": sims,
+                }
             )
             print(f"  train {params}: CRPS {np.mean(crps) * 100:.4f}% of price")
         best = min(log, key=lambda r: r["mean_crps"])
-        return dict(best["params"]), log
+        params = dict(best["params"])
+        for hh in self.cfg.horizons:
+            sims = (
+                best["_sims"]
+                if hh == h
+                else self._run_tasks(ex, [self.task(o, hh, params, oracle=False) for o in origins])
+            )
+            rv = np.array([self.trailing_vol(o) * math.sqrt(hh) for o in origins])
+            y = np.array([math.log(close[o + hh] / close[o]) for o in origins])
+            self.recal[hh] = Recalibration.fit(sims, rv, y)
+            self.ensembles[f"train_h{hh}"] = np.array(sims)
+            self.ensembles[f"train_h{hh}_origins"] = np.array(origins)
+            print(f"  recalibration h={hh}: {self.recal[hh]}")
+        for r in log:
+            r.pop("_sims")
+        return params, log
 
     def backtest(
         self, ex: ProcessPoolExecutor | None, params: dict[str, float], h: int
     ) -> list[dict[str, Any]]:
         hist = self.ds.history
-        origins = list(range(self.split_idx, len(hist.dates) - h, self.cfg.test_every))
+        every = self.cfg.test_every * (1 if h == 1 else self.cfg.long_every)
+        origins = list(range(self.split_idx, len(hist.dates) - h, every))
         tasks = [self.task(o, h, params, oracle=False) for o in origins]
         oracle_tasks = [self.task(o, h, params, oracle=True) for o in origins]
         sims = self._run_tasks(ex, tasks + oracle_tasks)
         abm, orc = sims[: len(origins)], sims[len(origins) :]
+        self.ensembles[f"test_h{h}"] = np.array(abm)
+        self.ensembles[f"test_h{h}_oracle"] = np.array(orc)
+        self.ensembles[f"test_h{h}_origins"] = np.array(origins)
+        recal = self.recal.get(h, Recalibration())
+        n = self.cfg.rw_samples
         rows = []
         for i, o in enumerate(origins):
             p0, actual = float(hist.close[o]), float(hist.close[o + h])
@@ -356,7 +526,14 @@ class Experiment:
                     1 for e in self.ds.events if o - self.cfg.lookback_days <= e.reaction_idx <= o
                 ),
             }
-            for name, ratios in zip(MODELS, (rw, erw, abm[i], orc[i]), strict=True):
+            forecasts = (
+                rw,
+                erw,
+                raw_predictive(abm[i], self.rng, n),
+                recal.sample(abm[i], self.trailing_vol(o) * math.sqrt(h), self.rng, n),
+                raw_predictive(orc[i], self.rng, n),
+            )
+            for name, ratios in zip(MODELS, forecasts, strict=True):
                 s = p0 * ratios
                 row[name] = {
                     "crps": crps_sample(s, actual) / p0,
@@ -402,8 +579,12 @@ class Experiment:
                     "train": len(self.train_events),
                     "test": len(self.test_events),
                 },
-                "impact_model": impact,
-                "simulation": {"params": params, "grid": train_log},
+                "impact_model": {**impact, "jump_scale": self.jump_scale, "jump_fit": self.jump_fit},
+                "simulation": {
+                    "params": params,
+                    "grid": train_log,
+                    "recalibration": {str(h): asdict(r) for h, r in self.recal.items()},
+                },
                 "backtest": {
                     str(h): {"summary": summarize(rows), "origins": rows} for h, rows in results.items()
                 },
@@ -508,6 +689,7 @@ def main(argv: list[str] | None = None) -> dict[str, Any]:
     out = Path(cfg.out_dir) if cfg.out_dir else ROOT / "docs" / "experiments" / cfg.ticker.upper()
     out.mkdir(parents=True, exist_ok=True)
     (out / "results.json").write_text(json.dumps(res), encoding="utf-8")
+    np.savez_compressed(out / "ensembles.npz", **exp.ensembles)  # type: ignore[arg-type]
     if not cfg.data_root:
         write_events_json(exp, ROOT / "data" / cfg.ticker.upper() / "events.json")
     from .experiment_report import write_report

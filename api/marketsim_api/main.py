@@ -21,7 +21,7 @@ from . import __version__
 from .datasets import DatasetStore
 from .jobs import JobRegistry
 from .log import RequestLogMiddleware, configure_logging, logger
-from .routes import analysis, config, parse, results, runs, scenarios, stream
+from .routes import analysis, config, experiments, parse, results, runs, scenarios, stream
 from .schemas import Health
 from .settings import Settings
 from .storage import Store
@@ -84,6 +84,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(results.router)
     v1.include_router(analysis.router)
     v1.include_router(parse.router)
+    v1.include_router(experiments.router)
     app.include_router(v1)
     return app
 

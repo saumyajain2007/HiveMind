@@ -2,6 +2,7 @@ import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/re
 
 import { api, unwrap } from "./client";
 import type { Schemas } from "./client";
+import type * as E from "./experiments";
 import type * as R from "./results";
 import { DEMO } from "@/features/builder/presets";
 
@@ -249,5 +250,30 @@ export function useBacktest(id: string | null | undefined) {
       ) as unknown as R.AnalysisResponse<R.BacktestResult, R.BacktestOrigin>,
     enabled: Boolean(id),
     refetchInterval: (q) => (q.state.data?.result ? false : 1_500),
+  });
+}
+
+// ----------------------------------------------------------------------------- real-data experiments
+
+export function useExperiments() {
+  return useQuery({
+    queryKey: ["experiments"],
+    queryFn: async () =>
+      unwrap(await api.GET("/api/v1/experiments")) as unknown as E.ExperimentListItem[],
+    staleTime: Infinity,
+  });
+}
+
+export function useExperiment(ticker: string | null | undefined) {
+  return useQuery({
+    queryKey: ["experiment", ticker ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/experiments/{ticker}", {
+          params: { path: { ticker: ticker ?? "" } },
+        }),
+      ) as unknown as E.ExperimentResults,
+    enabled: Boolean(ticker),
+    staleTime: Infinity,
   });
 }

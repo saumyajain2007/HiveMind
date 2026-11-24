@@ -27,6 +27,9 @@ const NarrativesPage = lazy(() =>
 const AnalysisPage = lazy(() =>
   import("@/pages/AnalysisPage").then((m) => ({ default: m.AnalysisPage })),
 );
+const RealDataPage = lazy(() =>
+  import("@/pages/RealDataPage").then((m) => ({ default: m.RealDataPage })),
+);
 const DesignPage = lazy(() =>
   import("@/pages/DesignPage").then((m) => ({ default: m.DesignPage })),
 );
@@ -72,6 +75,7 @@ export const routes: RouteObject[] = [
       { path: "network", element: page(NetworkPage, {}) },
       { path: "narratives", element: page(NarrativesPage, {}) },
       { path: "analysis", element: page(AnalysisPage, {}) },
+      { path: "real-data", element: page(RealDataPage, {}) },
       { path: "design", element: page(DesignPage, {}) },
       { path: "*", element: page(NotFoundPage, {}) },
     ],
