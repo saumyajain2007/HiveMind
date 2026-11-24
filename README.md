@@ -2,7 +2,7 @@
 
 An agent-based simulator for a single stock. Agents with correlated traits live on several social platforms. News and rumours spread between them, change what they believe, and they trade on those beliefs in a batch auction. Running it many times gives a distribution of price paths, which is then calibrated against history and backtested against a random walk.
 
-> **Status: skeleton (issue #1).** Tooling and CI are in place; the engine, API and web app are built in issues #2–#25. See [`issues.md`](issues.md) for the plan and [`HANDOFF.md`](HANDOFF.md) for the engine spec.
+> **Status.** The engine (issues #2–#15) is complete: population, social graph, events, diffusion, beliefs and narratives, trading and firms, the batch-auction market, the simulation loop, Monte Carlo, calibration with a parameter-recovery test, a CRPS backtest and an offline headline parser. The API and web app are being built in #16–#25. See [`issues.md`](issues.md) for the plan and [`HANDOFF.md`](HANDOFF.md) for the engine spec.
 
 ## Repository layout
 
@@ -42,11 +42,79 @@ uv run pre-commit install
 
 ## Engine
 
+`marketsim/` is a pure Python + NumPy library (no web code, no network calls). Each tick is 15 minutes; the market is open from 09:30 to 16:00.
+
+| Module | What it does |
+|---|---|
+| `population` | N agents with eight correlated traits (Gaussian copula), investor categories, platform use, activity hours, communities, interests, influence; media outlets |
+| `graph` | Twitter and Instagram (directed Chung–Lu), Friendship (communities + triadic closure), Reddit (subreddit memberships), TikTok (algorithmic), YouTube (creators + upload lag); `layer_stats()` |
+| `events` | The event record, a queue, a strict JSON loader, Hawkes shocks, seeding (official / outlet / influencer / insider / anonymous), broadcast |
+| `items`, `diffusion` | Circulating news items and who has seen / shared them; spread over every platform with an attention cap |
+| `beliefs` | Bounded-confidence belief updates; adopt, mutate and invent narratives |
+| `trading`, `firms`, `market` | Retail strategies (fundamental / chartist / sentiment), prop firms and funds, a batch auction against a square-root-impact market maker, Black–Scholes ATM call |
+| `sim` | The tick loop, metrics, `on_tick` frames for live streaming, save / load |
+| `montecarlo`, `viz`, `run_demo` | R runs on one world, quantile fans, static plots |
+| `calibration`, `backtest`, `event_parser` | Random-search calibration + recovery test, CRPS backtest vs a random walk, offline LLM headline parser |
+
 ```bash
-uv run python -m marketsim.run_demo --agents 10000 --days 5 --runs 20   # plots + summary.json in outputs/
+uv run python -m marketsim.run_demo --agents 10000 --days 5 --runs 20   # plots + summary.json in outputs/ (≈10 s)
 uv run python -m marketsim.calibration          # parameter-recovery test (≈1 min)
 uv run python -m marketsim.backtest             # backtest on a synthetic series
+uv run python benchmarks/bench.py               # build time, s / tick, peak RSS
 ```
+
+```python
+from marketsim.config import Config
+from marketsim import scenarios, montecarlo
+from marketsim.sim import Simulation
+
+res = Simulation(Config(n_agents=10_000), scenarios.demo(), seed=1).run(5 * 96)
+res["series"]["price"], res["summary"]["families"]  # one run
+mc = montecarlo.run(Config(), scenarios.demo(), R=20, workers=2)
+mc.quantiles()["0.5"], mc.summary()["final_price_quantiles"]  # the distribution
+```
+
+Every run is determined by `(config, scenario, seed)`: `config.seed` builds the population and graph, `seed` drives the dynamics.
+
+### Results so far
+
+**Demo** (`run_demo`, 10k agents, 5 days, 20 runs, 7 s): the anonymous takeover rumour reaches ~30% of agents within a day, and ~45% of agents know the story once its official denial (same family) has spread; the −5% earnings miss gaps the price at the next open (median final price 95.4, V_true 95.1). Excess kurtosis of open-tick returns ≈ 59 (dominated by the earnings gap), |r| autocorrelation at lag 1 ≈ 0.03.
+
+**Parameter recovery** (#12, full tables in [`DECISIONS.md`](DECISIONS.md#parameter-recovery-test-12)). From one simulated 5-day path, the four calibrated parameters are only weakly identified:
+
+| parameter | true | recovered (one path) | recovered (median of 8 paths) |
+|---|---|---|---|
+| `impact_Y` | 0.9 | 1.33 | 0.70 |
+| `base_share` | 0.3 | 0.125 | 0.35 |
+| `mu0` | 0.4 | 0.39 | 0.15 |
+| `sentiment_scale` | 0.055 | 0.084 | 0.033 |
+
+`impact_Y` carries the most signal; `mu0` and `sentiment_scale` barely change the median price path. Calibrated values should not be trusted until the fit uses many events, adds awareness or volume targets, and pins the weak parameters from outside data.
+
+**Benchmarks** (#15, `benchmarks/bench.py`, demo scenario for one day, Windows 11, 32 threads, one process):
+
+| agents | degrees | edges | build | s / tick (mean) | s / tick (market open) | peak RSS |
+|---:|---|---:|---:|---:|---:|---:|
+| 10,000 | default | 160,442 | 0.2 s | 0.0005 | 0.0012 | 75 MB |
+| 100,000 | default | 1,756,497 | 2.2 s | 0.0030 | 0.0044 | 209 MB |
+| 1,000,000 | halved | 9,242,273 | 22 s | 0.055 | 0.060 | 1.0 GB |
+| 1,000,000 | default | 17,664,579 | 32 s | 0.24 | 0.096 | 1.9 GB |
+
+Per-tick cost follows the number of sharers' edges, not N × items: at 1M the default-degree run is slower because a viral rumour mutates almost every tick (see limitations).
+
+### Known limitations
+
+- **Nothing is fitted to data.** Every `PLACEHOLDER` in `config.py` is a guess; graph statistics are not yet matched to SNAP / Pew / Arctic Shift (see [`DATA_SOURCES.md`](DATA_SOURCES.md)).
+- **Weak identifiability** of the calibrated parameters (above).
+- **Returns are autocorrelated within the day** (lag-1 ACF ≈ 0.2): agents come online gradually, so order flow is persistent. Volatility clustering is weak.
+- **Mutation scales with N.** The handoff's rule gives every sharer a chance to mutate, with at most one child per parent per tick. At 1M agents a viral rumour spawns a child almost every tick (247 in a day), and the 128-slot item store evicts the faintest items.
+- **The market maker has unlimited capacity** and re-quotes on public news; its ADV tracks traded volume. There is no inventory-driven quote shading.
+- **Retail cannot short**; firms can. One ticker only.
+- **The backtest has no skill yet** on synthetic data (skill −0.14 against a random walk): without news inside the horizon, the model adds narrative noise.
+
+### v2
+
+Dealer gamma hedging; several tickers; LLM-driven discretionary funds (the `DiscretionaryPolicy` hook exists); fitting graph layers to data; the `[TBD]` trait from the design notes; per-item (not per-sharer) mutation rates; inventory-aware market making.
 
 ### Backtesting on real data
 
@@ -71,7 +139,7 @@ from marketsim.backtest import backtest, load_dated_events, load_price_csv
 dates, closes = load_price_csv("prices.csv")
 events = load_dated_events("events.json", dates)
 res = backtest(closes, events, origins=range(30, len(closes) - 1), horizon=1, runs=20, dates=dates)
-print(res.skill)   # 1 − mean CRPS(model) / mean CRPS(random walk); > 0 beats the random walk
+print(res.skill)  # 1 − mean CRPS(model) / mean CRPS(random walk); > 0 beats the random walk
 ```
 
 For historical events, `true_impact` should come from `event_parser.abnormal_return_impact` (an event study) for *calibration only*; using it as a forecast input is lookahead leakage.

@@ -177,4 +177,17 @@ Best RMSE 0.0040 vs 0.0078 at the true parameters.
 
 ### Benchmarks (#15)
 
-_(pending)_
+`uv run python benchmarks/bench.py --sizes 10000 100000 1000000` (each size in its own process; demo scenario for one day; Windows 11 dev machine, 32 threads, ~2 GB RAM free at the time):
+
+| agents | degrees | edges | build | s / tick (mean) | s / tick (open) | peak RSS |
+|---:|---|---:|---:|---:|---:|---:|
+| 10,000 | default | 160,442 | 0.2 s | 0.0005 | 0.0012 | 75 MB |
+| 100,000 | default | 1,756,497 | 2.2 s | 0.0030 | 0.0044 | 209 MB |
+| 1,000,000 | halved | 9,242,273 | 22 s | 0.055 | 0.060 | 1.0 GB |
+| 1,000,000 | default | 17,664,579 | 32 s | 0.24 | 0.096 | 1.9 GB |
+
+The 100k target (< 0.5 s per tick) is met with a wide margin. "Halved" halves every layer's mean degree / memberships; the default degrees also fit in memory, so both are listed.
+
+**Profile at 1M (default degrees, one day, 23.5 s):** (1) `Diffusion._absorb`, 8.3 s: sorting and de-duplicating the (item, agent) exposure triples; (2) gathering receivers from the graph CSRs (`gather_rows` + `np.repeat`), ~5.5 s; (3) the online mask (`online_prob` + mask), 2.1 s. The easy win taken: the investor mask used during market hours is now cached instead of rebuilt every tick. The rest is already vectorised; the big lever is fewer items (next point).
+
+**At 1M a viral rumour mutates almost every tick.** The handoff's rule gives every sharer of a narrative a chance to mutate, with at most one child per parent per tick. With thousands of sharers per tick the cap binds every tick: 247 mutations in one day, and 122 items evicted from the 128-slot store. Kept as specified; v2 should make mutation a per-item rate.

@@ -81,6 +81,7 @@ class Diffusion:
         self._yt_queue: list[tuple[int, int, int, np.ndarray]] = []  # (due tick, seq, item id, creators)
         self._yt_seq = 0
         self.price: float | None = None  # current share price, set by the simulation each tick
+        self._investor_mask: np.ndarray | None = None  # cached; rebuilt when agents are added
 
     # ---------------------------------------------------------------- 1. who is online
     def online_mask(self, tick: int) -> np.ndarray:
@@ -89,8 +90,9 @@ class Diffusion:
         p = pop.online_prob(hour, self.cfg.diffusion.base_online)
         in_day = tick % TICKS_PER_DAY
         if MARKET_OPEN_TICK <= in_day < MARKET_CLOSE_TICK:
-            investor = (pop.category != NON_INVESTOR) & (pop.category != MEDIA)
-            p = np.where(investor, p * self.cfg.trading.trading_online_boost, p)
+            if self._investor_mask is None or len(self._investor_mask) != pop.n:
+                self._investor_mask = (pop.category != NON_INVESTOR) & (pop.category != MEDIA)
+            p = np.where(self._investor_mask, p * self.cfg.trading.trading_online_boost, p)
         return self.rng.random(pop.n) < np.minimum(p, 1.0)
 
     # ---------------------------------------------------------------- YouTube lag
