@@ -22,7 +22,6 @@ const SECTION_TITLES: Record<string, string> = {
   market: "Market",
 };
 
-
 function fmt(v: number): string {
   if (!Number.isFinite(v)) return String(v);
   if (Math.abs(v) >= 1000) return v.toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -186,10 +185,7 @@ function PlatformCards({ value, onChange }: { value: string[]; onChange: (v: str
             )}
           >
             <PlatformIcon platform={p} />
-            <span className="text-[11px] text-muted-foreground">
-              {on ? "On" : "Off"}
-              
-            </span>
+            <span className="text-[11px] text-muted-foreground">{on ? "On" : "Off"}</span>
           </button>
         );
       })}
