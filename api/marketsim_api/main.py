@@ -2,7 +2,8 @@
 
 Run locally with:  uv run uvicorn marketsim_api.main:app --reload
 Environment: MARKETSIM_DATA_DIR (default ./runs), MARKETSIM_CORS_ORIGINS, MARKETSIM_LOG_LEVEL,
-MARKETSIM_LOG_JSON (1 = JSON lines, the default).
+MARKETSIM_LOG_JSON (1 = JSON lines, the default), MARKETSIM_MAX_JOBS (concurrent jobs, default 2),
+MARKETSIM_EXECUTOR (process | thread), MARKETSIM_RUN_JOBS (0 = record runs without running them).
 """
 
 from __future__ import annotations
@@ -16,8 +17,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import marketsim
 
 from . import __version__
+from .jobs import JobRegistry
 from .log import RequestLogMiddleware, configure_logging, logger
-from .routes import config, runs, scenarios
+from .routes import config, runs, scenarios, stream
 from .schemas import Health
 from .settings import Settings
 from .storage import Store
@@ -36,9 +38,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        app.state.store = Store(settings.data_dir)
-        logger.info("startup", extra={"data_dir": str(settings.data_dir), "version": __version__})
+        store = Store(settings.data_dir)
+        app.state.store = store
+        interrupted = store.fail_interrupted()
+        app.state.jobs = (
+            JobRegistry(store, settings.max_jobs, settings.executor) if settings.run_jobs else None
+        )
+        logger.info(
+            "startup",
+            extra={"data_dir": str(settings.data_dir), "version": __version__, "interrupted": interrupted},
+        )
         yield
+        if app.state.jobs is not None:
+            app.state.jobs.shutdown()
 
     app = FastAPI(
         title="marketsim API",
@@ -64,6 +76,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(config.router)
     v1.include_router(scenarios.router)
     v1.include_router(runs.router)
+    v1.include_router(stream.router)
     app.include_router(v1)
     return app
 

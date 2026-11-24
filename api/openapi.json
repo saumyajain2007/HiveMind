@@ -289,7 +289,7 @@
           "runs"
         ],
         "summary": "Create Run",
-        "description": "Record a run with status `queued`.\n\nThe scenario is copied into the run, so later edits to a saved scenario never change a\npast run.",
+        "description": "Record a run with status `queued` and start it.\n\nThe scenario is copied into the run, so later edits to a saved scenario never change a\npast run. Watch it on `WS /runs/{id}/stream`.",
         "operationId": "create_run_api_v1_runs_post",
         "requestBody": {
           "required": true,
@@ -456,6 +456,49 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/cancel": {
+      "post": {
+        "tags": [
+          "runs"
+        ],
+        "summary": "Cancel Run",
+        "description": "Ask a queued or running run to stop. It ends as `cancelled` and keeps what it computed.",
+        "operationId": "cancel_run_api_v1_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -2077,6 +2120,14 @@
             ],
             "title": "Seed",
             "description": "Overrides the scenario's seed"
+          },
+          "pace": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Pace",
+            "description": "Live viewing: at most this many ticks per second (0 = as fast as possible). Does not change results.",
+            "default": 0.0
           }
         },
         "additionalProperties": false,

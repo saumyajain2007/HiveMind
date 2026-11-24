@@ -20,3 +20,7 @@ class Settings:
     cors_origins: list[str] = field(default_factory=_origins)
     log_level: str = field(default_factory=lambda: os.environ.get("MARKETSIM_LOG_LEVEL", "INFO"))
     log_json: bool = field(default_factory=lambda: os.environ.get("MARKETSIM_LOG_JSON", "1") != "0")
+    # job runner (#17)
+    run_jobs: bool = field(default_factory=lambda: os.environ.get("MARKETSIM_RUN_JOBS", "1") != "0")
+    max_jobs: int = field(default_factory=lambda: int(os.environ.get("MARKETSIM_MAX_JOBS", "2")))
+    executor: str = field(default_factory=lambda: os.environ.get("MARKETSIM_EXECUTOR", "process"))

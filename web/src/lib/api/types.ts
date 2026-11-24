@@ -133,10 +133,10 @@ export interface paths {
     put?: never;
     /**
      * Create Run
-     * @description Record a run with status `queued`.
+     * @description Record a run with status `queued` and start it.
      *
      *     The scenario is copied into the run, so later edits to a saved scenario never change a
-     *     past run.
+     *     past run. Watch it on `WS /runs/{id}/stream`.
      */
     post: operations["create_run_api_v1_runs_post"];
     delete?: never;
@@ -158,6 +158,26 @@ export interface paths {
     post?: never;
     /** Delete Run */
     delete: operations["delete_run_api_v1_runs__run_id__delete"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/runs/{run_id}/cancel": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Cancel Run
+     * @description Ask a queued or running run to stop. It ends as `cancelled` and keeps what it computed.
+     */
+    post: operations["cancel_run_api_v1_runs__run_id__cancel_post"];
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -1207,6 +1227,12 @@ export interface components {
        * @description Overrides the scenario's seed
        */
       seed?: number | null;
+      /**
+       * Pace
+       * @description Live viewing: at most this many ticks per second (0 = as fast as possible). Does not change results.
+       * @default 0
+       */
+      pace: number;
     };
     /** RunDetail */
     RunDetail: {
@@ -1847,6 +1873,37 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  cancel_run_api_v1_runs__run_id__cancel_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        run_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RunDetail"];
+        };
       };
       /** @description Validation Error */
       422: {

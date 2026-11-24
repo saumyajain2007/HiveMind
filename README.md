@@ -153,10 +153,12 @@ FastAPI service in `api/marketsim_api`. Everything except `/api/health` lives un
 | `GET /config/defaults` | Default parameters (from `marketsim/config.py`) and an empty scenario |
 | `GET /config/schema` | Every parameter with default, range, description and `placeholder` flag, plus enums and the tick clock |
 | `POST/GET/PUT/DELETE /scenarios` | Saved scenarios: agent count, days, seed and scheduled events |
-| `POST /runs` | Record a run (`queued`) from a saved or inline scenario; execution arrives in #17 |
+| `POST /runs` | Start a run (single or Monte Carlo) from a saved or inline scenario; `pace` slows a single run down for live viewing |
 | `GET /runs`, `GET/DELETE /runs/{id}` | Run index (paged, filter by status) and run details |
+| `POST /runs/{id}/cancel` | Stop a queued or running run (it ends as `cancelled`, keeping what it computed) |
+| `WS /runs/{id}/stream` | Live frames: `hello`, then `tick` / `event` / `narrative` (or Monte Carlo `progress`), then `done` or `error`; `?after=<tick>` resumes |
 
-The parameter models are generated from the `config.py` dataclasses, so adding a field there adds it to the API (give it a range in `config_schema.FIELD_RANGES`; a test enforces this). Runs are stored under `MARKETSIM_DATA_DIR` (default `./runs`): `index.sqlite3` plus `runs/<id>/spec.json`. Each run has a `spec_hash`, and equal hashes mean identical results.
+The parameter models are generated from the `config.py` dataclasses, so adding a field there adds it to the API (give it a range in `config_schema.FIELD_RANGES`; a test enforces this). Runs are stored under `MARKETSIM_DATA_DIR` (default `./runs`): `index.sqlite3` plus `runs/<id>/spec.json` and the results (`result/` for a single run, `mc/` for Monte Carlo). Jobs run in a process pool of `MARKETSIM_MAX_JOBS` workers (default 2); further runs wait as `queued`. Each run has a `spec_hash`, and equal hashes mean identical results.
 
 After changing the API, regenerate the spec and the web types (CI checks both):
 
@@ -170,7 +172,7 @@ pnpm -C web gen:api
 React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Query, Zustand. The design is a night-mode trading terminal, with dark as the default and a light theme too. `/design` shows every token and component in both themes.
 
 - **Mock API.** `web/.env.development` sets `VITE_API_MOCK=true`, so `pnpm dev` runs against an in-browser mock of the FastAPI routes plus a replayed live stream (MSW, `web/src/mocks`). A "MOCK DATA" tag in the top bar says so. Set `VITE_API_MOCK=false` and run the API on :8000 to use the real backend; Vite proxies `/api`. Production builds never include the mocks.
-- **Live data.** `WS /api/v1/runs/{id}/stream` messages are defined in `web/src/lib/live/types.ts`; the real stream arrives with #17. Frames go into ring buffers outside React state, and subscribers re-render at most once per animation frame.
+- **Live data.** `WS /api/v1/runs/{id}/stream` messages are defined in `web/src/lib/live/types.ts`, and the API sends exactly those shapes. Frames go into ring buffers outside React state, and subscribers re-render at most once per animation frame.
 - **Shortcuts.** `Ctrl/⌘ K` opens the command palette. Charts can be read with the keyboard: focus a chart, then use ← →.
 - **Accessibility.** The e2e suite runs axe (WCAG 2.1 AA, including colour contrast) on every page in both themes. Animations respect `prefers-reduced-motion`.
 

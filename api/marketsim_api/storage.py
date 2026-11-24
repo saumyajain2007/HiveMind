@@ -226,6 +226,21 @@ class Store:
         if cur.rowcount == 0:
             raise NotFound(run_id)
 
+    def fail_interrupted(self) -> int:
+        """Mark runs left queued or running by a previous API process as failed."""
+        with self._conn() as c:
+            cur = c.execute(
+                "UPDATE runs SET status = ?, updated_at = ?, error = ? WHERE status IN (?, ?)",
+                (
+                    RunStatus.failed.value,
+                    _now().isoformat(),
+                    "interrupted: the API stopped before the run finished",
+                    RunStatus.queued.value,
+                    RunStatus.running.value,
+                ),
+            )
+        return int(cur.rowcount)
+
     def delete_run(self, run_id: str) -> None:
         run = self.get_run(run_id)
         if run.status in (RunStatus.queued, RunStatus.running):

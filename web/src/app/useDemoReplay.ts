@@ -16,6 +16,7 @@ export function useDemoReplay() {
         mode: "single",
         runs: 1,
         workers: 1,
+        pace: 48, // ticks per second: the 5-day demo plays out in about 10 s
       });
       connectRun(run.id);
       toast.success("Demo run started", { description: `${run.name} · ${run.id}` });

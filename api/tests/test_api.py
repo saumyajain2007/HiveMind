@@ -53,7 +53,12 @@ DENIAL = {
 @pytest.fixture
 def client(tmp_path: Path) -> Iterator[TestClient]:
     app = create_app(
-        Settings(data_dir=tmp_path / "data", cors_origins=["http://localhost:5173"], log_json=False)
+        Settings(
+            data_dir=tmp_path / "data",
+            cors_origins=["http://localhost:5173"],
+            log_json=False,
+            run_jobs=False,  # these tests cover the run index; execution is in test_jobs.py
+        )
     )
     with TestClient(app) as c:
         yield c

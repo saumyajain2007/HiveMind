@@ -162,6 +162,13 @@ class RunCreate(_Strict):
     scenario: ScenarioSpec | None = None
     parameters: Parameters | None = Field(None, description="Model parameters; defaults if omitted")
     seed: int | None = Field(None, ge=0, le=2**32 - 1, description="Overrides the scenario's seed")
+    pace: float = Field(
+        0.0,
+        ge=0.0,
+        le=10_000.0,
+        description="Live viewing: at most this many ticks per second (0 = as fast as possible). "
+        "Does not change results.",
+    )
 
     @model_validator(mode="after")
     def _one_scenario(self) -> RunCreate:

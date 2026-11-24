@@ -3,7 +3,14 @@ import { createStore } from "zustand/vanilla";
 
 import { SeriesBuffer } from "./buffer";
 import { LiveSocket, streamUrl } from "./socket";
-import type { FeedItem, HelloMessage, LiveStatus, StreamMessage, TickMessage } from "./types";
+import type {
+  FeedItem,
+  HelloMessage,
+  LiveStatus,
+  ProgressMessage,
+  StreamMessage,
+  TickMessage,
+} from "./types";
 
 /** Ticks kept per series: 250 days × 96 ticks, enough for the longest allowed run. */
 export const LIVE_CAPACITY = 24_000;
@@ -20,6 +27,10 @@ export const series = {
   vTrue: new SeriesBuffer(LIVE_CAPACITY),
   volume: new SeriesBuffer(LIVE_CAPACITY),
   confidence: new SeriesBuffer(LIVE_CAPACITY),
+  iv: new SeriesBuffer(LIVE_CAPACITY),
+  atmCall: new SeriesBuffer(LIVE_CAPACITY),
+  mmInventory: new SeriesBuffer(LIVE_CAPACITY),
+  imbalance: new SeriesBuffer(LIVE_CAPACITY),
 };
 
 export interface LiveState {
@@ -30,6 +41,7 @@ export interface LiveState {
   last: TickMessage | null;
   feed: FeedItem[];
   summary: Record<string, unknown> | null;
+  progress: ProgressMessage | null;
   version: number;
   framesReceived: number;
 }
@@ -42,6 +54,7 @@ const initial: LiveState = {
   last: null,
   feed: [],
   summary: null,
+  progress: null,
   version: 0,
   framesReceived: 0,
 };
@@ -93,6 +106,10 @@ export function ingest(msg: StreamMessage): void {
       series.vTrue.push(msg.v_true);
       series.volume.push(msg.volume);
       series.confidence.push(msg.confidence);
+      series.iv.push(msg.iv);
+      series.atmCall.push(msg.atm_call);
+      series.mmInventory.push(msg.mm_inventory ?? 0);
+      series.imbalance.push(msg.imbalance ?? 0);
       pendingLast = msg;
       pendingFrames += 1;
       scheduleFlush();
@@ -102,6 +119,9 @@ export function ingest(msg: StreamMessage): void {
       pendingFeed.push({ ...msg, receivedAt: Date.now() });
       pendingFrames += 1;
       scheduleFlush();
+      return;
+    case "progress":
+      liveStore.setState({ progress: msg });
       return;
     case "done":
       flushNow();
