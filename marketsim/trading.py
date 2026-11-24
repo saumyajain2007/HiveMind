@@ -140,6 +140,19 @@ class Trading:
         p = tc.panic_rate * (pop.loss_aversion[ids] - 1.0) * pop.impulsiveness[ids]
         return (loss > tc.panic_loss) & (self.rng.random(len(ids)) < p)
 
+    def equilibrate(self, market: MarketState) -> None:
+        """Start every investor at the position the trading rule wants at the opening price
+        (entry price = that price), so the first auction does not replay the whole set-up."""
+        pop, P = self.pop, market.price
+        ids = pop.investor_ids
+        if len(ids) == 0:
+            return
+        eq = self.equity(ids, P)
+        target = self.target_value(ids, self.expected_return(ids, market), market)
+        pop.shares[ids] = target / P
+        pop.cash[ids] = eq - target
+        pop.entry_price[ids] = np.where(target > 0, P, 0.0)
+
     # ---------------------------------------------------------------- orders
     def orders(self, market: MarketState, online: np.ndarray) -> OrderBatch:
         """Limit orders of online investors at the current price."""

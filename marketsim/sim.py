@@ -184,6 +184,7 @@ class Simulation:
         self.events_log: list[dict[str, Any]] = []
         self._investors = pop.investor_ids
         self.trading.update_fitness(0.0)  # sets every investor's weights from the priors
+        self.trading.equilibrate(self.market)
 
     # ---------------------------------------------------------------- one tick
     def step(self) -> TickFrame | None:
@@ -453,17 +454,17 @@ def summarize(
     }
     if len(price) > 1:
         out["stylized_facts"] = stylized_facts(price)
-    return _finite(out)
+    return json_safe(out)
 
 
-def _finite(x: Any) -> Any:
+def json_safe(x: Any) -> Any:
     """Replace NaN / inf with None so the summary is valid JSON."""
     if isinstance(x, float):
         return x if math.isfinite(x) else None
     if isinstance(x, dict):
-        return {k: _finite(v) for k, v in x.items()}
+        return {k: json_safe(v) for k, v in x.items()}
     if isinstance(x, list):
-        return [_finite(v) for v in x]
+        return [json_safe(v) for v in x]
     return x
 
 
