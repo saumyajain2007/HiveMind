@@ -4,6 +4,7 @@ import {
   FlaskConical,
   GitBranch,
   Landmark,
+  Cpu,
   Split,
   WalletCards,
   Library,
@@ -92,6 +93,13 @@ export const NAV: NavItem[] = [
     icon: WalletCards,
     description: "Expected prices, forecast statistics and trading results",
     shortcut: "G S",
+  },
+  {
+    path: "/algo",
+    label: "Algo run",
+    icon: Cpu,
+    description: "The event-driven agent strategy, day by day",
+    shortcut: "G G",
   },
 ];
 

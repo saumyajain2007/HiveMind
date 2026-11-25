@@ -1569,6 +1569,51 @@
         }
       }
     },
+    "/api/v1/experiments/{ticker}/demo": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get Demo",
+        "description": "The demo run (`python -m marketsim.leaked <TICKER>`): prices, the algorithm's positions,\nequity, trades, statistics and fitness. It is hindsight-calibrated; see the README.",
+        "operationId": "get_demo_api_v1_experiments__ticker__demo_get",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Demo Api V1 Experiments  Ticker  Demo Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/event-library": {
       "get": {
         "tags": [

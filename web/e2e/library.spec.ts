@@ -97,3 +97,11 @@ test("event lab: isolate the demo's events, real moves, the library", async ({ p
   await expect(page.getByText("Isolated real effect of each event type")).toBeVisible();
   await axe(page);
 });
+
+test("algo run: stats, charts and trades", async ({ page }) => {
+  await page.goto("/algo");
+  await expect(page.getByText("Sharpe ratio")).toBeVisible();
+  await expect(page.getByRole("img", { name: /Equity of the strategy/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Recent trades table" })).toBeVisible();
+  await axe(page);
+});

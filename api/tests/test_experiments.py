@@ -31,6 +31,9 @@ def _fake_results() -> dict:
 def client(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> TestClient:
     (tmp_path / "FAKE").mkdir()
     (tmp_path / "FAKE" / "results.json").write_text(json.dumps(_fake_results()), "utf-8")
+    (tmp_path / "FAKE" / "leaked").mkdir()
+    demo = {"ticker": "FAKE", "period": ["a", "b"], "demo": {"dates": ["a"], "stats": {"sharpe": 1.0}}}
+    (tmp_path / "FAKE" / "leaked" / "leaked.json").write_text(json.dumps(demo), "utf-8")
     (tmp_path / "events").mkdir()
     (tmp_path / "events" / "library.json").write_text(json.dumps({"n_events": 2, "events": [1, 2]}), "utf-8")
     (tmp_path / "FAKE" / "isolation.json").write_text(json.dumps({"ticker": "FAKE", "windows": []}), "utf-8")
@@ -65,3 +68,9 @@ def test_library_and_isolation(client: TestClient) -> None:
     assert client.get(f"{V1}/event-library?events=true").json()["events"] == [1, 2]
     assert client.get(f"{V1}/experiments/FAKE/isolation").json()["windows"] == []
     assert client.get(f"{V1}/experiments/NOPE/isolation").status_code == 404
+
+
+def test_demo(client: TestClient) -> None:
+    d = client.get(f"{V1}/experiments/FAKE/demo").json()
+    assert d["ticker"] == "FAKE" and d["stats"]["sharpe"] == 1.0
+    assert client.get(f"{V1}/experiments/NOPE/demo").status_code == 404

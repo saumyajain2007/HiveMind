@@ -379,3 +379,37 @@ export interface EventLibrary {
     volume_ratio: number;
   }[];
 }
+
+// ----------------------------------------------------------------------------- algo run
+
+export interface AlgoRun {
+  ticker: string;
+  period: [string, string];
+  dates: string[];
+  close: number[];
+  positions: number[];
+  equity: number[];
+  drawdown: number[];
+  buy_hold_equity: number[];
+  trades: {
+    side: string;
+    entry: string;
+    exit: string;
+    bars: number;
+    weight: number;
+    ret: number;
+  }[];
+  stats: Record<string, number | null>;
+  sharpe_ci95: [number, number];
+  fitness: {
+    n: number;
+    information_coefficient: number;
+    ic_t: number;
+    rank_ic: number;
+    hit_rate: number;
+    brier: number;
+    brier_climatology: number;
+  };
+  features: string[];
+  rule: string;
+}

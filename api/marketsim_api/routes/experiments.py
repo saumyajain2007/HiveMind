@@ -98,3 +98,14 @@ def get_event_library(events: bool = False) -> dict[str, Any]:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "no event library yet")
     lib = _load(str(p), p.stat().st_mtime)
     return lib if events else {k: v for k, v in lib.items() if k != "events"}
+
+
+@router.get("/{ticker}/demo")
+def get_demo(ticker: str) -> dict[str, Any]:
+    """The demo run (`python -m marketsim.leaked <TICKER>`): prices, the algorithm's positions,
+    equity, trades, statistics and fitness. It is hindsight-calibrated; see the README."""
+    p = experiments_dir() / ticker.upper() / "leaked" / "leaked.json"
+    if not ticker.isalnum() or not p.exists():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"no demo run for {ticker}")
+    doc = _load(str(p), p.stat().st_mtime)
+    return {"ticker": doc["ticker"], "period": doc["period"], **doc["demo"]}

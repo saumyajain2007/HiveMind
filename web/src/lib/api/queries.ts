@@ -340,3 +340,18 @@ export function useIsolation(id: string | null | undefined) {
     },
   });
 }
+
+export function useAlgoRun(ticker: string | null | undefined) {
+  return useQuery({
+    queryKey: ["algo-run", ticker ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/experiments/{ticker}/demo", {
+          params: { path: { ticker: ticker ?? "" } },
+        }),
+      ) as unknown as E.AlgoRun,
+    enabled: Boolean(ticker),
+    staleTime: Infinity,
+    retry: false,
+  });
+}

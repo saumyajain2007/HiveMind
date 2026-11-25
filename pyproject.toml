@@ -73,6 +73,7 @@ ignore = [
 "marketsim/isolation.py" = ["E501"]
 "marketsim/event_library.py" = ["E501"]
 "marketsim/backtester.py" = ["E501"]
+"marketsim/leaked.py" = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["marketsim", "marketsim_api"]

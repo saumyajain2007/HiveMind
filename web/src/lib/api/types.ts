@@ -610,6 +610,27 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/experiments/{ticker}/demo": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Demo
+     * @description The demo run (`python -m marketsim.leaked <TICKER>`): prices, the algorithm's positions,
+     *     equity, trades, statistics and fitness. It is hindsight-calibrated; see the README.
+     */
+    get: operations["get_demo_api_v1_experiments__ticker__demo_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/event-library": {
     parameters: {
       query?: never;
@@ -3427,6 +3448,39 @@ export interface operations {
     };
   };
   get_real_isolation_api_v1_experiments__ticker__isolation_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        ticker: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_demo_api_v1_experiments__ticker__demo_get: {
     parameters: {
       query?: never;
       header?: never;

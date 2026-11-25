@@ -82,6 +82,10 @@ def write_experiment_fixture(ticker: str = "AAPL", keep: int = 200) -> bool:
         _write(
             "library", {k: v for k, v in json.loads(lib.read_text(encoding="utf-8")).items() if k != "events"}
         )
+    algo = src.parent / "leaked" / "leaked.json"
+    if algo.exists():
+        doc = json.loads(algo.read_text(encoding="utf-8"))
+        _write("algo", {"ticker": doc["ticker"], "period": doc["period"], **doc["demo"]})
     _write_isolation()
     return True
 
