@@ -476,3 +476,11 @@ AAPL event isolation, rerun with these mechanics (`python -m marketsim.isolation
 - **Before:** the simulated effect of each filing was 97–102% of the injected change (pass-through about 1), because the market maker re-quoted the change in full.
 - **Now:** it is 12–63% of the injected change after two days (median 42%), and roughly a quarter after one day.
 - **Shortfall on the largest moves:** the 2026-07-30 earnings release, a real −9.4%, is simulated at −1.3% over two days.
+
+**Builder settings saved in the browser kept the old mechanics.** The Builder saves its parameters in localStorage. Saved values for existing fields survived the default change, so Builder runs still used `mm_news_pass_through = 1.0` (and `impact_Y` 0.7, `noise_frac` 0.3). In one run, an event with a hidden +5% change moved the price +7.9% at the next open. Fix:
+- The store now records the defaults its parameters started from.
+- When the engine defaults change, every field the user did not edit follows them.
+- Parameters saved before this tracking existed are reset to the current defaults.
+- Parameters copied from a run (Duplicate) are kept as they are.
+
+With the current defaults, the same +5% event moves the price +0.05% at the first auction, +0.5% to +2.2% by that day's close, and +1% to +3.4% after two days (3 seeds).

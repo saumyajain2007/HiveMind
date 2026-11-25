@@ -4,6 +4,7 @@ import { branchingRatio, DEFAULT_HAWKES, hawkesEvents } from "./hawkes";
 import { parseLine } from "./parseLine";
 import { DEMO, newEvent } from "./presets";
 import { builderStore, nextEventId, validateScenario } from "./store";
+import type { Parameters } from "./store";
 
 describe("validateScenario", () => {
   it("accepts the demo", () => {
@@ -65,5 +66,35 @@ describe("hawkes", () => {
     expect(branchingRatio({ ...DEFAULT_HAWKES, alpha: 0.4, beta: 0.5 })).toBeCloseTo(
       (0.4 * Math.exp(-0.5)) / (1 - Math.exp(-0.5)),
     );
+  });
+});
+
+describe("stale saved parameters", () => {
+  type P = Parameters;
+  const oldDefaults = { market: { mm_news_pass_through: 1, impact_Y: 0.7 } } as unknown as P;
+  const newDefaults = {
+    market: { mm_news_pass_through: 0, impact_Y: 0.122, mm_inventory_skew: 0.3 },
+  } as unknown as P;
+
+  it("follows new engine defaults but keeps the user's own edits", () => {
+    builderStore.getState().setParameters(oldDefaults);
+    builderStore.getState().setParam("market", "impact_Y", 0.5); // the user's edit
+    builderStore.getState().rebase(newDefaults);
+    const m = (
+      builderStore.getState().parameters as unknown as Record<string, Record<string, number>>
+    ).market!;
+    expect(m).toEqual({ mm_news_pass_through: 0, impact_Y: 0.5, mm_inventory_skew: 0.3 });
+  });
+
+  it("resets parameters saved before defaults were tracked", () => {
+    builderStore.setState({ parameters: oldDefaults, base: null, pinned: false });
+    builderStore.getState().rebase(newDefaults);
+    expect(builderStore.getState().parameters).toEqual(newDefaults);
+  });
+
+  it("keeps a duplicated run's parameters as they are", () => {
+    builderStore.getState().load(builderStore.getState().scenario, null, oldDefaults);
+    expect(builderStore.getState().pinned).toBe(true);
+    expect(builderStore.getState().parameters).toEqual(oldDefaults);
   });
 });

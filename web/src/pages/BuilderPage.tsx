@@ -23,7 +23,7 @@ import { EventEditor } from "@/features/builder/EventEditor";
 import { branchingRatio, DEFAULT_HAWKES, hawkesEvents } from "@/features/builder/hawkes";
 import type { HawkesParams } from "@/features/builder/hawkes";
 import { ImportHeadlines } from "@/features/builder/ImportHeadlines";
-import { parameterDiff } from "@/features/builder/diff";
+import { parameterDiff, same } from "@/features/builder/diff";
 import { ParameterPanel } from "@/features/builder/ParameterPanel";
 import { newEvent, PRESETS } from "@/features/builder/presets";
 import { builderStore, nextEventId, useBuilder, validateScenario } from "@/features/builder/store";
@@ -163,8 +163,17 @@ export function BuilderPage() {
   const st = builderStore.getState;
 
   useEffect(() => {
-    if (!parameters && defaults.data)
-      st().setParameters(defaults.data.parameters as unknown as Parameters);
+    if (!defaults.data) return;
+    const d = defaults.data.parameters as unknown as Parameters;
+    const s = st();
+    if (!s.parameters) s.setParameters(d);
+    else if (!s.pinned && !same(s.base, d)) {
+      // saved parameters predate the current engine defaults: follow them, keep the user's edits
+      s.rebase(d);
+      toast.info("Parameters updated to the engine's current defaults", {
+        description: "Settings you changed yourself are kept.",
+      });
+    }
   }, [parameters, defaults.data, st]);
 
   const issues = useMemo(() => validateScenario(scenario), [scenario]);

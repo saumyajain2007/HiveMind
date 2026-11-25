@@ -4,6 +4,7 @@ import { createStore } from "zustand/vanilla";
 
 import type { Schemas } from "@/lib/api/client";
 
+import { same } from "./diff";
 import { DEMO } from "./presets";
 
 type ScenarioSpec = Schemas["ScenarioSpec"];
@@ -14,11 +15,17 @@ export interface BuilderState {
   scenario: ScenarioSpec;
   /** null = engine defaults (filled in from /config/defaults on first load). */
   parameters: Parameters | null;
+  /** The engine defaults `parameters` started from; fields still equal to it follow new defaults. */
+  base: Parameters | null;
+  /** Parameters copied from a run: kept as they are when the engine defaults change. */
+  pinned: boolean;
   scenarioId: string | null;
   selected: number | null;
   setScenario: (patch: Partial<ScenarioSpec>) => void;
   load: (spec: ScenarioSpec, id?: string | null, parameters?: Parameters | null) => void;
   setParameters: (p: Parameters) => void;
+  /** Move to new engine defaults, keeping every field the user changed. */
+  rebase: (defaults: Parameters) => void;
   setParam: (section: string, field: string, value: unknown) => void;
   upsertEvent: (e: EventSpec) => void;
   removeEvent: (id: number) => void;
@@ -34,6 +41,8 @@ export const builderStore = createStore<BuilderState>()(
     (set) => ({
       scenario: DEMO,
       parameters: null,
+      base: null,
+      pinned: false,
       scenarioId: null,
       selected: null,
       setScenario: (patch) => set((s) => ({ scenario: { ...s.scenario, ...patch } })),
@@ -42,9 +51,33 @@ export const builderStore = createStore<BuilderState>()(
           scenario: { ...spec, events: sortEvents(spec.events ?? []) },
           scenarioId: id,
           selected: null,
-          parameters: parameters === undefined ? s.parameters : parameters,
+          ...(parameters === undefined
+            ? {}
+            : {
+                parameters,
+                pinned: parameters !== null,
+                base: parameters === null ? null : s.base,
+              }),
         })),
-      setParameters: (parameters) => set({ parameters }),
+      setParameters: (parameters) => set({ parameters, base: parameters, pinned: false }),
+      rebase: (defaults) =>
+        set((s) => {
+          type P = Record<string, Record<string, unknown>>;
+          const cur = s.parameters as unknown as P | null;
+          const old = s.base as unknown as P | null;
+          const d = defaults as unknown as P;
+          const out: P = {};
+          for (const [sec, fields] of Object.entries(d)) {
+            out[sec] = {};
+            for (const [f, v] of Object.entries(fields)) {
+              const mine = cur?.[sec]?.[f];
+              // without a record of the old defaults we cannot tell edits from stale defaults
+              const edited = old != null && mine !== undefined && !same(mine, old[sec]?.[f]);
+              out[sec][f] = edited ? mine : v;
+            }
+          }
+          return { parameters: out as unknown as Parameters, base: defaults, pinned: false };
+        }),
       setParam: (section, field, value) =>
         set((s) => {
           if (!s.parameters) return {};
@@ -88,6 +121,8 @@ export const builderStore = createStore<BuilderState>()(
       partialize: (s) => ({
         scenario: s.scenario,
         parameters: s.parameters,
+        base: s.base,
+        pinned: s.pinned,
         scenarioId: s.scenarioId,
       }),
     },

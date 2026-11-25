@@ -234,7 +234,7 @@ export function EventEditor({ enums }: { enums: Schemas["Enumerations"] }) {
           htmlFor={id("impact")}
           hint={
             e.true_impact
-              ? `Moves the fundamental value by ${formatSignedPct(Math.expm1(e.true_impact))}`
+              ? `Hidden value moves ${formatSignedPct(Math.expm1(e.true_impact))}; the price only follows as agents trade on noisy readings of it`
               : "0 = no real news (e.g. a false rumour)"
           }
         >
