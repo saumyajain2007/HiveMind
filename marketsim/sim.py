@@ -34,7 +34,15 @@ import numpy as np
 from .beliefs import Beliefs
 from .config import ALL_PLATFORMS, CATEGORIES, MEDIA, TICKS_PER_DAY, Config
 from .diffusion import Diffusion
-from .events import Event, EventQueue, apply_to_market, assign_ids, event_from_dict, seed_agents
+from .events import (
+    Event,
+    EventQueue,
+    apply_to_market,
+    assign_ids,
+    draw_true_impact,
+    event_from_dict,
+    seed_agents,
+)
 from .firms import build_company, build_firms
 from .graph import DirectedLayer, FriendshipLayer, SocialGraph
 from .items import ORIGINS, ItemStore
@@ -316,6 +324,9 @@ class Simulation:
 
     # ---------------------------------------------------------------- helpers
     def _inject(self, ev: Event, t: int) -> dict[str, Any]:
+        if ev.draw_impact:
+            bc = self.cfg.belief
+            ev.true_impact = draw_true_impact(ev, bc.drawn_impact_size, bc.drawn_impact_noise, self.event_rng)
         if ev.signal is None and ev.true_impact != 0.0:
             bc = self.cfg.belief
             if ev.seeding == "insider":

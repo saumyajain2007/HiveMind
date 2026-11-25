@@ -26,7 +26,13 @@ import { ImportHeadlines } from "@/features/builder/ImportHeadlines";
 import { parameterDiff, same } from "@/features/builder/diff";
 import { ParameterPanel } from "@/features/builder/ParameterPanel";
 import { newEvent, PRESETS } from "@/features/builder/presets";
-import { builderStore, nextEventId, useBuilder, validateScenario } from "@/features/builder/store";
+import {
+  builderStore,
+  nextEventId,
+  useBuilder,
+  validateScenario,
+  withDrawnImpacts,
+} from "@/features/builder/store";
 import type { Parameters } from "@/features/builder/store";
 import { Timeline } from "@/features/builder/Timeline";
 import type { Schemas } from "@/lib/api/client";
@@ -185,7 +191,7 @@ export function BuilderPage() {
     if (!ready) return;
     try {
       const r = await create.mutateAsync({
-        scenario,
+        scenario: withDrawnImpacts(scenario),
         parameters: parameters!,
         mode,
         runs: mode === "single" ? 1 : mcRuns,
@@ -206,7 +212,7 @@ export function BuilderPage() {
 
   async function saveScenario() {
     try {
-      const rec = await save.mutateAsync({ id: scenarioId, spec: scenario });
+      const rec = await save.mutateAsync({ id: scenarioId, spec: withDrawnImpacts(scenario) });
       st().load(rec.spec, rec.id);
       toast.success(scenarioId ? "Scenario updated" : "Scenario saved");
     } catch (e) {

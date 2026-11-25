@@ -316,6 +316,8 @@
       "signal_floor": 0.005,
       "interpretation_noise": 1.0,
       "reveal_half_life_days": 2.0,
+      "drawn_impact_size": 0.04,
+      "drawn_impact_noise": 0.5,
       "adopt_rate": 0.5,
       "narrative_pull": 0.02,
       "confidence_decay": 0.002,

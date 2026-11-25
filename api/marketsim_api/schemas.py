@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -39,7 +39,9 @@ class EventSpec(_Strict):
     tick: int = Field(ge=0, description=f"Tick of injection ({TICKS_PER_DAY} ticks per day, 15 minutes each)")
     kind: str = Field(json_schema_extra={"enum": list(NEWS_KINDS)})
     ticker: int = Field(0, ge=0, description="Ticker / sector index; v1 simulates one ticker (0)")
-    true_impact: float = Field(0.0, ge=-0.5, le=0.5, description="Log change in fundamental value; hidden")
+    true_impact: Annotated[float, Field(ge=-0.5, le=0.5)] | None = Field(
+        0.0, description="Log change in fundamental value; hidden. null = the engine draws it at injection"
+    )
     sentiment: float = Field(ge=-1.0, le=1.0)
     credibility: float = Field(ge=0.0, le=1.0)
     salience: float = Field(ge=0.0, le=1.0)
@@ -77,7 +79,8 @@ class EventSpec(_Strict):
             tick=self.tick,
             kind=self.kind,
             ticker=self.ticker,
-            true_impact=self.true_impact,
+            true_impact=0.0 if self.true_impact is None else self.true_impact,
+            draw_impact=self.true_impact is None,
             sentiment=self.sentiment,
             credibility=self.credibility,
             salience=self.salience,

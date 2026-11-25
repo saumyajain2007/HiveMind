@@ -1930,6 +1930,24 @@
             "default": 2.0,
             "placeholder": true
           },
+          "drawn_impact_size": {
+            "type": "number",
+            "maximum": 0.3,
+            "minimum": 0.0,
+            "title": "Drawn Impact Size",
+            "description": "Log change of a true, fully bullish story",
+            "default": 0.04,
+            "placeholder": true
+          },
+          "drawn_impact_noise": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Drawn Impact Noise",
+            "description": "Log-normal spread of that size",
+            "default": 0.5,
+            "placeholder": true
+          },
           "adopt_rate": {
             "type": "number",
             "maximum": 1.0,
@@ -2637,11 +2655,18 @@
             "default": 0
           },
           "true_impact": {
-            "type": "number",
-            "maximum": 0.5,
-            "minimum": -0.5,
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 0.5,
+                "minimum": -0.5
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "True Impact",
-            "description": "Log change in fundamental value; hidden",
+            "description": "Log change in fundamental value; hidden. null = the engine draws it at injection",
             "default": 0.0
           },
           "sentiment": {

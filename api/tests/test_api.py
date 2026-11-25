@@ -204,10 +204,22 @@ def test_scenario_crud(client: TestClient) -> None:
         [{**RUMOUR, "seeding": "pigeon"}],
         [{**RUMOUR, "sentiment": 1.5}],
         [{**RUMOUR, "unexpected": True}],
+        [{**RUMOUR, "true_impact": 0.9}],
     ],
 )
 def test_invalid_scenarios_rejected(client: TestClient, events: list[dict[str, Any]]) -> None:
     assert client.post(f"{V1}/scenarios", json=scenario(events=events)).status_code == 422
+
+
+def test_unset_true_impact_is_drawn_by_the_engine(client: TestClient) -> None:
+    from marketsim_api.schemas import EventSpec
+
+    body = scenario(events=[{**RUMOUR, "true_impact": None}])
+    spec = client.post(f"{V1}/scenarios", json=body).json()["spec"]
+    assert spec["events"][0]["true_impact"] is None
+    ev = EventSpec(**spec["events"][0]).to_engine()
+    assert ev.draw_impact and ev.true_impact == 0.0
+    assert not EventSpec(**RUMOUR).to_engine().draw_impact
 
 
 def test_events_are_sorted_by_tick(client: TestClient) -> None:

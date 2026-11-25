@@ -57,6 +57,9 @@ class Event:
     # public reading of the release (log); None = drawn at injection around true_impact. Agents,
     # firms and the market maker see this, never true_impact.
     signal: float | None = None
+    # True when the scenario's author did not set true_impact (the Builder never does): the engine
+    # draws it at injection (`draw_true_impact`), so nobody knows the real change in advance.
+    draw_impact: bool = False
 
     @property
     def is_real(self) -> bool:
@@ -108,8 +111,11 @@ def event_from_dict(d: Mapping[str, Any], *, allow_internal: bool = False) -> Ev
     if d["tick"] < 0:
         raise ValueError("tick must be >= 0")
     values: dict[str, float] = {}
+    draw = d.get("true_impact", 0.0) is None or d.get("draw_impact", False) is True
     for key, (lo, hi) in _RANGES.items():
         v = d.get(key, 0.0)
+        if key == "true_impact" and draw:
+            v = 0.0
         if isinstance(v, bool) or not isinstance(v, int | float) or not math.isfinite(v):
             raise ValueError(f"{key} must be a finite number")
         if not lo <= v <= hi:
@@ -123,8 +129,19 @@ def event_from_dict(d: Mapping[str, Any], *, allow_internal: bool = False) -> Ev
         parent=d.get("parent", -1),
         id=d.get("id", -1),
         topic=topic,
+        draw_impact=draw,
         **values,
     )
+
+
+def draw_true_impact(ev: Event, size: float, noise: float, rng: np.random.Generator) -> float:
+    """The hidden change for an event whose author left it unset. The story is true with
+    probability `credibility` (otherwise nothing real changes, like a false rumour); a true story
+    moves the value in the direction it is presented, by about size·|sentiment|, with log-normal
+    spread `noise`. Clipped to ±0.3."""
+    if rng.random() >= ev.credibility:
+        return 0.0
+    return float(np.clip(size * ev.sentiment * math.exp(noise * rng.standard_normal()), -0.3, 0.3))
 
 
 def load_events(path: str | Path) -> list[Event]:

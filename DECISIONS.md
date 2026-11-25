@@ -484,3 +484,29 @@ AAPL event isolation, rerun with these mechanics (`python -m marketsim.isolation
 - Parameters copied from a run (Duplicate) are kept as they are.
 
 With the current defaults, the same +5% event moves the price +0.05% at the first auction, +0.5% to +2.2% by that day's close, and +1% to +3.4% after two days (3 seeds).
+
+## The Builder no longer sets an event's real change
+
+**Problem.** The Builder's event editor had a "True impact" field, and the cockpit drew the hidden fundamental value as a dashed line. Whoever built or watched the scenario knew the answer the agents were trying to find.
+
+**Now.**
+
+- **No field.** The Builder sends every event with `true_impact: null` (`withDrawnImpacts`), including presets, Hawkes shocks and imported headlines. The editor no longer has the field, and the import list no longer shows impacts.
+- **The engine draws it at injection** (`events.draw_true_impact`, from the run's event stream, so a seed reproduces it):
+  - The story is true with probability `credibility`. Otherwise nothing real changes, like a false rumour.
+  - A true story moves the value `drawn_impact_size · sentiment · exp(N(0, drawn_impact_noise))`: 0.04 and 0.5, both PLACEHOLDERs, clipped to ±0.3.
+  - From there everything works as before: the public reading, each agent's own reading, then slow revelation.
+- **API.** `true_impact` may be `null` (draw it) or a number (scripted). It still defaults to 0, so scripted scenarios, the demo, the real-data replays and the tests are unchanged.
+- **Cockpit.** The price chart no longer draws the fundamental value. The live stream still carries it for the analysis pages.
+
+**Test.** `test_unset_impact_is_drawn_at_injection`: the draw is the same for a seed, differs across seeds, leans with sentiment, and is 0 at credibility 0.
+
+## Signal lab: fewer choices, costs shown
+
+- **Inputs.** Agent model forecast, 5-day momentum and social sentiment only.
+- **Rules.** Sign or sized by strength. The "beyond ±0.5 sd" rule was removed.
+- **Hold.** Fixed at 5 days.
+- **Demo button removed.** The demo run's real inputs (agent spread, event reaction, earnings calendar, 1-day momentum) are no longer on the page, so "Load demo run" could not represent it.
+- **Costs.** Fixed and shown: the backtester's large-cap costs (1 bp commission, 4 bp spread and impact per trade, 30 bp a year short borrow).
+  - The cost figure is computed from these costs and the rule's typical turnover: about 0.4% a year at a 5-day hold.
+  - The Sharpe is still illustrative, one of the ten fixed values.

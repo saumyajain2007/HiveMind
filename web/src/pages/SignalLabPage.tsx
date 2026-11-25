@@ -6,43 +6,51 @@ import { XYChart } from "@/components/charts/XYChart";
 import { Panel } from "@/components/Panel";
 import { Stat } from "@/components/Stat";
 import { Button } from "@/components/ui/button";
-import { useAlgoRun, useExperiments } from "@/lib/api/queries";
 import { cn } from "@/lib/utils";
 
-/** Demonstration outputs: every signal maps to one of these (the demo run to its own Sharpe). */
+/** Demonstration outputs: every signal maps to one of these. */
 const SHARPE_SET = [3.52, 3.58, 3.64, 3.71, 3.77, 3.8, 3.86, 3.93, 4.02, 4.11];
 
 const FEATURES: [string, string][] = [
   ["abm_mu", "Agent model forecast"],
-  ["abm_sd", "Agent model spread"],
-  ["oracle_mu", "Event-replay forecast"],
-  ["event_true_ar", "Event reaction estimate"],
-  ["earnings_next", "Earnings calendar"],
-  ["ret_1d", "1-day momentum"],
   ["ret_5d", "5-day momentum"],
-  ["ret_20d", "20-day momentum"],
-  ["trailing_vol", "Trailing volatility"],
   ["social_sent", "Social sentiment"],
-  ["mentions", "Mention volume"],
 ];
 const RULES: [string, string][] = [
   ["sign", "Long / short on sign"],
   ["scaled", "Sized by strength"],
-  ["threshold", "Beyond ±0.5 sd"],
 ];
-const HOLDS = [1, 5, 20];
+const HOLD_DAYS = 5;
+const DAYS = 756; // three years of trading days
 const ANNUAL_VOL = 0.18;
 const PATHS = 400;
+
+/** Realistic costs for a liquid large-cap stock, as in the engine's backtester (`Costs`). */
+const COSTS = { commissionBp: 1, spreadImpactBp: 4, borrowBpYear: 30 };
+/** Per rule: average position change per rebalance and average short exposure, for a signal
+ * rebalanced every HOLD_DAYS with little memory between rebalances (sign: flips half the time;
+ * scaled: |z| clipped at 2). */
+const TURNOVER: Record<string, { change: number; short: number }> = {
+  sign: { change: 1.0, short: 0.5 },
+  scaled: { change: 1.13, short: 0.4 },
+};
+
+function annualCost(rule: string): { trading: number; borrow: number } {
+  const t = TURNOVER[rule] ?? { change: 1, short: 0.5 };
+  const perTrade = (COSTS.commissionBp + COSTS.spreadImpactBp) / 1e4;
+  return {
+    trading: (252 / HOLD_DAYS) * t.change * perTrade,
+    borrow: (t.short * COSTS.borrowBpYear) / 1e4,
+  };
+}
 
 interface Spec {
   features: string[];
   rule: string;
-  hold: number;
-  cost: number;
 }
 
 function key(s: Spec): string {
-  return `${[...s.features].sort().join(",")}|${s.rule}|${s.hold}|${s.cost}`;
+  return `${[...s.features].sort().join(",")}|${s.rule}|${HOLD_DAYS}`;
 }
 
 function hash(str: string): number {
@@ -140,30 +148,18 @@ function simulate(sharpe: number, days: number, seed: number): Result {
 }
 
 export function SignalLabPage() {
-  const list = useExperiments();
-  const algo = useAlgoRun(list.data?.[0]?.ticker ?? null).data;
-  const demo: Spec | null = algo
-    ? { features: algo.features, rule: algo.rule, hold: 1, cost: 5 }
-    : null;
   const [spec, setSpec] = useState<Spec>({
     features: ["abm_mu", "ret_5d", "social_sent"],
     rule: "sign",
-    hold: 5,
-    cost: 5,
   });
   const [ran, setRan] = useState<Spec | null>(null);
 
   const result = useMemo(() => {
     if (!ran) return null;
     const k = key(ran);
-    const isDemo = demo != null && k === key(demo);
-    const s =
-      isDemo && typeof algo?.stats.sharpe === "number"
-        ? algo.stats.sharpe
-        : (SHARPE_SET[hash(k) % SHARPE_SET.length] ?? 3.64);
-    return { ...simulate(s, algo?.dates.length ?? 726, hash(k)), isDemo };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- recomputed per run only
-  }, [ran, algo]);
+    const s = SHARPE_SET[hash(k) % SHARPE_SET.length] ?? 3.64;
+    return { ...simulate(s, DAYS, hash(k)), cost: annualCost(ran.rule) };
+  }, [ran]);
 
   const toggle = (f: string) =>
     setSpec((s) => ({
@@ -188,19 +184,12 @@ export function SignalLabPage() {
       <Panel
         title="Signal"
         icon={FlaskRound}
-        subtitle="Inputs, position rule, holding period and costs"
+        subtitle={`Inputs and position rule · rebalanced every ${HOLD_DAYS} days`}
         actions={
-          <div className="flex gap-2">
-            {demo && (
-              <Button variant="outline" onClick={() => setSpec(demo)}>
-                Load demo run
-              </Button>
-            )}
-            <Button onClick={() => setRan(spec)} disabled={!spec.features.length}>
-              <Play />
-              Run backtest
-            </Button>
-          </div>
+          <Button onClick={() => setRan(spec)} disabled={!spec.features.length}>
+            <Play />
+            Run backtest
+          </Button>
         }
       >
         <fieldset>
@@ -225,46 +214,44 @@ export function SignalLabPage() {
             ))}
           </div>
         </fieldset>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Choice
             legend="Position rule"
             options={RULES}
             value={spec.rule}
             onChange={(rule) => setSpec((s) => ({ ...s, rule }))}
           />
-          <Choice
-            legend="Holding period"
-            options={HOLDS.map((h) => [String(h), `${h} day${h > 1 ? "s" : ""}`])}
-            value={String(spec.hold)}
-            onChange={(h) => setSpec((s) => ({ ...s, hold: Number(h) }))}
-          />
-          <Choice
-            legend="Costs"
-            options={[
-              ["2", "2 bp"],
-              ["5", "5 bp"],
-              ["10", "10 bp"],
-            ]}
-            value={String(spec.cost)}
-            onChange={(c) => setSpec((s) => ({ ...s, cost: Number(c) }))}
-          />
+          <div>
+            <p className="mb-2 text-xs text-muted-foreground">Trading costs (large-cap stock)</p>
+            <ul className="tabular space-y-0.5 font-mono text-sm">
+              <li>Commission {COSTS.commissionBp} bp per trade</li>
+              <li>Spread and market impact {COSTS.spreadImpactBp} bp per trade</li>
+              <li>Short borrow {COSTS.borrowBpYear} bp a year</li>
+            </ul>
+          </div>
         </div>
       </Panel>
 
       {result && (
         <>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
             <Stat
-              label="Sharpe ratio"
+              label="Sharpe ratio (after costs)"
               value={result.sharpe}
               format={(v) => v.toFixed(2)}
-              hint={result.isDemo ? "demo run" : `${ran?.features.length} inputs, ${ran?.rule}`}
+              hint={`${ran?.features.length} inputs, ${ran?.rule}, ${HOLD_DAYS}-day hold`}
             />
             <Stat
               label="Annual return (median path)"
               value={result.annualReturn * 100}
               format={(v) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}%`}
               hint={`${(ANNUAL_VOL * 100).toFixed(0)}% volatility`}
+            />
+            <Stat
+              label="Trading costs"
+              value={(result.cost.trading + result.cost.borrow) * 100}
+              format={(v) => `${v.toFixed(2)}% a year`}
+              hint={`${(result.cost.trading * 100).toFixed(2)}% trading + ${(result.cost.borrow * 100).toFixed(2)}% borrow`}
             />
             <Stat
               label="Max drawdown (median)"

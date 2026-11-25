@@ -64,6 +64,8 @@ FIELD_RANGES: dict[str, tuple[float, float]] = {
     "belief.signal_floor": (0.0, 0.05),
     "belief.interpretation_noise": (0.0, 3.0),
     "belief.reveal_half_life_days": (0.0, 30.0),
+    "belief.drawn_impact_size": (0.0, 0.3),
+    "belief.drawn_impact_noise": (0.0, 2.0),
     "market.flow_rho_ewma": (0.5, 0.999),
     "market.flow_rho_max": (0.0, 0.95),
     "market.noise_vol_feedback": (0.0, 2.0),

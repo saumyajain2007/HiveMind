@@ -6,7 +6,6 @@ import {
   CrosshairMode,
   HistogramSeries,
   LineSeries,
-  LineStyle,
 } from "lightweight-charts";
 import type {
   IChartApi,
@@ -60,7 +59,6 @@ function css(name: string): string {
 export interface PriceChartProps {
   ticks: number[];
   price: number[];
-  vTrue: number[];
   volume: number[];
   events: ItemMeta[];
   mode: "candles" | "line";
@@ -70,15 +68,14 @@ export interface PriceChartProps {
 }
 
 /**
- * The cockpit's main chart (TradingView lightweight-charts): 15-minute candles or a line, the
- * hidden fundamental value as a dashed overlay, volume underneath and event markers (amber =
+ * The cockpit's main chart (TradingView lightweight-charts): 15-minute candles or a line,
+ * volume underneath and event markers (amber =
  * official / news, violet = rumour or narrative, grey = price headline). Only market hours are
  * drawn; the gaps between sessions mark the closed market.
  */
 export function PriceChart({
   ticks,
   price,
-  vTrue,
   volume,
   events,
   mode,
@@ -90,7 +87,6 @@ export function PriceChart({
   const s = useRef<{
     candles: ISeriesApi<"Candlestick">;
     line: ISeriesApi<"Line">;
-    fundamental: ISeriesApi<"Line">;
     volume: ISeriesApi<"Histogram">;
     markers: ISeriesMarkersPluginApi<Time>;
     lineMarkers: ISeriesMarkersPluginApi<Time>;
@@ -131,13 +127,6 @@ export function PriceChart({
     });
     const candles = c.addSeries(CandlestickSeries, { priceLineVisible: true });
     const line = c.addSeries(LineSeries, { lineWidth: 2, priceLineVisible: false, visible: false });
-    const fundamental = c.addSeries(LineSeries, {
-      lineWidth: 2,
-      lineStyle: LineStyle.Dashed,
-      priceLineVisible: false,
-      lastValueVisible: false,
-      crosshairMarkerVisible: false,
-    });
     const vol = c.addSeries(HistogramSeries, {
       priceScaleId: "vol",
       priceFormat: { type: "volume" },
@@ -149,7 +138,6 @@ export function PriceChart({
     s.current = {
       candles,
       line,
-      fundamental,
       volume: vol,
       markers: createSeriesMarkers(candles, []),
       lineMarkers: createSeriesMarkers(line, []),
@@ -211,7 +199,6 @@ export function PriceChart({
       wickDownColor: down,
     });
     ss.line.applyOptions({ color: css("--primary") });
-    ss.fundamental.applyOptions({ color: css("--fundamental") });
   }, [theme]);
 
   // data
@@ -220,7 +207,6 @@ export function PriceChart({
     if (!ss) return;
     const candles = [];
     const lineData = [];
-    const fund = [];
     const vols = [];
     const up = css("--bull");
     const down = css("--bear");
@@ -238,14 +224,12 @@ export function PriceChart({
           low: Math.min(prev, p),
         });
         lineData.push({ time, value: p });
-        fund.push({ time, value: vTrue[i]! });
         vols.push({ time, value: volume[i]!, color: alpha(p >= prev ? up : down, 0.45) });
       }
       prev = p;
     }
     ss.candles.setData(candles);
     ss.line.setData(lineData);
-    ss.fundamental.setData(fund);
     ss.volume.setData(vols);
     const last = ticks[ticks.length - 1] ?? -1;
     const markers: SeriesMarker<Time>[] = events
@@ -278,7 +262,7 @@ export function PriceChart({
     chart.current?.timeScale().fitContent();
     ss.markers.setMarkers(mode === "candles" ? markers : []);
     ss.lineMarkers.setMarkers(mode === "line" ? markers : []);
-  }, [ticks, price, vTrue, volume, events, mode, theme]);
+  }, [ticks, price, volume, events, mode, theme]);
 
   useEffect(() => {
     s.current?.candles.applyOptions({ visible: mode === "candles" });

@@ -203,7 +203,6 @@ export function ImportHeadlines({
                     <p className="font-mono text-[11px] text-muted-foreground">
                       {simClock(e.tick).label} · {e.kind} · {e.seeding} · credibility{" "}
                       {e.credibility.toFixed(2)}
-                      {e.true_impact ? ` · impact ${e.true_impact.toFixed(3)}` : ""}
                       {e.parent >= 0 ? ` · follows #${e.parent}` : ""}
                     </p>
                   </div>

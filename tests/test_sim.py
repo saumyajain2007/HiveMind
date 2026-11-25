@@ -127,6 +127,23 @@ def test_the_fundamental_is_not_priced_at_once() -> None:
     assert d[39 + 5 * TICKS_PER_DAY] < d[44] - 0.03  # and it keeps moving toward the value
 
 
+def test_unset_impact_is_drawn_at_injection() -> None:
+    """An event with true_impact null gets a hidden change drawn by the engine: the same for a
+    seed, different across seeds, and leaning the way the story is presented."""
+    cfg = Config(n_agents=1_000, seed=0)
+    ev = [{**DEMO[2], "true_impact": None, "sentiment": 0.8, "credibility": 1.0, "tick": 39}]
+    drawn = []
+    for seed in range(4):
+        r = Simulation(cfg, Scenario.from_dicts(ev), seed=seed).run(TICKS_PER_DAY)
+        drawn.append(r["events"][0]["true_impact"])
+    again = Simulation(cfg, Scenario.from_dicts(ev), seed=0).run(TICKS_PER_DAY)["events"][0]["true_impact"]
+    assert again == drawn[0]
+    assert all(x > 0 for x in drawn) and len(set(drawn)) == 4
+    false_story = [{**ev[0], "credibility": 0.0}]
+    r = Simulation(cfg, Scenario.from_dicts(false_story), seed=0).run(TICKS_PER_DAY)
+    assert r["events"][0]["true_impact"] == 0.0
+
+
 def test_on_tick_frames_and_cancellation(world: World) -> None:
     frames: list[dict] = []
     sample = np.arange(0, world.pop.n, 10)

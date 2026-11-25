@@ -145,7 +145,6 @@ function LiveCockpit() {
       tick,
       ticks: cut(ticks),
       price: cut(series.price.toArray()),
-      vTrue: cut(series.vTrue.toArray()),
       volume: vol,
       conf,
       iv: cut(series.iv.toArray()),
@@ -330,7 +329,7 @@ function LiveCockpit() {
           <div className="flex h-full flex-col gap-4 pr-2">
             <Panel
               title="Price"
-              subtitle="15-minute candles in market hours · dashed: hidden fundamental value · markers: news"
+              subtitle="15-minute candles in market hours · markers: news"
               icon={CandlestickChart}
               className="min-h-[420px] flex-1"
               actions={
@@ -376,7 +375,6 @@ function LiveCockpit() {
                   <PriceChart
                     ticks={data.ticks}
                     price={data.price}
-                    vTrue={data.vTrue}
                     volume={data.volume}
                     events={data.items}
                     mode={mode}
@@ -384,13 +382,6 @@ function LiveCockpit() {
                   />
                 </div>
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5">
-                    <span
-                      className="h-0 w-4 border-t-2 border-dashed border-fundamental"
-                      aria-hidden
-                    />{" "}
-                    Fundamental value (hidden from agents)
-                  </span>
                   <span className="inline-flex items-center gap-1.5">
                     <span className="size-2.5 rounded-full bg-official" aria-hidden /> Official /
                     news (arrow)

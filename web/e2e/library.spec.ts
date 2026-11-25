@@ -116,12 +116,14 @@ test("import: pick a stock, import, classifier", async ({ page }) => {
   await axe(page);
 });
 
-test("signal lab: demo run reproduces the algo run's Sharpe", async ({ page }) => {
+test("signal lab: three inputs, a 5-day hold and realistic costs", async ({ page }) => {
   await page.goto("/signals");
   await expect(page.getByRole("note")).toContainText("demonstration purposes only");
-  await page.getByRole("button", { name: "Load demo run" }).click();
+  await expect(page.getByRole("checkbox")).toHaveCount(3);
+  await expect(page.getByRole("radio")).toHaveCount(2);
+  await expect(page.getByText("Spread and market impact 4 bp per trade")).toBeVisible();
   await page.getByRole("button", { name: "Run backtest" }).click();
   await expect(page.getByRole("img", { name: "Monte Carlo equity fan" })).toBeVisible();
-  await expect(page.getByText("demo run", { exact: true })).toBeVisible();
+  await expect(page.getByText("Trading costs", { exact: true })).toBeVisible();
   await axe(page);
 });

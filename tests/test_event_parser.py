@@ -59,7 +59,7 @@ class FakeLLM:
 def test_event_has_the_user_fields_plus_id_topic_and_signal() -> None:
     user = ["tick", "kind", "ticker", "true_impact", "sentiment", "credibility", "salience"]
     user += ["complexity", "seeding", "parent"]
-    assert list(Event.__dataclass_fields__) == [*user, "id", "topic", "signal"]
+    assert list(Event.__dataclass_fields__) == [*user, "id", "topic", "signal", "draw_impact"]
     ev = Event(0, "rumour", 0, 0.0, 0.5, 0.2, 0.7, 0.2, "anonymous")
     assert ev.parent == -1 and ev.topic == "finance" and not ev.is_real
     assert set(NEWS_KINDS) < set(KINDS) and "price_move" in KINDS

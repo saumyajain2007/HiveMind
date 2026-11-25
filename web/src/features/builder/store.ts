@@ -133,6 +133,12 @@ export function useBuilder<T>(selector: (s: BuilderState) => T): T {
   return useStore(builderStore, selector);
 }
 
+/** What the Builder sends: every event's real (hidden) change is left for the engine to draw, so
+ * nobody building or watching the scenario knows it in advance. */
+export function withDrawnImpacts(s: ScenarioSpec): ScenarioSpec {
+  return { ...s, events: (s.events ?? []).map((e) => ({ ...e, true_impact: null })) };
+}
+
 export function nextEventId(events: EventSpec[] | undefined): number {
   return Math.max(-1, ...(events ?? []).map((e) => e.id)) + 1;
 }

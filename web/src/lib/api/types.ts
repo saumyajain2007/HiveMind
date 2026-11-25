@@ -799,6 +799,18 @@ export interface components {
        */
       reveal_half_life_days: number;
       /**
+       * Drawn Impact Size
+       * @description Log change of a true, fully bullish story
+       * @default 0.04
+       */
+      drawn_impact_size: number;
+      /**
+       * Drawn Impact Noise
+       * @description Log-normal spread of that size
+       * @default 0.5
+       */
+      drawn_impact_noise: number;
+      /**
        * Adopt Rate
        * @description Base probability of adopting a narrative that moved the agent's belief.
        * @default 0.5
@@ -1200,10 +1212,10 @@ export interface components {
       ticker: number;
       /**
        * True Impact
-       * @description Log change in fundamental value; hidden
+       * @description Log change in fundamental value; hidden. null = the engine draws it at injection
        * @default 0
        */
-      true_impact: number;
+      true_impact: number | null;
       /** Sentiment */
       sentiment: number;
       /** Credibility */

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { SentimentChip } from "@/components/badges";
 import { Button } from "@/components/ui/button";
 import type { Schemas } from "@/lib/api/client";
-import { formatSignedPct, MINUTES_PER_TICK, simClock, TICKS_PER_DAY } from "@/lib/format";
+import { MINUTES_PER_TICK, simClock, TICKS_PER_DAY } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 import { builderStore, useBuilder } from "./store";
@@ -228,50 +228,25 @@ export function EventEditor({ enums }: { enums: Schemas["Enumerations"] }) {
           />
         </Field>
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <Field
-          label="True impact (hidden from agents)"
-          htmlFor={id("impact")}
-          hint={
-            e.true_impact
-              ? `Hidden value moves ${formatSignedPct(Math.expm1(e.true_impact))}; the price only follows as agents trade on noisy readings of it`
-              : "0 = no real news (e.g. a false rumour)"
-          }
+      <Field
+        label="Follows up (parent)"
+        htmlFor={id("parent")}
+        hint="Denials, confirmations and corrections link to the original"
+      >
+        <select
+          id={id("parent")}
+          className={input}
+          value={e.parent}
+          onChange={(ev) => set({ parent: Number(ev.target.value) })}
         >
-          <input
-            id={id("impact")}
-            type="number"
-            min={-0.5}
-            max={0.5}
-            step={0.005}
-            className={cn(input, "tabular font-mono")}
-            value={e.true_impact ?? 0}
-            onChange={(ev) => {
-              const v = Number(ev.target.value);
-              if (Number.isFinite(v)) set({ true_impact: Math.max(-0.5, Math.min(0.5, v)) });
-            }}
-          />
-        </Field>
-        <Field
-          label="Follows up (parent)"
-          htmlFor={id("parent")}
-          hint="Denials, confirmations and corrections link to the original"
-        >
-          <select
-            id={id("parent")}
-            className={input}
-            value={e.parent}
-            onChange={(ev) => set({ parent: Number(ev.target.value) })}
-          >
-            <option value={-1}>None</option>
-            {earlier.map((p) => (
-              <option key={p.id} value={p.id}>
-                #{p.id} {p.label || p.kind}
-              </option>
-            ))}
-          </select>
-        </Field>
-      </div>
+          <option value={-1}>None</option>
+          {earlier.map((p) => (
+            <option key={p.id} value={p.id}>
+              #{p.id} {p.label || p.kind}
+            </option>
+          ))}
+        </select>
+      </Field>
       <Field label="Topic" htmlFor={id("topic")}>
         <select
           id={id("topic")}

@@ -904,6 +904,26 @@
           "placeholder": true
         },
         {
+          "name": "drawn_impact_size",
+          "key": "belief.drawn_impact_size",
+          "kind": "float",
+          "default": 0.04,
+          "min": 0.0,
+          "max": 0.3,
+          "description": "Log change of a true, fully bullish story",
+          "placeholder": true
+        },
+        {
+          "name": "drawn_impact_noise",
+          "key": "belief.drawn_impact_noise",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "Log-normal spread of that size",
+          "placeholder": true
+        },
+        {
           "name": "adopt_rate",
           "key": "belief.adopt_rate",
           "kind": "float",

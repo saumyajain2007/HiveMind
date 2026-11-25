@@ -223,10 +223,10 @@ The **Import** page (`/import`, `GET /api/v1/stocks` and `GET /api/v1/stocks/{ti
 
 ## Signal lab page: illustrative outputs
 
-The **Signal lab** page (`/signals`) is a demonstration. It says so in a header and a footnote. You can choose inputs, a position rule, a holding period and costs, but **the Sharpe ratio is not computed from them**:
+The **Signal lab** page (`/signals`) is a demonstration. It says so in a header and a footnote. You can choose inputs (agent model forecast, 5-day momentum, social sentiment) and a position rule; the hold is fixed at 5 days. **The Sharpe ratio is not computed from them**:
 
 - Each combination is hashed to one of ten fixed values (3.52, 3.58, 3.64, 3.71, 3.77, 3.80, 3.86, 3.93, 4.02, 4.11).
-- "Load demo run" reproduces the Algo run's Sharpe (3.64).
+- The trading-cost figure is a real estimate from the stated costs (1 bp commission and 4 bp spread and impact per trade, 30 bp a year to borrow shares for shorts, as in the backtester) and the rule's typical turnover at a 5-day hold: about 0.4% a year.
 - The Monte Carlo fan chart and Sharpe histogram are 400 random paths drawn to have that Sharpe at 18% volatility, so they match the number by construction.
 
 None of it is evidence about any signal. The honest backtests are the Strategy page and the AAPL tables above.
@@ -337,7 +337,7 @@ React 19 + TypeScript + Vite, Tailwind 4 + shadcn/ui (Radix), Motion, TanStack Q
 |---|---|
 | **Runs** | Every run with status, spec hash, sparkline and final move; open, duplicate into the Builder, delete; tick two to compare them (paths on one axis + the settings that differ) |
 | **Builder** | Parameters generated from `/config/schema` (ranges, placeholder badges, reset, diff), platform cards, a drag-and-drop event timeline, Hawkes random shocks, headline import through an LLM, presets, save / load, **Run live** and **Monte Carlo ×R** |
-| **Cockpit** | Candles in market hours with event markers and the hidden fundamental value, confidence gauge, IV / ATM call, market-maker inventory, order imbalance, live news feed and top-5 awareness; pause, scrub, cancel, replay with the same seed |
+| **Cockpit** | Candles in market hours with event markers (the hidden fundamental value is not drawn), confidence gauge, IV / ATM call, market-maker inventory, order imbalance, live news feed and top-5 awareness; pause, scrub, cancel, replay with the same seed |
 | **Monte Carlo** | Fan chart that fills in while runs finish, terminal-price distribution vs a random walk, return distribution, ACF of r and \|r\|, volatility clustering; PNG / SVG / CSV export |
 | **Network** | A sampled subgraph (Sigma.js + ForceAtlas2 in a Web Worker), per-platform layers, a chosen story lighting up node by node, agent hover cards, layer statistics |
 | **Narratives** | Story strip, lineage tree (born × sentiment, shape = origin), family awareness curves, who-heard-it heat map, item cards with credibility decay |

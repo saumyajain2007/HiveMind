@@ -153,6 +153,10 @@ class BeliefConfig:
     # running view of real events drifts toward the cumulative true_impact with this half-life.
     # 0 = never revealed. This is the only path by which the hidden value reaches retail beliefs.
     reveal_half_life_days: float = 2.0    # PLACEHOLDER
+    # Events with no true_impact set (all Builder events) get one drawn at injection: true with
+    # probability credibility, then size·sentiment·exp(N(0, noise)) (events.draw_true_impact).
+    drawn_impact_size: float = 0.04       # PLACEHOLDER: log change of a true, fully bullish story
+    drawn_impact_noise: float = 0.5       # PLACEHOLDER: log-normal spread of that size
     adopt_rate: float = 0.5
     narrative_pull: float = 0.02          # per tick pull of Confidence toward held narrative
     confidence_decay: float = 0.002       # per tick forgetting toward 0
