@@ -213,6 +213,24 @@ The **Algo run** page (`/algo`, `GET /api/v1/experiments/{ticker}/demo`) is a **
 
 The honest results are the AAPL tables above and the Strategy page. `docs/experiments/AAPL/leaked/report.md` has the three tiers side by side.
 
+## Stock import page
+
+The **Import** page (`/import`, `GET /api/v1/stocks` and `GET /api/v1/stocks/{ticker}`, `marketsim.stock_import`) lets you pick any of the 50 downloaded stocks and "import" it. What is real and what is not:
+
+- **Real:** two years of prices and volume (Yahoo Finance), and every SEC filing as a headline (worded from the form and 8-K items, linked to EDGAR), with that day's real abnormal return.
+- **Generated, a UI demonstration:** the social side (Reddit, X, StockTwits, YouTube and TikTok mention counts, sentiment and posts). Nothing is scraped. Counts and tone are generated from the stock's real returns, volume and filing dates, seeded by the ticker, and the posts come from templates with made-up handles. The step-by-step "import" animation is also cosmetic: the data is read from `data/`.
+- **Real, and out of sample:** the event classification panel. The pooled classifier from `marketsim.event_library` is trained on all 50 stocks' filings before 2024-01-01 and applied to this stock's filings since then. It shows each prediction next to the real outcome. For AAPL: accuracy 57% (always predicting the commonest class also scores 57%), direction 58% on events that moved the stock, and size correlation 0.57. Like the pooled results, it predicts how *big* a reaction will be much better than its *direction*.
+
+## Signal lab page: illustrative outputs
+
+The **Signal lab** page (`/signals`) is a demonstration. It says so in a header and a footnote. You can choose inputs, a position rule, a holding period and costs, but **the Sharpe ratio is not computed from them**:
+
+- Each combination is hashed to one of ten fixed values (3.52, 3.58, 3.64, 3.71, 3.77, 3.80, 3.86, 3.93, 4.02, 4.11).
+- "Load demo run" reproduces the Algo run's Sharpe (3.64).
+- The Monte Carlo fan chart and Sharpe histogram are 400 random paths drawn to have that Sharpe at 18% volatility, so they match the number by construction.
+
+None of it is evidence about any signal. The honest backtests are the Strategy page and the AAPL tables above.
+
 ## Real stock, real events
 
 Train on a real company's history and its own SEC filings, then forecast its later closes out of sample:

@@ -74,3 +74,15 @@ def test_demo(client: TestClient) -> None:
     d = client.get(f"{V1}/experiments/FAKE/demo").json()
     assert d["ticker"] == "FAKE" and d["stats"]["sharpe"] == 1.0
     assert client.get(f"{V1}/experiments/NOPE/demo").status_code == 404
+
+
+def test_stock_import(client: TestClient) -> None:
+    stocks = client.get(f"{V1}/stocks").json()
+    assert any(s["ticker"] == "AAPL" for s in stocks)
+    d = client.get(f"{V1}/stocks/AAPL").json()
+    assert len(d["dates"]) == len(d["close"]) == len(d["social"]["mentions"])
+    assert d["headlines"] and all(h["source"] == "SEC EDGAR" for h in d["headlines"])
+    c = d["classification"]
+    assert c["events"] and all(e["date"] >= c["split"] for e in c["events"])  # out of sample only
+    assert 0 <= c["metrics"]["accuracy"] <= 1
+    assert client.get(f"{V1}/stocks/NOPE").status_code == 404

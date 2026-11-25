@@ -440,3 +440,34 @@ Re-checked after fix 2 (4 seeds × 10 days, 100k agents, distance 11.4):
 | open-to-close variance ratio | 0.67 | 0.67 |
 
 Fat tails need news; the background-news process is still available as a scenario input.
+
+## Events no longer set the price through the fundamental change
+
+**Problem.** A real event moved the hidden value V_true, and three channels read that value at once:
+
+- the market maker re-quoted by 100% of `true_impact` at the next auction (`mm_news_pass_through = 1.0`);
+- funds added `true_impact` to their value estimate on the release;
+- every agent who heard the news moved its value by α × `true_impact`.
+
+In the real-data replays, `true_impact` *is* the predicted (or, for the oracle, the actual) reaction, so the simulated reaction was the injected number re-labelled. The agents contributed almost nothing.
+
+**Now.**
+
+1. **Public reading.** Each event has a public reading, `Event.signal = true_impact + N(0, 0.5·|true_impact| + 0.005)`. Insiders read it exactly. Nobody but the company's buyback desk (and funds, after their one-day research lag) sees V_true.
+2. **Private interpretation.** Each agent interprets the reading with its own error, sd `interpretation_noise · (1 − knowledge) · (|signal| + floor)`. It moves its value by α × its reading.
+3. **No automatic re-quote.** The market maker no longer re-quotes on news (`mm_news_pass_through = 0`; when turned on, it applies to the reading, not the truth).
+4. **Gradual revelation.** The true size comes out over days: each agent's running total of real-event value changes drifts toward the true cumulative change, with half-life `reveal_half_life_days = 2`. This is the only path by which the hidden value reaches retail beliefs.
+5. **Inventory risk.** The market maker leans its quotes against its inventory (`mm_inventory_skew = 0.3` tick sd at most, `tanh(I / 0.5 ADV)`, 5% laid off per open tick). Without it, the market maker absorbed unlimited informed selling at an unchanged price: a −10% change moved the price −1% after five days, even with every agent's value down 8%.
+   - Skew 1.0, unbounded, ran away: the price ×10⁷ in 30 days with momentum traders.
+   - The bounded version leaves no-event runs unchanged: daily sd 1.5% vs 1.5%, kurtosis about 0.
+
+**Effect.** A hidden −10% change (5,000 agents, fitted AAPL parameters, 2 seeds) now moves the price −1% to −3% in the first hour and −3% to −5% on the day, then keeps moving for days. One run overshot to −12% on day 3 and recovered.
+
+**Tests.**
+
+- `test_hidden_value_does_not_set_the_price`
+- `test_the_fundamental_is_not_priced_at_once`
+- `test_agents_read_the_signal_not_the_hidden_impact`
+- `test_readings_differ_between_agents`
+
+All new settings are PLACEHOLDERs: they have not been fitted. The AAPL results were regenerated with them (see the README tables).

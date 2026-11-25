@@ -112,14 +112,14 @@ class Funds(_Firms):
         super().__init__(n, total_capital)
         self.k, self.lag = k, lag_ticks
         self.policy: DiscretionaryPolicy = policy or RuleBasedPolicy()
-        self._official: list[tuple[int, float]] = []  # (tick, true_impact) read directly
+        self._official: list[tuple[int, float]] = []  # (tick, public reading) of official releases
         self._override: dict[int, tuple[int, float]] = {}  # firm -> (until tick, fraction)
 
     def on_event(self, event: Event, market: MarketState, tick: int) -> None:
         if event.seeding != "official":
             return
-        if event.true_impact != 0.0:
-            self._official.append((tick, event.true_impact))
+        if event.true_impact != 0.0:  # they read the release, not the hidden value
+            self._official.append((tick, event.true_impact if event.signal is None else event.signal))
         frac = self.policy.on_event(event, market)
         if frac is not None:
             until = tick + (96 - tick % 96)  # rest of the trading day

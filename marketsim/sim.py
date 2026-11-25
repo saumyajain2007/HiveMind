@@ -316,6 +316,15 @@ class Simulation:
 
     # ---------------------------------------------------------------- helpers
     def _inject(self, ev: Event, t: int) -> dict[str, Any]:
+        if ev.signal is None and ev.true_impact != 0.0:
+            bc = self.cfg.belief
+            if ev.seeding == "insider":
+                ev.signal = ev.true_impact  # insiders know what it is worth
+            else:
+                sd = bc.signal_noise * abs(ev.true_impact) + bc.signal_floor
+                ev.signal = float(ev.true_impact + sd * self.event_rng.standard_normal())
+        if ev.true_impact != 0.0:
+            self.beliefs.add_truth(ev.true_impact)
         seeds = seed_agents(ev, self.pop, self.event_rng, connectedness=self.connectedness)
         label = self.labels.get(ev.id)
         slot = self.items.from_event(ev, t, seeds=seeds, label=label)
@@ -335,6 +344,7 @@ class Simulation:
             "credibility": ev.credibility,
             "salience": ev.salience,
             "true_impact": ev.true_impact,
+            "signal": ev.signal,
         }
         if label:
             msg["label"] = label

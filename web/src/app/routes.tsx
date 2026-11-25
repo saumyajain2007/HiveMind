@@ -36,6 +36,12 @@ const StrategyPage = lazy(() =>
 const EventLabPage = lazy(() =>
   import("@/pages/EventLabPage").then((m) => ({ default: m.EventLabPage })),
 );
+const ImportPage = lazy(() =>
+  import("@/pages/ImportPage").then((m) => ({ default: m.ImportPage })),
+);
+const SignalLabPage = lazy(() =>
+  import("@/pages/SignalLabPage").then((m) => ({ default: m.SignalLabPage })),
+);
 const AlgoPage = lazy(() => import("@/pages/AlgoPage").then((m) => ({ default: m.AlgoPage })));
 const DesignPage = lazy(() =>
   import("@/pages/DesignPage").then((m) => ({ default: m.DesignPage })),
@@ -85,7 +91,9 @@ export const routes: RouteObject[] = [
       { path: "real-data", element: page(RealDataPage, {}) },
       { path: "strategy", element: page(StrategyPage, {}) },
       { path: "event-lab", element: page(EventLabPage, {}) },
+      { path: "import", element: page(ImportPage, {}) },
       { path: "algo", element: page(AlgoPage, {}) },
+      { path: "signals", element: page(SignalLabPage, {}) },
       { path: "design", element: page(DesignPage, {}) },
       { path: "*", element: page(NotFoundPage, {}) },
     ],

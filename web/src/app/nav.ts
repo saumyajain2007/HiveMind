@@ -5,6 +5,8 @@ import {
   GitBranch,
   Landmark,
   Cpu,
+  DownloadCloud,
+  FlaskRound,
   Split,
   WalletCards,
   Library,
@@ -95,11 +97,25 @@ export const NAV: NavItem[] = [
     shortcut: "G S",
   },
   {
+    path: "/import",
+    label: "Import",
+    icon: DownloadCloud,
+    description: "Pick a stock: prices, filings, social chatter and the event classifier",
+    shortcut: "G I",
+  },
+  {
     path: "/algo",
     label: "Algo run",
     icon: Cpu,
     description: "The event-driven agent strategy, day by day",
     shortcut: "G G",
+  },
+  {
+    path: "/signals",
+    label: "Signal lab",
+    icon: FlaskRound,
+    description: "Backtest a signal with Monte Carlo paths",
+    shortcut: "G L",
   },
 ];
 

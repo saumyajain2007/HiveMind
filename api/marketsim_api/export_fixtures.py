@@ -86,6 +86,11 @@ def write_experiment_fixture(ticker: str = "AAPL", keep: int = 200) -> bool:
     if algo.exists():
         doc = json.loads(algo.read_text(encoding="utf-8"))
         _write("algo", {"ticker": doc["ticker"], "period": doc["period"], **doc["demo"]})
+    from marketsim.sim import json_safe
+    from marketsim.stock_import import build, universe
+
+    _write("stocks", universe())
+    _write("stock-AAPL", json_safe(build("AAPL")))
     _write_isolation()
     return True
 

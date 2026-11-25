@@ -14,6 +14,8 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
 
+from marketsim.sim import json_safe
+
 router = APIRouter(prefix="/experiments", tags=["experiments"])
 library_router = APIRouter(prefix="/event-library", tags=["experiments"])
 
@@ -109,3 +111,30 @@ def get_demo(ticker: str) -> dict[str, Any]:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"no demo run for {ticker}")
     doc = _load(str(p), p.stat().st_mtime)
     return {"ticker": doc["ticker"], "period": doc["period"], **doc["demo"]}
+
+
+stocks_router = APIRouter(prefix="/stocks", tags=["experiments"])
+
+
+def data_dir() -> Path:
+    default = Path(__file__).resolve().parents[3] / "data"
+    return Path(os.environ.get("MARKETSIM_DATA_DIR", str(default)))
+
+
+@stocks_router.get("")
+def list_stocks() -> list[dict[str, Any]]:
+    """Every downloaded stock (`scripts/fetch_market_data.py`) with its last close."""
+    from marketsim.stock_import import universe
+
+    return universe(data_dir())
+
+
+@stocks_router.get("/{ticker}")
+def import_stock(ticker: str) -> dict[str, Any]:
+    """Import one stock: two years of prices, its filings as headlines, social chatter by
+    platform, and the pooled event classifier's out-of-sample predictions for its events."""
+    from marketsim.stock_import import build
+
+    if not ticker.isalnum() or not (data_dir() / ticker.upper() / "prices.csv").exists():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"no data for {ticker}")
+    return json_safe(build(ticker.upper(), data_dir()))

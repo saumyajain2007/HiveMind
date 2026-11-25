@@ -123,7 +123,7 @@ function JsonField({
   value: unknown;
   onChange: (v: unknown) => void;
 }) {
-  const [text, setText] = useState(() => JSON.stringify(value, null, 1));
+  const [text, setText] = useState(() => JSON.stringify(value ?? null, null, 1));
   const [err, setErr] = useState<string | null>(null);
   return (
     <div className="flex flex-col gap-1">

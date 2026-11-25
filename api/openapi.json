@@ -1659,6 +1659,78 @@
           }
         }
       }
+    },
+    "/api/v1/stocks": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "List Stocks",
+        "description": "Every downloaded stock (`scripts/fetch_market_data.py`) with its last close.",
+        "operationId": "list_stocks_api_v1_stocks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Response List Stocks Api V1 Stocks Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stocks/{ticker}": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Import Stock",
+        "description": "Import one stock: two years of prices, its filings as headlines, social chatter by\nplatform, and the pooled event classifier's out-of-sample predictions for its events.",
+        "operationId": "import_stock_api_v1_stocks__ticker__get",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Import Stock Api V1 Stocks  Ticker  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1818,9 +1890,45 @@
             "maximum": 100.0,
             "minimum": 0.0,
             "title": "Impact To Sentiment",
-            "description": "How knowledgeable agents translate true_impact into sentiment",
+            "description": "How knowledgeable agents translate their reading of an event into sentiment",
             "default": 10.0,
             "placeholder": false
+          },
+          "signal_noise": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Signal Noise",
+            "description": "Error of the public reading, relative to |true_impact|",
+            "default": 0.5,
+            "placeholder": true
+          },
+          "signal_floor": {
+            "type": "number",
+            "maximum": 0.05,
+            "minimum": 0.0,
+            "title": "Signal Floor",
+            "description": "Absolute error of the public reading (log)",
+            "default": 0.005,
+            "placeholder": true
+          },
+          "interpretation_noise": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Interpretation Noise",
+            "description": "Per-agent misreading, scaled by (1 − knowledge)",
+            "default": 1.0,
+            "placeholder": true
+          },
+          "reveal_half_life_days": {
+            "type": "number",
+            "maximum": 30.0,
+            "minimum": 0.0,
+            "title": "Reveal Half Life Days",
+            "description": "The real change is learned slowly (follow-up filings, analyst work, guidance): each agent's running view of real events drifts toward the cumulative true_impact with this half-life. 0 = never revealed. This is the only path by which the hidden value reaches retail beliefs.",
+            "default": 2.0,
+            "placeholder": true
           },
           "adopt_rate": {
             "type": "number",
@@ -3076,8 +3184,35 @@
             "maximum": 2.0,
             "minimum": 0.0,
             "title": "Mm News Pass Through",
-            "description": "Share of a public real event's true_impact the market maker re-quotes at once",
-            "default": 1.0,
+            "description": "(was 1.0 on true_impact: the price jumped straight to the fundamental)",
+            "default": 0.0,
+            "placeholder": true
+          },
+          "mm_inventory_skew": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Mm Inventory Skew",
+            "description": "(bounded: larger values run away with momentum traders)",
+            "default": 0.3,
+            "placeholder": true
+          },
+          "mm_inventory_scale": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.05,
+            "title": "Mm Inventory Scale",
+            "description": "Inventory, in ADVs, at which the lean is ~76% of max",
+            "default": 0.5,
+            "placeholder": true
+          },
+          "mm_inventory_layoff": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Mm Inventory Layoff",
+            "description": "Share of inventory laid off per open tick",
+            "default": 0.05,
             "placeholder": true
           },
           "mm_flow_anticipation": {

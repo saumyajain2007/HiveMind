@@ -275,10 +275,10 @@ class MarketState:
         """A real event moves the hidden value: V_true *= exp(true_impact)."""
         self.v_true *= math.exp(true_impact)
 
-    def apply_public_news(self, true_impact: float) -> None:
+    def apply_public_news(self, reading: float) -> None:
         """The market maker reads public news and re-quotes at the next auction by
-        `mm_news_pass_through` × true_impact."""
-        self.quote_shift += self.cfg.mm_news_pass_through * true_impact
+        `mm_news_pass_through` × the news' public reading (never the hidden true_impact)."""
+        self.quote_shift += self.cfg.mm_news_pass_through * reading
 
     def record_tick(self, tick: int, auction: AuctionResult | None = None) -> None:
         """Log one tick. Pass the auction result on open ticks; closed ticks keep the price."""
@@ -290,7 +290,7 @@ class MarketState:
             self.abs_ewma = r_abs if self.abs_ewma <= 0 else lam_v * self.abs_ewma + (1 - lam_v) * r_abs
             self.quote_shift = 0.0  # the re-quote is in the price now
             self.price = auction.price
-            self.mm_inventory += auction.mm_delta
+            self.mm_inventory = (1.0 - self.cfg.mm_inventory_layoff) * self.mm_inventory + auction.mm_delta
             volume = auction.volume
             if self.adv_estimate > 0.0:
                 lam = self.cfg.adv_ewma
@@ -335,6 +335,10 @@ class MarketState:
 
         Does not record the tick; call `record_tick(tick, result)` afterwards.
         """
+        adv = self.adv(total_shares_held)
+        tick_sd = self.daily_vol / math.sqrt(OPEN_TICKS_PER_DAY)
+        inv = math.tanh(self.mm_inventory / max(self.cfg.mm_inventory_scale * adv, 1e-9))
+        shift = self.quote_shift - self.cfg.mm_inventory_skew * tick_sd * inv
         res = batch_auction(
             buy_q,
             buy_lim,
@@ -342,18 +346,18 @@ class MarketState:
             sell_lim,
             P=self.price,
             sigma_daily=self.daily_vol,
-            adv=self.adv(total_shares_held),
+            adv=adv,
             Y=self.cfg.impact_Y,
             cap=self.cfg.circuit_breaker,
             noise_sd=self.tick_noise_sd(),
             rng=rng,
-            quote_shift=self.quote_shift,
+            quote_shift=shift,
         )
         self.last_noise = res.log_return - res.impact_return
         k = self.cfg.mm_flow_anticipation
         # the order-flow part of the move only: the news re-quote (quote_shift) is priced once,
         # not treated as persistent flow (it used to be amplified like a trend)
-        x, x_prev = res.impact_return - self.quote_shift, self.last_impact
+        x, x_prev = res.impact_return - shift, self.last_impact
         lam = self.cfg.flow_rho_ewma
         self.rho_num = lam * self.rho_num + (1 - lam) * x * x_prev
         self.rho_den = lam * self.rho_den + (1 - lam) * x_prev * x_prev

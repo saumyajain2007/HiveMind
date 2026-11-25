@@ -860,8 +860,48 @@
           "default": 10.0,
           "min": 0.0,
           "max": 100.0,
-          "description": "How knowledgeable agents translate true_impact into sentiment",
+          "description": "How knowledgeable agents translate their reading of an event into sentiment",
           "placeholder": false
+        },
+        {
+          "name": "signal_noise",
+          "key": "belief.signal_noise",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.0,
+          "max": 3.0,
+          "description": "Error of the public reading, relative to |true_impact|",
+          "placeholder": true
+        },
+        {
+          "name": "signal_floor",
+          "key": "belief.signal_floor",
+          "kind": "float",
+          "default": 0.005,
+          "min": 0.0,
+          "max": 0.05,
+          "description": "Absolute error of the public reading (log)",
+          "placeholder": true
+        },
+        {
+          "name": "interpretation_noise",
+          "key": "belief.interpretation_noise",
+          "kind": "float",
+          "default": 1.0,
+          "min": 0.0,
+          "max": 3.0,
+          "description": "Per-agent misreading, scaled by (1 − knowledge)",
+          "placeholder": true
+        },
+        {
+          "name": "reveal_half_life_days",
+          "key": "belief.reveal_half_life_days",
+          "kind": "float",
+          "default": 2.0,
+          "min": 0.0,
+          "max": 30.0,
+          "description": "The real change is learned slowly (follow-up filings, analyst work, guidance): each agent's running view of real events drifts toward the cumulative true_impact with this half-life. 0 = never revealed. This is the only path by which the hidden value reaches retail beliefs.",
+          "placeholder": true
         },
         {
           "name": "adopt_rate",
@@ -1131,10 +1171,40 @@
           "name": "mm_news_pass_through",
           "key": "market.mm_news_pass_through",
           "kind": "float",
-          "default": 1.0,
+          "default": 0.0,
           "min": 0.0,
           "max": 2.0,
-          "description": "Share of a public real event's true_impact the market maker re-quotes at once",
+          "description": "(was 1.0 on true_impact: the price jumped straight to the fundamental)",
+          "placeholder": true
+        },
+        {
+          "name": "mm_inventory_skew",
+          "key": "market.mm_inventory_skew",
+          "kind": "float",
+          "default": 0.3,
+          "min": 0.0,
+          "max": 2.0,
+          "description": "(bounded: larger values run away with momentum traders)",
+          "placeholder": true
+        },
+        {
+          "name": "mm_inventory_scale",
+          "key": "market.mm_inventory_scale",
+          "kind": "float",
+          "default": 0.5,
+          "min": 0.05,
+          "max": 5.0,
+          "description": "Inventory, in ADVs, at which the lean is ~76% of max",
+          "placeholder": true
+        },
+        {
+          "name": "mm_inventory_layoff",
+          "key": "market.mm_inventory_layoff",
+          "kind": "float",
+          "default": 0.05,
+          "min": 0.0,
+          "max": 1.0,
+          "description": "Share of inventory laid off per open tick",
           "placeholder": true
         },
         {

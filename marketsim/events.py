@@ -54,6 +54,9 @@ class Event:
     parent: int = -1  # for follow-ups: confirmations, denials, corrections
     id: int = -1
     topic: str = "finance"
+    # public reading of the release (log); None = drawn at injection around true_impact. Agents,
+    # firms and the market maker see this, never true_impact.
+    signal: float | None = None
 
     @property
     def is_real(self) -> bool:
@@ -369,11 +372,12 @@ PUBLIC_SEEDINGS = ("official", "outlet")
 def apply_to_market(event: Event, market: MarketState) -> None:
     """A real event moves the hidden fundamental value at injection: V_true *= exp(true_impact).
 
-    Public real news (official releases and outlet reports) also makes the market maker re-quote
-    at the next auction (`MarketState.apply_public_news`). Leaks, insider tips and rumours do
-    not: they reach the price only through agents' orders.
+    The hidden value is not observed. Public real news (official releases and outlet reports) makes
+    the market maker re-quote at the next auction on the event's public *reading* (`Event.signal`)
+    times `mm_news_pass_through` (0 by default: the price moves only through orders). Leaks,
+    insider tips and rumours never re-quote it.
     """
     if event.true_impact != 0.0:
         market.apply_fundamental_shock(event.true_impact)
         if event.seeding in PUBLIC_SEEDINGS:
-            market.apply_public_news(event.true_impact)
+            market.apply_public_news(event.true_impact if event.signal is None else event.signal)

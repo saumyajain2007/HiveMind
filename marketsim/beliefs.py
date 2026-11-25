@@ -9,9 +9,11 @@ The user's four lines, in order:
 
   with cred_eff = (credibility · trust)^(1 + 2·knowledge) (trust: the platform the item arrived
   on), eff_sentiment = (1−α)·sentiment + α·clip(true_impact · impact_to_sentiment) and
-  α = knowledge · (1 − complexity·(1 − knowledge)). Every update of a tick is computed from the
-  same starting confidence and applied together with `np.add.at`, then clipped to [-1, 1].
-  Agents who learn of a real event also update `perceived_value *= exp(α · true_impact)`.
+  α = knowledge · (1 − complexity·(1 − knowledge)); `impact` is the agent's own reading of the
+  event's public signal (never the hidden true_impact, see BeliefConfig.signal_noise). Every
+  update of a tick is computed from the same starting confidence and applied together with
+  `np.add.at`, then clipped to [-1, 1].
+  Agents who learn of a real event also update `perceived_value *= exp(α · reading)`.
 * **Adopt.** On a belief-moving narrative item, with probability
   adopt_rate · (impulsiveness + 1 − knowledge) / 2, the agent takes it as its `held_narrative`
   and moves `narrative_bias` toward the item's sentiment (`adopt_step`). A belief-moving
@@ -64,6 +66,8 @@ class Beliefs:
     def __init__(self, pop: Population, items: ItemStore, cfg: Config, rng: np.random.Generator) -> None:
         self.pop, self.items, self.cfg, self.rng = pop, items, cfg, rng
         self._last_invent = {1: -(10**9), -1: -(10**9)}  # direction -> tick of the last invention
+        self.news_acc = np.zeros(pop.n)  # log value change each agent has taken in from real events
+        self.true_cum = 0.0  # cumulative true_impact of the real events so far (hidden)
 
     # ---------------------------------------------------------------- belief + adopt
     def absorb(self, slots: np.ndarray, agents: np.ndarray, trust: np.ndarray | None = None) -> BeliefResult:
@@ -82,7 +86,11 @@ class Beliefs:
         k = pop.knowledge[agents]
         imp = pop.impulsiveness[agents]
         alpha = k * (1.0 - items.complexity[slots] * (1.0 - k))
-        impact = items.true_impact[slots]
+        sig = items.signal[slots]
+        real = items.true_impact[slots] != 0.0
+        # each agent's own reading of the public signal; the hidden true_impact is never seen
+        sd = bc.interpretation_noise * (1.0 - k) * (np.abs(sig) + bc.signal_floor)
+        impact = np.where(real, sig + sd * self.rng.standard_normal(len(slots)), 0.0)
         eff = (1.0 - alpha) * items.sentiment[slots] + alpha * np.clip(
             impact * bc.impact_to_sentiment, -1.0, 1.0
         )
@@ -95,12 +103,12 @@ class Beliefs:
         np.clip(pop.confidence, -1.0, 1.0, out=pop.confidence)
         out.moved, out.blocked = int(moves.sum()), int((~moves).sum())
 
-        real = impact != 0.0
         if real.any():
             log_pv = np.zeros(pop.n)
             np.add.at(log_pv, agents[real], alpha[real] * impact[real])
             touched = np.unique(agents[real])
             pop.perceived_value[touched] *= np.exp(log_pv[touched])
+            self.news_acc[touched] += log_pv[touched]
 
         # adopt narratives / drop them after a debunking item of the same family
         narrative = items.is_narrative[slots]
@@ -210,6 +218,22 @@ class Beliefs:
         )
         return int(items.item_id[slot])
 
+    # ---------------------------------------------------------------- revelation
+    def add_truth(self, true_impact: float) -> None:
+        """A real event happened: its true size will come out over the following days."""
+        self.true_cum += float(true_impact)
+
+    def reveal(self, ticks: int) -> None:
+        """Every agent's view of real events drifts toward their true cumulative size, with
+        half-life `reveal_half_life_days` (nothing is learned at the moment of the event)."""
+        hl = self.cfg.belief.reveal_half_life_days
+        if hl <= 0 or self.true_cum == 0.0:
+            return
+        rate = 1.0 - 0.5 ** (ticks / (hl * TICKS_PER_DAY))
+        d = rate * (self.true_cum - self.news_acc)
+        self.pop.perceived_value *= np.exp(d)
+        self.news_acc += d
+
     # ---------------------------------------------------------------- drift
     def drift(self) -> None:
         """Holders are pulled toward their narrative bias; every confidence decays toward 0."""
@@ -235,4 +259,6 @@ class Beliefs:
         out.children = self.mutate(tick, share_slots, share_agents)
         out.invented = self.invent(tick, ret_1d, online)
         self.drift()
+        if tick % INVENT_EVERY == 0:
+            self.reveal(INVENT_EVERY)
         return out

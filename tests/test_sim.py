@@ -109,11 +109,22 @@ def test_big_moves_become_price_news() -> None:
     cfg = Config(n_agents=3_000, seed=0)
     shock = [{**DEMO[2], "true_impact": -0.4, "tick": 39}]
     sim = Simulation(cfg, Scenario.from_dicts(shock), seed=3)
-    r = sim.run(TICKS_PER_DAY)
+    r = sim.run(3 * TICKS_PER_DAY)  # the price finds the shock over days, not at once
     news = [e for e in r["events"] if e["kind"] == "price_move"]
     assert news, "a 40% fundamental shock should make the price move past the headline threshold"
     assert news[0]["label"].startswith("Stock ") and news[0]["seeding"] == "outlet"
     assert any(rec["origin"] == "price_news" for rec in r["lineage"])
+
+
+def test_the_fundamental_is_not_priced_at_once() -> None:
+    """A hidden −20% change moves the price gradually: under half at first, more by day 5."""
+    cfg = Config(n_agents=3_000, seed=0)
+    shock = [{**DEMO[2], "true_impact": -0.2, "tick": 39}]
+    p = np.log(Simulation(cfg, Scenario.from_dicts(shock), seed=3).run(6 * TICKS_PER_DAY)["series"]["price"])
+    q = np.log(Simulation(cfg, Scenario.from_dicts([]), seed=3).run(6 * TICKS_PER_DAY)["series"]["price"])
+    d = p - q
+    assert d[40] > -0.1  # first auction after the release: nowhere near −20%
+    assert d[39 + 5 * TICKS_PER_DAY] < d[44] - 0.03  # and it keeps moving toward the value
 
 
 def test_on_tick_frames_and_cancellation(world: World) -> None:

@@ -355,3 +355,24 @@ export function useAlgoRun(ticker: string | null | undefined) {
     retry: false,
   });
 }
+
+export function useStocks() {
+  return useQuery({
+    queryKey: ["stocks"],
+    queryFn: async () => unwrap(await api.GET("/api/v1/stocks")) as unknown as E.StockListing[],
+    staleTime: Infinity,
+  });
+}
+
+export function useStockImport(ticker: string | null) {
+  return useQuery({
+    queryKey: ["stock-import", ticker ?? ""],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/v1/stocks/{ticker}", { params: { path: { ticker: ticker ?? "" } } }),
+      ) as unknown as E.StockImport,
+    enabled: Boolean(ticker),
+    staleTime: Infinity,
+    retry: false,
+  });
+}

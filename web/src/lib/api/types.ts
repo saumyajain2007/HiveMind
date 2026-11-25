@@ -653,6 +653,47 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/stocks": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List Stocks
+     * @description Every downloaded stock (`scripts/fetch_market_data.py`) with its last close.
+     */
+    get: operations["list_stocks_api_v1_stocks_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/stocks/{ticker}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Import Stock
+     * @description Import one stock: two years of prices, its filings as headlines, social chatter by
+     *     platform, and the pooled event classifier's out-of-sample predictions for its events.
+     */
+    get: operations["import_stock_api_v1_stocks__ticker__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -729,10 +770,34 @@ export interface components {
       mu0: number;
       /**
        * Impact To Sentiment
-       * @description How knowledgeable agents translate true_impact into sentiment
+       * @description How knowledgeable agents translate their reading of an event into sentiment
        * @default 10
        */
       impact_to_sentiment: number;
+      /**
+       * Signal Noise
+       * @description Error of the public reading, relative to |true_impact|
+       * @default 0.5
+       */
+      signal_noise: number;
+      /**
+       * Signal Floor
+       * @description Absolute error of the public reading (log)
+       * @default 0.005
+       */
+      signal_floor: number;
+      /**
+       * Interpretation Noise
+       * @description Per-agent misreading, scaled by (1 − knowledge)
+       * @default 1
+       */
+      interpretation_noise: number;
+      /**
+       * Reveal Half Life Days
+       * @description The real change is learned slowly (follow-up filings, analyst work, guidance): each agent's running view of real events drifts toward the cumulative true_impact with this half-life. 0 = never revealed. This is the only path by which the hidden value reaches retail beliefs.
+       * @default 2
+       */
+      reveal_half_life_days: number;
       /**
        * Adopt Rate
        * @description Base probability of adopting a narrative that moved the agent's belief.
@@ -1428,10 +1493,28 @@ export interface components {
       noise_frac: number;
       /**
        * Mm News Pass Through
-       * @description Share of a public real event's true_impact the market maker re-quotes at once
-       * @default 1
+       * @description (was 1.0 on true_impact: the price jumped straight to the fundamental)
+       * @default 0
        */
       mm_news_pass_through: number;
+      /**
+       * Mm Inventory Skew
+       * @description (bounded: larger values run away with momentum traders)
+       * @default 0.3
+       */
+      mm_inventory_skew: number;
+      /**
+       * Mm Inventory Scale
+       * @description Inventory, in ADVs, at which the lean is ~76% of max
+       * @default 0.5
+       */
+      mm_inventory_scale: number;
+      /**
+       * Mm Inventory Layoff
+       * @description Share of inventory laid off per open tick
+       * @default 0.05
+       */
+      mm_inventory_layoff: number;
       /**
        * Mm Flow Anticipation
        * @description FITTED (intraday_fit; at the top of its search range)
@@ -3520,6 +3603,61 @@ export interface operations {
       };
       header?: never;
       path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  list_stocks_api_v1_stocks_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          }[];
+        };
+      };
+    };
+  };
+  import_stock_api_v1_stocks__ticker__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        ticker: string;
+      };
       cookie?: never;
     };
     requestBody?: never;

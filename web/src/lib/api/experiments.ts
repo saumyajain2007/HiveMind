@@ -413,3 +413,79 @@ export interface AlgoRun {
   features: string[];
   rule: string;
 }
+
+// ----------------------------------------------------------------------------- stock import
+
+export interface StockListing {
+  ticker: string;
+  name: string;
+  last_date: string;
+  last_close: number;
+}
+
+export interface StockHeadline {
+  date: string;
+  released: string;
+  reaction_date: string;
+  index: number;
+  source: string;
+  form: string;
+  group: string;
+  headline: string;
+  abnormal_return: number | null;
+  url: string | null;
+}
+
+export interface SocialPost {
+  date: string;
+  platform: string;
+  handle: string;
+  text: string;
+  likes: number;
+  sentiment: number;
+}
+
+export interface ClassifiedEvent {
+  date: string;
+  form: string;
+  group: string;
+  proba: [number, number, number];
+  predicted: string;
+  actual: string;
+  expected_ar: number;
+  predicted_size: number;
+  actual_ar: number;
+}
+
+export interface StockImport {
+  ticker: string;
+  name: string;
+  period: [string, string];
+  dates: string[];
+  close: number[];
+  volume: number[];
+  sources: { name: string; provider: string; count: number }[];
+  headlines: StockHeadline[];
+  social: {
+    platforms: string[];
+    mentions: number[];
+    by_platform: Record<string, number[]>;
+    sentiment: number[];
+    posts: SocialPost[];
+    n_posts: number;
+  };
+  classification: {
+    split: string;
+    classes: string[];
+    events: ClassifiedEvent[];
+    metrics: {
+      n?: number;
+      accuracy?: number;
+      majority_accuracy?: number;
+      direction_hit_rate?: number | null;
+      size_corr?: number | null;
+      size_mae?: number;
+      mean_abs_ar?: number;
+    };
+  };
+}

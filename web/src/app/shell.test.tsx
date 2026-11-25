@@ -34,7 +34,9 @@ describe("app shell", () => {
       "Event lab",
       "Real data",
       "Strategy",
+      "Import",
       "Algo run",
+      "Signal lab",
     ]) {
       expect(within(nav).getByRole("link", { name: label })).toBeInTheDocument();
     }

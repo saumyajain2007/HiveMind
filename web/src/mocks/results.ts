@@ -310,6 +310,12 @@ export function resultHandlers(ctx: Ctx) {
       const result = (await import("./fixtures/results/isolation.json")).default;
       return HttpResponse.json({ run: { ...r, status: "done" }, result, progress: [] });
     }),
+    http.get("*/api/v1/stocks", async () =>
+      HttpResponse.json((await import("./fixtures/results/stocks.json")).default),
+    ),
+    http.get("*/api/v1/stocks/:ticker", async () =>
+      HttpResponse.json((await import("./fixtures/results/stock-AAPL.json")).default),
+    ),
     http.get("*/api/v1/experiments/:ticker/demo", async () =>
       HttpResponse.json((await import("./fixtures/results/algo.json")).default),
     ),

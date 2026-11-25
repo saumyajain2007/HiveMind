@@ -105,3 +105,23 @@ test("algo run: stats, charts and trades", async ({ page }) => {
   await expect(page.getByRole("region", { name: "Recent trades table" })).toBeVisible();
   await axe(page);
 });
+
+test("import: pick a stock, import, classifier", async ({ page }) => {
+  await page.goto("/import");
+  await page.getByRole("button", { name: "Import AAPL" }).click();
+  await expect(page.getByText("Event classification")).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByRole("region", { name: "Headline list" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Social posts" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Classified events" })).toBeVisible();
+  await axe(page);
+});
+
+test("signal lab: demo run reproduces the algo run's Sharpe", async ({ page }) => {
+  await page.goto("/signals");
+  await expect(page.getByRole("note")).toContainText("demonstration purposes only");
+  await page.getByRole("button", { name: "Load demo run" }).click();
+  await page.getByRole("button", { name: "Run backtest" }).click();
+  await expect(page.getByRole("img", { name: "Monte Carlo equity fan" })).toBeVisible();
+  await expect(page.getByText("demo run", { exact: true })).toBeVisible();
+  await axe(page);
+});

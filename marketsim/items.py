@@ -76,6 +76,7 @@ class ItemStore:
         self.salience = np.zeros(m)
         self.complexity = np.zeros(m)
         self.true_impact = np.zeros(m)
+        self.signal = np.zeros(m)  # public reading agents see
         self.topic = np.zeros(m, np.int32)
         self.parent = np.full(m, -1, np.int64)
         self.root = np.full(m, -1, np.int64)
@@ -126,6 +127,7 @@ class ItemStore:
         born: int,
         origin: str,
         true_impact: float = 0.0,
+        signal: float | None = None,
         topic: str = "finance",
         parent: int = -1,
         is_narrative: bool = False,
@@ -150,6 +152,7 @@ class ItemStore:
         self.salience[slot] = float(np.clip(salience, 0.0, 1.0))
         self.complexity[slot] = float(np.clip(complexity, 0.0, 1.0))
         self.true_impact[slot] = float(true_impact)
+        self.signal[slot] = float(true_impact if signal is None else signal)
         self.topic[slot] = _TOPIC[topic]
         self.parent[slot] = parent
         self.root[slot] = root
@@ -197,6 +200,7 @@ class ItemStore:
             salience=event.salience,
             complexity=event.complexity,
             true_impact=event.true_impact,
+            signal=event.signal,
             topic=event.topic,
             parent=self.item_for_event(event.parent),
             is_narrative=event.is_narrative,

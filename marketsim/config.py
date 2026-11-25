@@ -142,7 +142,17 @@ class DiffusionConfig:
 @dataclass
 class BeliefConfig:
     mu0: float = 0.35                     # base belief step size
-    impact_to_sentiment: float = 10.0     # how knowledgeable agents translate true_impact into sentiment
+    impact_to_sentiment: float = 10.0     # how knowledgeable agents translate their reading of an event into sentiment
+    # The hidden true_impact is never observed. An event's public reading (what the release appears
+    # to say) is signal = true_impact + N(0, signal_noise·|true_impact| + signal_floor); each agent then
+    # reads signal + N(0, interpretation_noise·(1 − knowledge)·(|signal| + signal_floor)).
+    signal_noise: float = 0.5             # PLACEHOLDER: error of the public reading, relative to |true_impact|
+    signal_floor: float = 0.005           # PLACEHOLDER: absolute error of the public reading (log)
+    interpretation_noise: float = 1.0     # PLACEHOLDER: per-agent misreading, scaled by (1 − knowledge)
+    # The real change is learned slowly (follow-up filings, analyst work, guidance): each agent's
+    # running view of real events drifts toward the cumulative true_impact with this half-life.
+    # 0 = never revealed. This is the only path by which the hidden value reaches retail beliefs.
+    reveal_half_life_days: float = 2.0    # PLACEHOLDER
     adopt_rate: float = 0.5
     narrative_pull: float = 0.02          # per tick pull of Confidence toward held narrative
     confidence_decay: float = 0.002       # per tick forgetting toward 0
@@ -176,12 +186,23 @@ class MarketConfig:
     adv_turnover: float = 0.01            # average daily volume as a share of shares held
     adv_ewma: float = 0.97                # PLACEHOLDER: per-open-tick EWMA weight of the market maker's ADV (tracks traded volume)
     noise_frac: float = 0.897             # unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3
-    mm_news_pass_through: float = 1.0     # PLACEHOLDER: share of a public real event's true_impact the market maker re-quotes at once
+    # Share of the *public reading* of official news (Event.signal, never the hidden true_impact)
+    # the market maker re-quotes at once. 0 = the price moves only through agents' and firms' orders
+    # as the news spreads; the fundamental change itself never sets the price.
+    mm_news_pass_through: float = 0.0     # PLACEHOLDER (was 1.0 on true_impact: the price jumped straight to the fundamental)
     # Fast traders / an efficient market maker, in reduced form: agents hear news over hours, so
     # the auction's impact x_t is persistent (x_t = rho x_{t-1} + surprise). The market maker
     # estimates rho online and prices in the flow still to come; the return becomes
     # x_t + k rho/(1-rho) (x_t - x_{t-1}), which for k = 1 leaves only the surprise (no
     # autocorrelation). k = this setting: 0 = off, 1 = fully efficient. Fitted to real 15-min bars.
+    # Inventory risk (Ho-Stoll / Avellaneda-Stoikov): a market maker holding I shares leans its quotes
+    # by -skew x tick sd x tanh(I / (mm_inventory_scale x ADV)) per open tick, so it unloads what
+    # informed sellers or buyers pushed onto it and their information reaches the price. It also lays
+    # inventory off elsewhere (other venues, hedges) at `mm_inventory_layoff` per open tick.
+    # 0 = infinite capacity (the price ignores who it has absorbed).
+    mm_inventory_skew: float = 0.3        # PLACEHOLDER (bounded: larger values run away with momentum traders)
+    mm_inventory_scale: float = 0.5       # PLACEHOLDER: inventory, in ADVs, at which the lean is ~76% of max
+    mm_inventory_layoff: float = 0.05     # PLACEHOLDER: share of inventory laid off per open tick
     mm_flow_anticipation: float = 0.556     # FITTED (intraday_fit; at the top of its search range)
     flow_rho_ewma: float = 0.98           # per-open-tick EWMA weight of the market maker's rho estimate
     flow_rho_max: float = 0.6             # cap on that estimate (gain rho/(1-rho) <= 1.5); higher runs away

@@ -57,6 +57,13 @@ _CATEGORY_ID = {name: i for i, name in enumerate(engine_config.CATEGORIES)}
 # A test checks that every numeric field in config.py has an entry here.
 FIELD_RANGES: dict[str, tuple[float, float]] = {
     "market.mm_flow_anticipation": (0.0, 1.5),
+    "market.mm_inventory_skew": (0.0, 2.0),
+    "market.mm_inventory_scale": (0.05, 5.0),
+    "market.mm_inventory_layoff": (0.0, 1.0),
+    "belief.signal_noise": (0.0, 3.0),
+    "belief.signal_floor": (0.0, 0.05),
+    "belief.interpretation_noise": (0.0, 3.0),
+    "belief.reveal_half_life_days": (0.0, 30.0),
     "market.flow_rho_ewma": (0.5, 0.999),
     "market.flow_rho_max": (0.0, 0.95),
     "market.noise_vol_feedback": (0.0, 2.0),

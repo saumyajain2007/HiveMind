@@ -123,7 +123,9 @@ def test_worker_never_waits_for_clients_and_reconnect_gets_the_tail(make_client:
     msgs = stream(client, run["id"], after=50)
     ticks = [m["tick"] for m in msgs if m["type"] == "tick"]
     assert ticks and min(ticks) > 50 and msgs[-1]["type"] == "done"
-    assert not [m for m in msgs if m["type"] == "event"]  # the rumour (tick 41) was before `after`
+    assert not [
+        m for m in msgs if m["type"] == "event" and m["tick"] <= 50
+    ]  # the rumour (tick 41) was before `after`
 
 
 def test_finished_run_replays_from_disk(make_client: ClientFactory) -> None:

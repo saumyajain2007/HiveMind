@@ -12,7 +12,9 @@ const PAGES = [
   "/analysis",
   "/event-lab",
   "/real-data",
+  "/import",
   "/algo",
+  "/signals",
   "/strategy",
   "/design",
 ];

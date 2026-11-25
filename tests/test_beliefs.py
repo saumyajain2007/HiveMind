@@ -16,6 +16,7 @@ from marketsim.items import ItemStore
 from marketsim.population import Population
 
 CFG = Config(n_agents=2_000, seed=0)
+CFG.belief = replace(CFG.belief, interpretation_noise=0.0)  # exact formulas below
 
 
 def setup(cfg: Config = CFG, seed: int = 0) -> tuple[Population, ItemStore, Beliefs]:
@@ -82,6 +83,27 @@ def test_real_event_moves_perceived_value_by_alpha() -> None:
     rumour = item(items, sentiment=0.9, is_narrative=True)
     b.absorb(np.array([rumour]), np.array([a]))
     assert pop.perceived_value[a] == pytest.approx(pv * np.exp(alpha * -0.05))  # rumours have no impact
+
+
+def test_agents_read_the_signal_not_the_hidden_impact() -> None:
+    pop, items, b = setup()
+    a = person(pop)
+    pop.knowledge[a], pv = 0.5, float(pop.perceived_value[a])
+    s = item(items, sentiment=0.0, true_impact=-0.05, signal=0.02, complexity=0.0)
+    b.absorb(np.array([s]), np.array([a]))
+    assert pop.perceived_value[a] == pytest.approx(pv * np.exp(0.5 * 0.02))  # up, though the truth is down
+
+
+def test_readings_differ_between_agents() -> None:
+    cfg = Config(n_agents=2_000, seed=0)
+    pop, items, b = setup(cfg)
+    people = np.flatnonzero(pop.category != MEDIA)[:200]
+    pop.knowledge[people] = 0.2
+    pv = pop.perceived_value[people].copy()
+    s = item(items, sentiment=0.0, true_impact=-0.05, complexity=0.0)
+    b.absorb(np.full(len(people), s), people)
+    moves = np.log(pop.perceived_value[people] / pv) / 0.2
+    assert moves.std() > 0.01 and abs(moves.mean() + 0.05) < 0.01
 
 
 def test_media_have_no_beliefs() -> None:
