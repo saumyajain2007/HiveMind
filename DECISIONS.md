@@ -470,4 +470,9 @@ In the real-data replays, `true_impact` *is* the predicted (or, for the oracle, 
 - `test_agents_read_the_signal_not_the_hidden_impact`
 - `test_readings_differ_between_agents`
 
-All new settings are PLACEHOLDERs: they have not been fitted. The AAPL results were regenerated with them (see the README tables).
+All new settings are PLACEHOLDERs: they have not been fitted. The AAPL results were regenerated with them. Forecasts: recalibrated skill −1.1% (1 day) and 0.0% (5 days). The oracle fell from +1.3% to −6.8% at 5 days, because the true reaction is no longer injected into the price. Volatility targeting: Sharpe 0.92 vs buy and hold 0.95.
+
+AAPL event isolation, rerun with these mechanics (`python -m marketsim.isolation AAPL`, 2-day horizon, 12 paired seeds):
+- **Before:** the simulated effect of each filing was 97–102% of the injected change (pass-through about 1), because the market maker re-quoted the change in full.
+- **Now:** it is 12–63% of the injected change after two days (median 42%), and roughly a quarter after one day.
+- **Shortfall on the largest moves:** the 2026-07-30 earnings release, a real −9.4%, is simulated at −1.3% over two days.

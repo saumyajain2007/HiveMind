@@ -151,7 +151,12 @@ export function RunCompare({ a, b }: { a: string; b: string }) {
               ? `${diff.length} setting${diff.length === 1 ? "" : "s"} differ`
               : "Specs are identical"}
           </h3>
-          <div className="max-h-[260px] overflow-y-auto">
+          <div
+            className="max-h-[260px] overflow-y-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            tabIndex={0}
+            role="region"
+            aria-label="Settings that differ"
+          >
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-left text-muted-foreground">

@@ -123,8 +123,10 @@ def main() -> None:
                 "seed": 0,
                 "events": DEMO_EVENTS,
             }
-            # Dynamics seed 15 of this world is one where the rumour mutates (2 mutations, 2 inventions),
-            # so the Narratives page has a family tree to show; with default rates most seeds have none.
+            # Dynamics seed 15 of this world was one where the rumour mutates (2 mutations, 2 inventions),
+            # so the Narratives page has a family tree to show. Since events reach the price only
+            # through agents (DECISIONS.md), no seed in 0-79 mutates twice, so the committed single-run
+            # fixtures are kept from before that change; refresh them only with a seed that mutates.
             single = c.post(f"{V1}/runs", json={"scenario": scenario, "seed": 15}).json()
             if single_only:
                 _write_single(c, _wait(c, single["id"]))

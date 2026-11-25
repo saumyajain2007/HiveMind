@@ -264,26 +264,29 @@ The **Real data** page shows the experiment (`GET /api/v1/experiments/{ticker}`)
 |---|---|---|---|---|
 | Random walk (trailing 20-day volatility) | 0 | 88% | 0 | 85% |
 | Random walk + predicted earnings jumps | −0.7% | 89% | −0.5% | 87% |
-| Agent model, raw | −5.5% | 85% | −3.9% | 84% |
-| Agent model, recalibrated on 2016–2023 | −0.2% | 87% | −1.1% | 83% |
-| Agent model told the true reactions (oracle, leaks the future) | −1.4% | 85% | +1.3% | 82% |
+| Agent model, raw | −3.9% | 77% | −8.7% | 52% |
+| Agent model, recalibrated on 2016–2023 | −1.1% | 90% | 0.0% | 83% |
+| Agent model told the true reactions (oracle) | −3.0% | 76% | −6.8% | 52% |
 
 **Trading on it** (daily, 5 bp costs, rules fixed in advance, `marketsim.backtester`; the Strategy page has trades, drawdowns and fitness):
 
 | strategy | total return | Sharpe (95% CI) | deflated Sharpe | max drawdown |
 |---|---|---|---|---|
-| Buy and hold | +90.4% | 0.95 (−0.13 to 2.03) | 0.55 | −33.4% |
-| Volatility target, model sd | +116.8% | 1.03 (−0.11 to 2.10) | 0.60 | −34.4% |
-| Volatility target, trailing sd | +96.2% | 0.91 (−0.21 to 1.97) | 0.52 | −34.0% |
-| Direction long/flat | +19.4% | 0.41 (−0.74 to 1.58) | 0.21 | −31.0% |
-| Direction long/short | −32.8% | −0.36 (−1.43 to 0.79) | 0.02 | −51.6% |
+| Buy and hold | +90.4% | 0.95 (−0.13 to 2.03) | 0.53 | −33.4% |
+| Volatility target, model sd | +92.5% | 0.92 (−0.17 to 1.97) | 0.51 | −32.9% |
+| Volatility target, trailing sd | +96.2% | 0.91 (−0.21 to 1.97) | 0.50 | −34.0% |
+| Direction long/flat | +13.9% | 0.34 (−0.83 to 1.51) | 0.17 | −25.8% |
+| Direction long/short | −40.2% | −0.51 (−1.55 to 0.63) | 0.01 | −52.4% |
 | Earnings classifier | −9.4% | −0.48 (−1.51 to 0.68) | 0.01 | −14.4% |
 
 **What this says.**
 
-- **Forecasts.** The recalibrated agent model is now level with a random walk (−0.2%). Earlier versions lost 9–15% before the market dynamics were fixed. Perfect event knowledge helps at five days (+1.3%).
-- **Direction.** The model's expected return carries no information out of sample: IC −0.07 at one day and −0.07 at five days, against +0.04 and +0.20 on the training origins, which is overfitting. Direction strategies lose.
-- **Volatility targeting.** Sizing positions by the model's spread forecast has the best Sharpe (1.03 vs 0.95), but it is not significant. Alpha is +3.9% a year with t = 0.65, the bootstrap puts a 36% chance on its Sharpe not beating buy and hold, and average exposure is 1.23×.
+These numbers are from the event mechanics described in DECISIONS.md ("Events no longer set the price through the fundamental change"): the simulated price reacts to an event only through agents' orders, as the news spreads and its true size is revealed over days.
+
+- **Forecasts.** The recalibrated agent model is level with a random walk: −1.1% at one day and 0.0% at five.
+- **The oracle got worse.** Under the previous mechanics it scored +1.3% at five days, because the true reaction was injected straight into the price. Now the true reaction only reaches the price through the agents, and it does worse than the honest model (−3.0% and −6.8%). The raw ensembles are also too narrow (77% and 52% coverage of a 90% band), which is what recalibration corrects.
+- **Direction.** The model's expected return carries no information out of sample: IC −0.05 at both horizons, against +0.14 and +0.17 on the training origins. Direction strategies lose.
+- **Volatility targeting.** It no longer beats buy and hold: Sharpe 0.92 against 0.95.
 - **Classifier.** It predicts the *size* of a filing's reaction (correlation 0.58) but not its direction (50%).
 
 See [the full report](docs/experiments/AAPL/report.md) and DECISIONS.md for the method and its caveats.
