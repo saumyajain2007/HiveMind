@@ -54,7 +54,7 @@ SPACE = {
 }
 NEWS_ALPHA, NEWS_BETA = 0.3, 0.5  # self-excitation: branching ratio ~0.47
 # fitted background news for AAPL (refine): ~2.9 synthetic news items per 96-tick day, impact sd 0.54%
-BACKGROUND_NEWS = {"news.rate_per_tick": 0.0297, "news.impact_sd": 0.00538}
+BACKGROUND_NEWS = {"news.rate_per_tick": 0, "news.impact_sd": 0.001}
 # intraday_share is reported, not fitted: the simulation has no overnight news, while ~25% of real
 # daily variance happens overnight
 SCALE = {"acf1": 0.03, "acf_abs1": 0.05, "kurtosis": 1.5, "log_sd": 0.15, "vr_day": 0.15}

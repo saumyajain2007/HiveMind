@@ -58,6 +58,7 @@ _CATEGORY_ID = {name: i for i, name in enumerate(engine_config.CATEGORIES)}
 FIELD_RANGES: dict[str, tuple[float, float]] = {
     "market.mm_flow_anticipation": (0.0, 1.5),
     "market.flow_rho_ewma": (0.5, 0.999),
+    "market.flow_rho_max": (0.0, 0.95),
     "market.noise_vol_feedback": (0.0, 2.0),
     "market.noise_permanence": (0.0, 1.0),
     "market.noise_intraday_profile": (0.0, 5.0),

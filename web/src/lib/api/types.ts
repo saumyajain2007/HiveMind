@@ -1384,7 +1384,7 @@ export interface components {
       /**
        * Impact Y
        * @description Square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7
-       * @default 0.099
+       * @default 0.122
        */
       impact_Y: number;
       /**
@@ -1402,7 +1402,7 @@ export interface components {
       /**
        * Noise Frac
        * @description Unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3
-       * @default 0.729
+       * @default 0.897
        */
       noise_frac: number;
       /**
@@ -1414,7 +1414,7 @@ export interface components {
       /**
        * Mm Flow Anticipation
        * @description FITTED (intraday_fit; at the top of its search range)
-       * @default 0.6
+       * @default 0.556
        */
       mm_flow_anticipation: number;
       /**
@@ -1424,9 +1424,15 @@ export interface components {
        */
       flow_rho_ewma: number;
       /**
+       * Flow Rho Max
+       * @description Cap on that estimate (gain rho/(1-rho) <= 1.5); higher runs away
+       * @default 0.6
+       */
+      flow_rho_max: number;
+      /**
        * Noise Vol Feedback
        * @description FITTED (intraday_fit)
-       * @default 0.239
+       * @default 0.258
        */
       noise_vol_feedback: number;
       /**
@@ -1438,7 +1444,7 @@ export interface components {
       /**
        * Noise Permanence
        * @description FITTED (intraday_fit)
-       * @default 0.047
+       * @default 0.0685
        */
       noise_permanence: number;
       /**
@@ -1558,7 +1564,7 @@ export interface components {
       /**
        * Prop Momentum K
        * @description FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)
-       * @default 4.42
+       * @default 3.87
        */
       prop_momentum_k: number;
       /**

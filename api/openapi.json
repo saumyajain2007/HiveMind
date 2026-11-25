@@ -2996,7 +2996,7 @@
             "minimum": 0.01,
             "title": "Impact Y",
             "description": "Square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7",
-            "default": 0.099,
+            "default": 0.122,
             "placeholder": false
           },
           "adv_turnover": {
@@ -3023,7 +3023,7 @@
             "minimum": 0.0,
             "title": "Noise Frac",
             "description": "Unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3",
-            "default": 0.729,
+            "default": 0.897,
             "placeholder": false
           },
           "mm_news_pass_through": {
@@ -3041,7 +3041,7 @@
             "minimum": 0.0,
             "title": "Mm Flow Anticipation",
             "description": "FITTED (intraday_fit; at the top of its search range)",
-            "default": 0.6,
+            "default": 0.556,
             "placeholder": false
           },
           "flow_rho_ewma": {
@@ -3053,13 +3053,22 @@
             "default": 0.98,
             "placeholder": false
           },
+          "flow_rho_max": {
+            "type": "number",
+            "maximum": 0.95,
+            "minimum": 0.0,
+            "title": "Flow Rho Max",
+            "description": "Cap on that estimate (gain rho/(1-rho) <= 1.5); higher runs away",
+            "default": 0.6,
+            "placeholder": false
+          },
           "noise_vol_feedback": {
             "type": "number",
             "maximum": 2.0,
             "minimum": 0.0,
             "title": "Noise Vol Feedback",
             "description": "FITTED (intraday_fit)",
-            "default": 0.239,
+            "default": 0.258,
             "placeholder": false
           },
           "intraday_vol_ewma": {
@@ -3077,7 +3086,7 @@
             "minimum": 0.0,
             "title": "Noise Permanence",
             "description": "FITTED (intraday_fit)",
-            "default": 0.047,
+            "default": 0.0685,
             "placeholder": false
           },
           "noise_intraday_profile": {
@@ -3285,7 +3294,7 @@
             "minimum": 0.0,
             "title": "Prop Momentum K",
             "description": "FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)",
-            "default": 4.42,
+            "default": 3.87,
             "placeholder": false
           },
           "prop_imbalance_k": {

@@ -237,7 +237,9 @@ class MarketState:
 
     def tick_noise_sd(self) -> float:
         """Std of the unmodelled-flow log return on one open tick (times the volatility feedback)."""
-        base = self.cfg.noise_frac * self.daily_vol / math.sqrt(OPEN_TICKS_PER_DAY)
+        # anchored to implied volatility: with realised volatility here, the feedback below fed on
+        # its own output across days and ran away (a 63-day replay went from 330 to 2,200)
+        base = self.cfg.noise_frac * self.iv_daily() / math.sqrt(OPEN_TICKS_PER_DAY)
         prof = self.cfg.noise_intraday_profile
         if prof:
             slot = (self.tick + 1) % TICKS_PER_DAY - MARKET_OPEN_TICK  # clear() runs before record_tick
@@ -349,15 +351,19 @@ class MarketState:
         )
         self.last_noise = res.log_return - res.impact_return
         k = self.cfg.mm_flow_anticipation
-        x, x_prev = res.impact_return, self.last_impact
+        # the order-flow part of the move only: the news re-quote (quote_shift) is priced once,
+        # not treated as persistent flow (it used to be amplified like a trend)
+        x, x_prev = res.impact_return - self.quote_shift, self.last_impact
         lam = self.cfg.flow_rho_ewma
         self.rho_num = lam * self.rho_num + (1 - lam) * x * x_prev
         self.rho_den = lam * self.rho_den + (1 - lam) * x_prev * x_prev
         self.last_impact = x
         if k > 0 and self.rho_den > 0:
             # price in the predictable rest of the flow (fills stay at the clearing price)
-            rho = min(0.9, max(0.0, self.rho_num / self.rho_den))
-            cap = self.cfg.circuit_breaker
+            # bounded: with rho near 1 the gain rho/(1-rho) explodes and every reversal is amplified
+            # into a runaway (seen in a 63-day replay: price 330 -> 2200 with value ~120)
+            rho = min(self.cfg.flow_rho_max, max(0.0, self.rho_num / self.rho_den))
+            cap = 3.0 * self.tick_noise_sd()
             extra = float(np.clip(k * rho / (1 - rho) * (x - x_prev), -cap, cap))
             res = replace(res, price=res.price * math.exp(extra), log_return=res.log_return + extra)
         return res

@@ -421,3 +421,22 @@ Distance 228 → 13.
 - **The agents' own flow is too persistent.** To make prices behave like AAPL's, that flow has to move the price about 7× less than before: most 15-minute variance comes from flow the model does not represent, plus news. Rumours with no real impact therefore move the simulated price much less than before.
 - **Gaps that remain.** Volatility clustering is about half the real level, and the fitted market reverts less within the day than AAPL does.
 - **Ranges and sources.** `mm_flow_anticipation` sits at the top of its range. All targets come from one stock over 59 days.
+
+**Two bugs in the first version of these mechanisms, found while regenerating the results:**
+
+1. **News amplified by the flow anticipation.** The auction's impact included the market maker's news re-quote, so the anticipation term treated a news jump as persistent flow and amplified it. Real earnings moves of −9% were simulated as −14%, and one of +0.7% came out as +8%. Fix: anticipation acts on the order-flow part only (impact − quote shift). `test_news_requote_is_not_amplified` pins it.
+2. **Runaway volatility over weeks.** The noise level scaled with *realised* daily volatility while the volatility feedback raised realised volatility, an unbounded loop. In a 63-day replay (July–September 2018) the price went from 330 to 2,200 against a value of about 120, and that one window wrecked the agent fit (daily sd 5.3% vs real 2.3%, kurtosis 49). Fix: the noise level is anchored to implied volatility, and the anticipation gain is capped (`flow_rho_max = 0.6`, at most 3 noise sds a tick). `test_noise_cannot_run_away` pins it. All 12 agent-fit windows are now stable, with simulated daily sd 0.7–1.7% vs real 1.0–1.9% (the COVID windows are higher in reality, 4.4%).
+
+The tick-dynamics fit was redone after fix 1. Search plus refinement chose no background news, and those values are the current defaults: `impact_Y` 0.122, `noise_frac` 0.897, `noise_vol_feedback` 0.258, `prop_momentum_k` 3.87, `mm_flow_anticipation` 0.556, `noise_permanence` 0.0685.
+
+Re-checked after fix 2 (4 seeds × 10 days, 100k agents, distance 11.4):
+
+| 15-min moment | real AAPL | fitted |
+|---|---|---|
+| lag-1 autocorrelation | −0.009 | −0.04 |
+| \|r\| lag-1 autocorrelation | 0.22 | 0.10 |
+| excess kurtosis | 3.35 | 1.0 |
+| sd | 0.21% | 0.25% |
+| open-to-close variance ratio | 0.67 | 0.67 |
+
+Fat tails need news; the background-news process is still available as a scenario input.

@@ -172,26 +172,27 @@ class TradingConfig:
 class MarketConfig:
     initial_price: float = 100.0
     implied_vol: float = 0.30             # annualised; options used as a signal only in v1
-    impact_Y: float = 0.099               # square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7
+    impact_Y: float = 0.122               # square-root law prefactor; FITTED to AAPL 15-min bars (intraday_fit), was 0.7
     adv_turnover: float = 0.01            # average daily volume as a share of shares held
     adv_ewma: float = 0.97                # PLACEHOLDER: per-open-tick EWMA weight of the market maker's ADV (tracks traded volume)
-    noise_frac: float = 0.729             # unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3
+    noise_frac: float = 0.897             # unmodelled order flow, as a share of per-tick vol; FITTED (intraday_fit), was 0.3
     mm_news_pass_through: float = 1.0     # PLACEHOLDER: share of a public real event's true_impact the market maker re-quotes at once
     # Fast traders / an efficient market maker, in reduced form: agents hear news over hours, so
     # the auction's impact x_t is persistent (x_t = rho x_{t-1} + surprise). The market maker
     # estimates rho online and prices in the flow still to come; the return becomes
     # x_t + k rho/(1-rho) (x_t - x_{t-1}), which for k = 1 leaves only the surprise (no
     # autocorrelation). k = this setting: 0 = off, 1 = fully efficient. Fitted to real 15-min bars.
-    mm_flow_anticipation: float = 0.6     # FITTED (intraday_fit; at the top of its search range)
+    mm_flow_anticipation: float = 0.556     # FITTED (intraday_fit; at the top of its search range)
     flow_rho_ewma: float = 0.98           # per-open-tick EWMA weight of the market maker's rho estimate
+    flow_rho_max: float = 0.6             # cap on that estimate (gain rho/(1-rho) <= 1.5); higher runs away
     # Unmodelled flow scales with recent intraday volatility: noise sd x (recent |r| / normal |r|)^k,
     # clipped to [0.5, 4] (GARCH-like volatility clustering). 0 = off; fitted to real 15-min bars.
-    noise_vol_feedback: float = 0.239     # FITTED (intraday_fit)
+    noise_vol_feedback: float = 0.258     # FITTED (intraday_fit)
     intraday_vol_ewma: float = 0.9        # per-open-tick EWMA weight of recent |r| for the feedback
     # Share of the unmodelled flow's price move that is information: it also moves V_true and every
     # agent's perceived value, so value investors do not trade it straight back. 0 = pure noise
     # (moves revert within the day); fitted to real 15-min bars.
-    noise_permanence: float = 0.047       # FITTED (intraday_fit)
+    noise_permanence: float = 0.0685       # FITTED (intraday_fit)
     # Time-of-day shape of the unmodelled flow (sd multiplier per open tick, 09:30 .. 15:45, RMS 1):
     # measured on AAPL's 15-minute bars (U-shape: busy open, quiet lunch, pick-up at the close).
     noise_intraday_profile: tuple = (1.896, 1.620, 1.277, 1.115, 1.144, 1.096, 1.077, 1.010, 0.934, 0.858, 0.915, 0.762, 0.648, 0.791, 0.820, 0.762, 0.724, 0.915, 0.648, 0.715, 0.934, 0.724, 0.619, 0.762, 1.058, 1.058)
@@ -204,7 +205,7 @@ class MarketConfig:
     n_funds: int = 3
     firm_capital_share: float = 0.15      # firms' capital vs total investor wealth
     prop_momentum_ticks: int = 4          # PLACEHOLDER: prop firms' momentum look-back (1 hour)
-    prop_momentum_k: float = 4.42         # FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)
+    prop_momentum_k: float = 3.87         # FITTED (intraday_fit), was 30: prop target = capital * tanh(k * momentum + k2 * imbalance)
     prop_imbalance_k: float = 0.2         # PLACEHOLDER
     fund_value_k: float = 5.0             # PLACEHOLDER: fund target = capital * clip(k * (V - P) / P, -1, 1)
     fund_lag_ticks: int = 96              # funds know V_true with a 1-day lag
